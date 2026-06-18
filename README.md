@@ -20,5 +20,3 @@ All assets used in this project are either original creations by the author or s
 ・視力に難がある人（将来的にはターゲット？）<br>
 
 予定タブでは、先頭に数字4文字を入力することで日付として認識し、自動で並び替える機能があります。<br>
-
-PCからでもタスクの編集・削除ができるように、近日アップデート予定（6/18現在）
