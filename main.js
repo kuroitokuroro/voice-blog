@@ -1017,7 +1017,22 @@ function renderScheduleList() {
         return;
       }
 
-      if (isEditing) return;
+      const isContentEditing =
+        isEditing || content.classList.contains("editing");
+
+      if (isContentEditing) {
+        isEditing = false;
+        content.contentEditable = "false";
+        content.classList.remove("editing");
+
+        if (isPcPointer() && schedule.done) {
+          closeSwipeActions(item);
+          item.classList.add("show-actions");
+        }
+
+        return;
+      }
+
       if (item.classList.contains("show-edit")) return;
       if (item.classList.contains("show-delete")) return;
 
@@ -1045,7 +1060,7 @@ function renderScheduleList() {
     });
 
     let isEditing = false;
-    
+
     editButton.addEventListener("click", (event) => {
       event.stopPropagation();
 
