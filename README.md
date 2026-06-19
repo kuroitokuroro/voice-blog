@@ -20,3 +20,8 @@ All assets used in this project are either original creations by the author or s
 ・視力に難がある人（将来的にはターゲット？）<br>
 
 予定タブでは、先頭に数字4文字を入力することで日付として認識し、自動で並び替える機能があります。<br>
+
+▼今後の課題
+コード整形
+開発しやすい、自分が理解しやすいかたちにコードを並び替える作業。
+中身は触らず、コメントや改行で見やすく整えるだけ。
