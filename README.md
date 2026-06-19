@@ -23,6 +23,4 @@ All assets used in this project are either original creations by the author or s
 
 ▼今後の課題
 
-コード整形<br>
-開発しやすい、自分が理解しやすいかたちにコードを並び替える作業。<br>
-中身は触らず、コメントや改行で見やすく整えるだけ。<br>
+いまはない
