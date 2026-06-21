@@ -674,32 +674,36 @@ function renderPastDateButtons() {
         pastDiaryList.innerHTML = "";
       } else {
         selectedPastDateKey = dateKey;
+        isPastDiaryCalendarOpen = false;
         renderPastDiary(dateKey);
       }
 
-      renderPastDateButtons();
+     renderPastDateButtons();
+      renderPastDiaryCalendar();
     });
 
     dateButtons.appendChild(button);
   });
+
   const moreButton = document.createElement("button");
   moreButton.type = "button";
   moreButton.className = "date-button";
   moreButton.textContent = "もっと過去の日記";
 
+   if (isPastDiaryCalendarOpen) {
+    moreButton.classList.add("active");
+  }
+
   moreButton.addEventListener("click", () => {
     isPastDiaryCalendarOpen = !isPastDiaryCalendarOpen;
 
-    if (isPastDiaryCalendarOpen) moreButton.classList.add("active");
-
-    if (!isPastDiaryCalendarOpen) {
+     if (isPastDiaryCalendarOpen) {
+      selectedPastDateKey = null;
+      pastDiaryList.classList.remove("open");
       pastDiaryList.innerHTML = "";
-
-      document.querySelectorAll(".date-button.active").forEach((button) => {
-        button.classList.remove("active");
-      });
     }
 
+    renderPastDateButtons();
     renderPastDiaryCalendar();
   });
 
