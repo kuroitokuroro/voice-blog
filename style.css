@@ -227,12 +227,11 @@ button {
 .date-button {
   padding: 7px 11px;
   font-size: 13px;
-  color: #ffffff;
-  background: #8e8e8e;
+  color: #000;
 }
 
 .date-button.active {
-  background: #c05050;
+  background: #748a74;
   color: white;
 }
 
