@@ -227,7 +227,7 @@ button {
 .date-button {
   padding: 7px 11px;
   font-size: 13px;
-  background: #333;
+  background: #748a74;
   color: #fff;
 }
 
@@ -506,7 +506,7 @@ button {
   padding: 6px 10px;
   border-radius: 999px;
   border: none;
-  background: #333;
+  background: #748a74;
   color: #fff;
   font-size: 13px;
   font-family: inherit;
@@ -515,6 +515,7 @@ button {
 .goal-sort-button.sort-mode {
   background: #748a74;
   color: white;
+  background: #c05050;
 }
 
 .goal-title-actions {
@@ -809,7 +810,7 @@ button {
 }
 
 .goal-sort-button.color-mode {
-  background: #748a74;
+  background: #c05050;
   color: white;
 }
 

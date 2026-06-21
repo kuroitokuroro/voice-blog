@@ -2345,6 +2345,8 @@ function toggleGoalColorMode() {
   resetGoalModes();
   isGoalColorMode = nextMode;
 
+  goalColorButton.textContent = isGoalColorMode ? "色分け完了" : "色分け";
+
   goalColorButton.classList.toggle("color-mode", isGoalColorMode);
   goalList.classList.toggle("color-mode", isGoalColorMode);
 
