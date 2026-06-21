@@ -227,8 +227,8 @@ button {
 .date-button {
   padding: 7px 11px;
   font-size: 13px;
-  background: #d0d0d0;
-  color: #222;
+  background: #333;
+  color: #fff;
 }
 
 .date-button.active {
@@ -506,8 +506,8 @@ button {
   padding: 6px 10px;
   border-radius: 999px;
   border: none;
-  background: #d0d0d0;
-  color: #333;
+  background: #333;
+  color: #fff;
   font-size: 13px;
   font-family: inherit;
 }
@@ -847,4 +847,18 @@ button {
 
 #dateSwitchCustomArea {
   display: none;
+}
+
+.backup-file-input {
+  display: none;
+}
+
+.import-backup-button {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  cursor: pointer;
+  font-family: inherit;
 }

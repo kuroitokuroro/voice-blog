@@ -174,12 +174,24 @@
       <br>
       ※予定タブは0時切り替え固定になります。<br>
     </div>
-    <h2>保存と復元</h2>
+    <h2>バックアップのやりかた</h2>
+
+１．「バックアップを書き出す」を押して、データを保存します。<br>
+（こえ手帳_backup_2026-06-21.json のような名前のファイルが保存されます）<br>
+<br>
+２．保存したデータを、読み込みたい端末へ送ります。<br>
+<br>
+３．「バックアップを読み込む」から、送ったデータを読み込みます。<br>
+<br><br>
     <button id="exportBackupButton" class="main-button" type="button">
       バックアップを書き出す
     </button>
 
-    <input id="importBackupInput" type="file" accept="application/json" />
+    <input id="importBackupInput" class="backup-file-input" type="file" accept="application/json" />
+
+    <label for="importBackupInput" class="main-button import-backup-button" >
+      バックアップを読み込む
+    </label>
   </section>
 
   <div class="bottomIconArea"><img src="icon.png" class="bottomIcon" />
