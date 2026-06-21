@@ -862,3 +862,10 @@ button {
   cursor: pointer;
   font-family: inherit;
 }
+
+.backup-help-text {
+  margin-bottom: 20px;
+  line-height: 1.8;
+  font-size: 14px;
+  color: #444;
+}
