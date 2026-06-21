@@ -158,12 +158,9 @@ button {
   }
 
   .common-item.show-actions::after {
-  pointer-events: none;
-}
-
-  .common-item.show-actions::after {
     content: "";
     position: absolute;
+    pointer-events: none;
     inset: 0;
     background: rgba(247, 247, 247, 0.86);
     z-index: 3;
@@ -423,7 +420,6 @@ button {
   align-items: center;
   gap: 4px;
   font-size: 32px;
-  font-weight: bold;
   font-family: "Zen Maru Gothic", sans-serif;
   font-weight: 300;
   margin: 0;

@@ -612,12 +612,25 @@ function addTodayDiaryItem(text, index) {
 
   editButton.addEventListener("click", (event) => {
     event.stopPropagation();
-    if (!isEditing) { isEditing = true; content.contentEditable = "true"; content.classList.add("editing"); content.focus(); }
-    else {
-      isEditing = false; content.contentEditable = "false"; content.classList.remove("editing"); updateDiaryItem(todayKey, index, content.textContent.trim()); item.classList.remove("show-edit");
-      renderTodayDiary();
-      renderMonthSelect();
+
+    if (!isEditing) {
+      isEditing = true;
+      content.contentEditable = "true";
+      content.classList.add("editing");
+      content.focus();
+      return;
     }
+
+    isEditing = false;
+    content.contentEditable = "false";
+    content.classList.remove("editing");
+
+    updateDiaryItem(todayKey, index, content.textContent.trim());
+
+    item.classList.remove("show-edit");
+
+    renderTodayDiary();
+    renderMonthSelect();
   });
 
   deleteButton.addEventListener("click", (event) => {
