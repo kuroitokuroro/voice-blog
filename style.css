@@ -510,7 +510,6 @@ button {
 }
 
 .goal-sort-button.sort-mode {
-  background: #748a74;
   color: white;
   background: #c05050;
 }
@@ -816,7 +815,7 @@ button {
 }
 
 .goal-color-gray .swipe-content {
-  background: #DFDFDF;
+  background: #eaeaea;
 }
 
 .date-switch-range {
