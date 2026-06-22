@@ -228,7 +228,7 @@ button {
   padding: 5px 7px;
   font-size: 13px;
   color: #000000;
-  border-bottom: 2px solid #ccc;
+  border-bottom: 3px solid #ccc;
 }
 
 .date-button.active {
@@ -503,13 +503,10 @@ button {
 }
 
 .goal-sort-button {
-  padding: 6px 10px;
-  border-radius: 999px;
-  border: none;
-  background: #8e8e8e;
-  color: #fff;
+  padding: 5px 7px;
   font-size: 13px;
-  font-family: inherit;
+  color: #000000;
+  border-bottom: 3px solid #ccc;
 }
 
 .goal-sort-button.sort-mode {
