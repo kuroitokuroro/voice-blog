@@ -1,3 +1,71 @@
+
+ /* スキン設定は localStorage に保存する*/
+ /* バックアップJSON には含めない */
+
+/* ===== スキン：初期値 ===== */
+
+:root{
+--iro-bg-main:#f7f7f7;
+--iro-bg-tab:#d0d0d0;
+--iro-bg-card:#ffffff;
+
+--iro-action-btn:#333333;
+--iro-delete-btn:#d33;
+--iro-sub-btn:#748a74;
+
+--iro-text-main:#222;
+--iro-text-sub:#666;
+--iro-btn-text:#fff;
+
+--iro-border:#ccc;
+--iro-voice:#815CD7;
+
+--iro-goal-1:#C0E8C0;
+--iro-goal-2:#DFDFDF;
+}
+
+/* ===== スキン：明るい ===== */
+
+body.skin-light-white {
+}
+
+body.skin-light-red {
+}
+
+body.skin-light-blue {
+}
+
+body.skin-light-yellow {
+}
+
+body.skin-light-green {
+}
+
+body.skin-light-purple {
+}
+
+/* ===== スキン：暗い ===== */
+
+body.skin-dark-white {
+}
+
+body.skin-dark-red {
+}
+
+body.skin-dark-blue {
+}
+
+body.skin-dark-yellow {
+}
+
+body.skin-dark-green {
+}
+
+body.skin-dark-purple {
+}
+
+/* ===== /スキン ===== */
+
 body {
   font-family: sans-serif;
   max-width: 640px;
@@ -511,7 +579,7 @@ button {
 
 .goal-sort-button.sort-mode {
   color: white;
-  background: #c05050;
+  background: #748a74;
 }
 
 .goal-title-actions {
@@ -521,7 +589,7 @@ button {
 }
 
 .goal-sort-button.delete-mode {
-  background: #c05050;
+  background: #748a74;
   color: white;
 }
 
@@ -806,7 +874,7 @@ button {
 }
 
 .goal-sort-button.color-mode {
-  background: #c05050;
+  background: #748a74;
   color: white;
 }
 
