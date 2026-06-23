@@ -2502,33 +2502,180 @@ function exportBackup() {
 }
 
 function isValidBackupData(data) {
-  if (!data) return false;
-  if (data.version !== 1) return false;
-  if (data.appName !== "こえ手帳") return false;
-
-  if (
-    typeof data.diary !== "object" ||
-    data.diary === null ||
-    Array.isArray(data.diary)
-  ) {
-    return false;
-  }
-
-  if (!Array.isArray(data.goals)) return false;
-  if (!Array.isArray(data.habits)) return false;
-  if (!Array.isArray(data.schedules)) return false;
-  if (!Array.isArray(data.tabOrder)) return false;
-
-  if (
-    typeof data.settings !== "object" ||
-    data.settings === null ||
-    Array.isArray(data.settings)
-  ) {
-    return false;
-  }
+  if (!isValidBackupRoot(data)) return false;
+  if (!isValidDiaryData(data.diary)) return false;
+  if (!isValidGoalData(data.goals)) return false;
+  if (!isValidHabitData(data.habits)) return false;
+  if (!isValidScheduleData(data.schedules)) return false;
+  if (!isValidTabOrder(data.tabOrder)) return false;
+  if (!isValidBackupSettings(data.settings)) return false;
 
   return true;
 }
+
+// ===== バックアップ検証 =====
+
+function isPlainObject(value) {
+  return (
+    typeof value === "object" &&
+    value !== null &&
+    !Array.isArray(value)
+  );
+}
+
+function isValidDateKey(value) {
+  if (typeof value !== "string") return false;
+
+  const match = value.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  if (!match) return false;
+
+  const year = Number(match[1]);
+  const month = Number(match[2]);
+  const day = Number(match[3]);
+
+  if (month < 1 || month > 12) return false;
+
+  const lastDay = new Date(year, month, 0).getDate();
+
+  return day >= 1 && day <= lastDay;
+}
+
+function isValidBackupRoot(data) {
+  if (!isPlainObject(data)) return false;
+  if (data.version !== 1) return false;
+  if (data.appName !== "こえ手帳") return false;
+
+  if (typeof data.exportedAt !== "string") return false;
+  if (Number.isNaN(Date.parse(data.exportedAt))) return false;
+
+  return true;
+}
+
+function isValidDiaryData(diary) {
+  if (!isPlainObject(diary)) return false;
+
+  return Object.entries(diary).every(([dateKey, items]) => {
+    if (!isValidDateKey(dateKey)) return false;
+    if (!Array.isArray(items)) return false;
+
+    return items.every((item) => typeof item === "string");
+  });
+}
+
+function isValidGoalData(goals) {
+  if (!Array.isArray(goals)) return false;
+
+  return goals.every((goal) => {
+    if (typeof goal === "string") return true;
+
+    if (!isPlainObject(goal)) return false;
+    if (typeof goal.text !== "string") return false;
+
+    if (
+      goal.createdAt !== undefined &&
+      !isValidDateKey(goal.createdAt)
+    ) {
+      return false;
+    }
+
+    if (
+      goal.color !== undefined &&
+      goal.color !== null &&
+      goal.color !== "green" &&
+      goal.color !== "gray"
+    ) {
+      return false;
+    }
+
+    if (
+      goal.done !== undefined &&
+      typeof goal.done !== "boolean"
+    ) {
+      return false;
+    }
+
+    return true;
+  });
+}
+
+function isValidHabitData(habits) {
+  if (!Array.isArray(habits)) return false;
+
+  return habits.every((habit) => {
+    if (!isPlainObject(habit)) return false;
+    if (typeof habit.text !== "string") return false;
+    if (!Array.isArray(habit.doneDates)) return false;
+
+    return habit.doneDates.every((dateKey) =>
+      isValidDateKey(dateKey)
+    );
+  });
+}
+
+function isValidScheduleData(schedules) {
+  if (!Array.isArray(schedules)) return false;
+
+  return schedules.every((schedule) => {
+    if (!isPlainObject(schedule)) return false;
+    if (typeof schedule.text !== "string") return false;
+    if (typeof schedule.done !== "boolean") return false;
+
+    if (
+      schedule.dateKey !== null &&
+      !isValidDateKey(schedule.dateKey)
+    ) {
+      return false;
+    }
+
+    if (
+      schedule.createdAt !== undefined &&
+      !isValidDateKey(schedule.createdAt)
+    ) {
+      return false;
+    }
+
+    return true;
+  });
+}
+
+function isValidTabOrder(tabIds) {
+  if (!Array.isArray(tabIds)) return false;
+
+  const validTabIds = ["diary", "goal", "habit", "schedule"];
+
+  if (tabIds.length !== validTabIds.length) return false;
+
+  const tabIdSet = new Set(tabIds);
+
+  if (tabIdSet.size !== validTabIds.length) return false;
+
+  return validTabIds.every((tabId) => tabIdSet.has(tabId));
+}
+
+function isValidBackupSettings(settings) {
+  if (!isPlainObject(settings)) return false;
+
+  if (
+    settings.dateSwitchMode !== "fixed" &&
+    settings.dateSwitchMode !== "custom"
+  ) {
+    return false;
+  }
+
+  if (
+    typeof settings.dateSwitchHour !== "string" &&
+    typeof settings.dateSwitchHour !== "number"
+  ) {
+    return false;
+  }
+
+  const hour = Number(settings.dateSwitchHour);
+
+  return Number.isInteger(hour) && hour >= 0 && hour <= 6;
+}
+
+
+// ===== /バックアップ検証 =====
 
 function importBackup(event) {
   const file = event.target.files[0];
