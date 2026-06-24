@@ -1,10 +1,116 @@
+/* スキン設定は localStorage に保存する
+　 バックアップJSON には含めない */
+
+/* 保存データでは green / gray を使う。
+   スキンでは goal-1 / goal-2 を使う。 
+   詳細は開発メモ参照 */
+
+/* ===== スキン：初期値 ===== */
+
+:root {
+  --iro-bg-main: #f7f7f7;
+  --iro-bg-tab: #d0d0d0;
+  --iro-bg-card: #ffffff;
+
+  --iro-action-btn: #333333;
+  --iro-delete-btn: #d33;
+  --iro-sub-btn: #748a74;
+
+  --iro-text-main: #222;
+  --iro-text-sub: #666;
+  --iro-btn-text: #fff;
+
+  --iro-border: #ccc;
+  --iro-voice: #815CD7;
+
+  --iro-goal-1: #C0E8C0;
+  --iro-goal-2: #eaeaea;
+
+  --iro-overlay: rgba(247, 247, 247, 0.86);
+  --iro-icon: url("icon-black.png");
+}
+
+/* ===== スキン：明るい ===== */
+
+body.skin-light-mono {
+  --iro-bg-main: #f7f7f7;
+  --iro-bg-tab: #d0d0d0;
+  --iro-bg-card: #ffffff;
+
+  --iro-action-btn: #333333;
+  --iro-edit-btn: #4c956c;
+  --iro-delete-btn: rgb(190, 73, 73);
+  --iro-sub-btn: #748a74;
+
+  --iro-text-main: #222;
+  --iro-text-sub: #666;
+  --iro-btn-text: #fff;
+
+  --iro-border: #313131;
+  --iro-voice: #815CD7;
+
+  --iro-goal-1: #C0E8C0;
+  --iro-goal-2: #eaeaea;
+
+  --iro-overlay: rgba(247, 247, 247, 0.86);
+  --iro-icon: url("icon-black.png");
+}
+
+body.skin-light-red {}
+
+body.skin-light-blue {}
+
+body.skin-light-yellow {}
+
+body.skin-light-green {}
+
+body.skin-light-purple {}
+
+/* ===== スキン：暗い ===== */
+
+body.skin-dark-mono {
+  --iro-bg-main: #161616;
+  --iro-bg-tab: #4C4C4C;
+  --iro-bg-card: #000000;
+
+  --iro-action-btn: #ffffff;
+  --iro-edit-btn: #4c956c;
+  --iro-delete-btn: #9f2747;
+  --iro-sub-btn: #82699a;
+
+  --iro-text-main: #efefef;
+  --iro-text-sub: #8f8f8f;
+  --iro-btn-text: #000000;
+
+  --iro-border: #ccc;
+  --iro-voice: #56d5d7;
+
+  --iro-goal-1: #3b386d;
+  --iro-goal-2: #5b5b5b;
+
+  --iro-overlay: rgba(23, 23, 23, 0.86);
+  --iro-icon: url("icon-white.png");
+}
+
+body.skin-dark-red {}
+
+body.skin-dark-blue {}
+
+body.skin-dark-yellow {}
+
+body.skin-dark-green {}
+
+body.skin-dark-purple {}
+
+/* ===== /スキン ===== */
+
 body {
   font-family: sans-serif;
   max-width: 640px;
   margin: 0 auto;
   padding: 0px 24px;
-  background: #f7f7f7;
-  color: #222;
+  background-color: var(--iro-bg-main);
+  color: var(--iro-text-main);
 }
 
 h1 {
@@ -30,7 +136,7 @@ button {
   gap: 8px;
   margin: 0 -24px 15px;
   padding: 0 24px;
-  background: #d0d0d0;
+  background-color: var(--iro-bg-tab);
   user-select: none;
   touch-action: none;
 }
@@ -41,7 +147,7 @@ button {
   margin-bottom: -3px;
   border-radius: 16px 16px 0 0;
   background: transparent;
-  color: #222;
+  color: var(--iro-text-main);
   font-size: 14px;
   font-weight: 700;
 
@@ -53,15 +159,13 @@ button {
 
   -webkit-tap-highlight-color: transparent;
 
-  transition:
-    transform 0.15s ease,
-    background 0.15s ease,
+  transition: background 0.15s ease,
 
 }
 
 .tab-button.active {
-  background: #f7f7f7;
-  color: #111;
+  background-color: var(--iro-bg-main);
+  color: var(--iro-text-main);
 }
 
 .tab-icon {
@@ -81,18 +185,18 @@ button {
   display: block;
 }
 
-.main-button {
+.file-button {
   width: 100%;
   padding: 16px;
   margin-bottom: 16px;
   font-size: 18px;
-  background: #333;
-  color: white;
+  background: var(--iro-action-btn);
+  color: var(--iro-btn-text);
 }
 
 .diary-area,
 .past-diary-area {
-  background: white;
+  background: rgb(202, 19, 19);
   border-radius: 12px;
   overflow: hidden;
   margin-bottom: 16px;
@@ -144,12 +248,12 @@ button {
 
 .delete-button {
   right: 0;
-  background: #d33;
+  background: var(--iro-delete-btn);
 }
 
 .edit-button {
   left: 0;
-  background: #4c956c;
+  background: var(--iro-edit-btn);
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -158,14 +262,11 @@ button {
   }
 
   .common-item.show-actions::after {
-  pointer-events: none;
-}
-
-  .common-item.show-actions::after {
     content: "";
     position: absolute;
+    pointer-events: none;
     inset: 0;
-    background: rgba(247, 247, 247, 0.86);
+    background: var(--iro-bg-card);
     z-index: 3;
   }
 
@@ -228,14 +329,14 @@ button {
 }
 
 .date-button {
-  padding: 7px 11px;
+  padding: 5px 7px;
   font-size: 13px;
-  background: #d0d0d0;
-  color: #222;
+  color: #000000;
+  border-bottom: 3px solid #ccc;
 }
 
 .date-button.active {
-  background: #748a74;
+  background: var(--iro-sub-btn);
   color: white;
 }
 
@@ -265,19 +366,13 @@ button {
   border-radius: 10px;
   border: 1px solid #ccc;
   font-size: 16px;
-  background: white;
+  background: var(--iro-bg-card);
+  color:var(--iro-text-main);
 }
 
 .goal-checkbox {
   margin-right: 10px;
   transform: scale(1.2);
-}
-
-.empty-message {
-  padding: 12px;
-  font-size: 14px;
-  color: #666;
-  line-height: 1.6;
 }
 
 .habit-add-area {
@@ -294,15 +389,15 @@ button {
   border-radius: 12px;
   font-size: 16px;
   font-family: inherit;
-  background: white;
+  background: var(--iro-bg-card);
 }
 
 .habit-add-submit-button {
   width: 72px;
   padding: 12px;
   border-radius: 12px;
-  background: #333;
-  color: white;
+  background: var(--iro-action-btn);
+  color: var(--iro-btn-text);
   font-size: 15px;
 }
 
@@ -311,7 +406,7 @@ button {
   flex-wrap: wrap;
   gap: 8px;
   padding: 12px;
-  background: white;
+  background: var(--iro-bg-card);
   border-radius: 12px;
   margin-bottom: 16px;
 }
@@ -319,35 +414,31 @@ button {
 .habit-task-button {
   padding: 10px 14px;
   border-radius: 999px;
-  background: #eeeeee;
-  color: #333;
+  background-color: var(--iro-bg-main);
+  color: var(--iro-text-main);
   font-size: 15px;
   line-height: 1.2;
-  transition:
-    background 0.15s ease,
-    transform 0.15s ease,
-    box-shadow 0.15s ease;
+  transition: 0.15s ease;
   user-select: none;
   touch-action: manipulation;
 }
 
 .habit-task-button.done-today {
-  background: #748a74;
-  color: #ffffff;
+  background: var(--iro-sub-btn);
+  color: white;
 }
 
 .habit-task-button.selected {
-  box-shadow: 0 0 0 2px #748a74 inset;
+  box-shadow: 0 0 0 2px var(--iro-sub-btn) inset;
 }
 
 .habit-task-button.long-pressing {
   transform: scale(0.96);
-  background: #748a74;
 }
 
 .habit-calendar {
   display: none;
-  background: white;
+  background: var(--iro-bg-card);
   border-radius: 12px;
   padding: 12px;
   margin-bottom: 16px;
@@ -360,7 +451,7 @@ button {
 .habit-calendar-title {
   margin-bottom: 5px;
   font-size: 14px;
-  color: #555;
+  color: var(--iro-text-main);
   line-height: 1.5;
   display: flex;
   align-items: center;
@@ -385,18 +476,18 @@ button {
 
 .habit-calendar-weekday {
   min-height: 22px;
-  color: #888;
+  color: var(--iro-text-sub);
   font-size: 12px;
 }
 
 .habit-calendar-day {
-  background: #f1f1f1;
-  color: #777;
+  background: var(--iro-bg-main);
+  color: var(--iro-text-sub);
 }
 
 .habit-calendar-day.done {
-  background: #748a74;
-  color: #ffffff;
+  background: var(--iro-sub-btn);
+  color: white;
   font-weight: bold;
 }
 
@@ -413,7 +504,7 @@ button {
   font-size: 1em;
   border: none;
   border-radius: 12px;
-  background: #b94a48;
+  background: var(--iro-delete-btn);
   color: white;
   cursor: pointer;
 }
@@ -423,7 +514,6 @@ button {
   align-items: center;
   gap: 4px;
   font-size: 32px;
-  font-weight: bold;
   font-family: "Zen Maru Gothic", sans-serif;
   font-weight: 300;
   margin: 0;
@@ -434,7 +524,7 @@ button {
   align-items: center;
   margin: 0 -24px;
   padding: 12px 24px 20px;
-  background: #d0d0d0;
+  background: var(--iro-bg-tab);
 }
 
 .title-group {
@@ -486,6 +576,10 @@ button {
 .bottomIcon {
   width: 48px;
   height: 48px;
+  background-image: var(--iro-icon-image);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
 }
 
 .tab-button.dragging {
@@ -507,18 +601,15 @@ button {
 }
 
 .goal-sort-button {
-  padding: 6px 10px;
-  border-radius: 999px;
-  border: none;
-  background: #d0d0d0;
-  color: #333;
+  padding: 5px 7px;
   font-size: 13px;
-  font-family: inherit;
+  color: #000000;
+  border-bottom: 3px solid #ccc;
 }
 
 .goal-sort-button.sort-mode {
-  background: #748a74;
   color: white;
+  background: #748a74;
 }
 
 .goal-title-actions {
@@ -528,7 +619,7 @@ button {
 }
 
 .goal-sort-button.delete-mode {
-  background: #c05050;
+  background: #748a74;
   color: white;
 }
 
@@ -750,8 +841,8 @@ button {
   border: none;
   border-radius: 12px;
   margin-bottom: 12px;
-  background: #333;
-  color: #fff;
+  background: var(--iro-action-btn);
+  color: var(--iro-btn-text);
   font-family: inherit;
 }
 
@@ -770,8 +861,8 @@ button {
 }
 
 .common-voice-button.listening {
-  background: #815CD7;
-  color: #fff;
+  background: var(--iro-voice);
+  color: var(--iro-btn-text);
 }
 
 .diary-heading {
@@ -780,11 +871,11 @@ button {
 }
 
 .goal-color-green {
-  background: #C0E8C0;
+  background: var(--iro-goal-1);
 }
 
 .goal-color-gray {
-  background: #DFDFDF;
+  background: var(--iro-goal-2);
 }
 
 .goal-color-controls {
@@ -805,24 +896,24 @@ button {
 }
 
 .goal-color-chip.green {
-  background: #C0E8C0;
+  background: var(--iro-goal-1);
 }
 
 .goal-color-chip.gray {
-  background: #DFDFDF;
+  background: var(--iro-goal-2);
 }
 
 .goal-sort-button.color-mode {
-  background: #748a74;
+  background: var(--iro-sub-btn);
   color: white;
 }
 
 .goal-color-green .swipe-content {
-  background: #C0E8C0;
+  background: var(--iro-goal-1);
 }
 
 .goal-color-gray .swipe-content {
-  background: #DFDFDF;
+  background: var(--iro-goal-2);
 }
 
 .date-switch-range {
@@ -851,4 +942,25 @@ button {
 
 #dateSwitchCustomArea {
   display: none;
+}
+
+.backup-file-input {
+  display: none;
+}
+
+.import-backup-button {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.backup-help-text {
+  margin-bottom: 20px;
+  line-height: 1.8;
+  font-size: 14px;
+  color: #444;
 }

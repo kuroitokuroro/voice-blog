@@ -64,7 +64,7 @@
 
     <div class="download-area">
       <select id="monthSelect"></select>
-      <button id="downloadButton" class="main-button">txtファイルでダウンロード</button>
+      <button id="downloadButton" class="file-button">txtファイルでダウンロード</button>
       <button id="deleteOldestMonthButton" class="danger-button">一番古い月の日記を消す</button>
     </div>
   </section>
@@ -120,9 +120,20 @@
     <div id="scheduleList" class="diary-area"></div>
     <div id="scheduleDangerArea" class="schedule-danger-area"></div>
   </section>
-
+  <br>
   <section id="helpPanel" class="panel">
+    <hr>
     <br>
+    <div class="help-section">
+      <h3>PCの場合</h3>
+      <p>クリックで編集や削除ができます</p>
+    </div>
+    <div class="help-section">
+      <h3>スマホの場合</h3>
+      <p>スワイプで編集や削除ができます</p>
+    </div>
+    <br>
+    <hr>
     <br>
     <div class="help-section">
       <h3>日記</h3>
@@ -143,10 +154,88 @@
       <h3>予定</h3>
       <p>予定を入力できます。6/12、0612、6月12日 のように行頭に日付を入れると、日付つき予定として登録されます。</p>
     </div>
+    <br>
+    <hr>
   </section>
 
   <section id="settingsPanel" class="panel">
+    <hr>
+    <h3>スキン</h3>
+
+    <div class="skin-mode-group">
+      <p>ライト</p>
+
+      <div class="skin-options">
+        <label>
+          <input type="radio" name="skin" value="skin-light-mono">
+          ホワイト
+        </label>
+
+        <label>
+          <input type="radio" name="skin" value="skin-light-red">
+          レッド
+        </label>
+
+        <label>
+          <input type="radio" name="skin" value="skin-light-blue">
+          ブルー
+        </label>
+
+        <label>
+          <input type="radio" name="skin" value="skin-light-yellow">
+          イエロー
+        </label>
+
+        <label>
+          <input type="radio" name="skin" value="skin-light-green">
+          グリーン
+        </label>
+
+        <label>
+          <input type="radio" name="skin" value="skin-light-purple">
+          パープル
+        </label>
+      </div>
+    </div>
+
+    <div class="skin-mode-group">
+      <p>ダーク</p>
+
+      <div class="skin-options">
+        <label>
+          <input type="radio" name="skin" value="skin-dark-mono">
+          ブラック
+        </label>
+
+        <label>
+          <input type="radio" name="skin" value="skin-dark-red">
+          レッド
+        </label>
+
+        <label>
+          <input type="radio" name="skin" value="skin-dark-blue">
+          ブルー
+        </label>
+
+        <label>
+          <input type="radio" name="skin" value="skin-dark-yellow">
+          イエロー
+        </label>
+
+        <label>
+          <input type="radio" name="skin" value="skin-dark-green">
+          グリーン
+        </label>
+
+        <label>
+          <input type="radio" name="skin" value="skin-dark-purple">
+          パープル
+        </label>
+      </div>
+    </div>
+    </fieldset>
     <br>
+    <hr>
     <h2>日付の切り替わる時間</h2>
     <input id="dateSwitchFixed" type="radio" name="dateSwitchMode" checked>
     4時で固定（おすすめ）
@@ -156,18 +245,36 @@
     <div id="dateSwitchCustomArea">
       <div class="date-switch-current" id="dateSwitchCurrent">現在：4時</div>
       <input id="dateSwitchRange" class="date-switch-range" type="range" min="0" max="6" step="1" value="4">
-      <br>
-      ※予定タブは0時切り替え固定になります。<br>
     </div>
-    <h2>保存と復元</h2>
-    <button id="exportBackupButton" class="main-button" type="button">
+    <br>
+    ※予定タブは0時切り替え固定になります。
+    <br><br>
+    <hr>
+    <h2>バックアップのやりかた</h2>
+    <div class="backup-help-text">
+      １．「バックアップを書き出す」を押して、データを保存します。<br>
+      （こえ手帳_backup_2026-06-21.json のような名前のファイルが保存されます）<br>
+      <br>
+      ２．保存したデータを、読み込みたい端末へ送ります。<br>
+      <br>
+      ３．「バックアップを読み込む」から、送ったデータを読み込みます。<br>
+    </div><br>
+
+    <button id="exportBackupButton" class="file-button" type="button">
       バックアップを書き出す
     </button>
 
-    <input id="importBackupInput" type="file" accept="application/json" />
+    <input id="importBackupInput" class="backup-file-input" type="file" accept="application/json" />
+
+    <label for="importBackupInput" class="file-button import-backup-button">
+      バックアップを読み込む
+    </label>
+    <br>
+  
+    <hr>
   </section>
 
-  <div class="bottomIconArea"><img src="icon.png" class="bottomIcon" />
+  <div class="bottomIconArea"><div class="bottomIcon"></div>
   </div>
 
   <script src="main.js"></script>

@@ -1,5 +1,4 @@
 
-
 const TAB_STORAGE_KEY = "koeTabOrder";
 const DIARY_STORAGE_KEY = "voiceDiaryData";
 const GOAL_STORAGE_KEY = "koeGoalData";
@@ -7,6 +6,8 @@ const HABIT_STORAGE_KEY = "koeHabitData";
 const SCHEDULE_STORAGE_KEY = "koeScheduleData";
 const DATE_SWITCH_MODE_KEY = "dateSwitchMode";
 const DATE_SWITCH_HOUR_KEY = "dateSwitchHour";
+const SKIN_STORAGE_KEY = "koeSkin";
+const DEFAULT_SKIN = "skin-light-mono";
 
 
 const DEFAULT_TABS = [
@@ -36,6 +37,22 @@ const DEFAULT_TABS = [
   },
 ];
 
+const VALID_SKINS = [
+  "skin-light-mono",
+  "skin-light-red",
+  "skin-light-blue",
+  "skin-light-yellow",
+  "skin-light-green",
+  "skin-light-purple",
+  "skin-dark-mono",
+  "skin-dark-red",
+  "skin-dark-blue",
+  "skin-dark-yellow",
+  "skin-dark-green",
+  "skin-dark-purple",
+];
+
+const skinInputs = document.querySelectorAll('input[name="skin"]');
 const tabBar = document.getElementById("tabBar");
 const voiceButton = document.getElementById("voiceButton");
 const downloadButton = document.getElementById("downloadButton");
@@ -71,7 +88,6 @@ const customRadio = document.getElementById("dateSwitchCustom");
 const customArea = document.getElementById("dateSwitchCustomArea");
 const exportBackupButton = document.getElementById("exportBackupButton");
 const importBackupInput = document.getElementById("importBackupInput");
-
 
 let tabOrder = loadTabOrder();
 let activeTabId = tabOrder[0].id;
@@ -114,6 +130,22 @@ goalAddButton.addEventListener("click", addGoalFromInput);
 goalColorButton.addEventListener("click", toggleGoalColorMode);
 exportBackupButton.addEventListener("click", exportBackup);
 importBackupInput.addEventListener("change", importBackup);
+
+skinInputs.forEach((skinInput) => {
+  skinInput.addEventListener("change", () => {
+    if (skinInput.checked) {
+      changeSkin(skinInput.value);
+    }
+  });
+});
+
+const currentSkin = loadSkin();
+
+applySkin(currentSkin);
+
+skinInputs.forEach((skinInput) => {
+  skinInput.checked = skinInput.value === currentSkin;
+});
 
 renderTabs();
 renderPanels();
@@ -568,7 +600,44 @@ function normalizeVoiceText(text) {
   }, text);
 }
 
+// ===== スキン =====
 
+function isValidSkinName(skinName) {
+  return VALID_SKINS.includes(skinName);
+}
+
+function loadSkin() {
+  const savedSkin = localStorage.getItem(SKIN_STORAGE_KEY);
+
+  if (isValidSkinName(savedSkin)) {
+    return savedSkin;
+  }
+
+  return DEFAULT_SKIN;
+}
+
+function applySkin(skinName) {
+  const skinToApply = isValidSkinName(skinName)
+    ? skinName
+    : DEFAULT_SKIN;
+
+  document.body.classList.remove(...VALID_SKINS);
+  document.body.classList.add(skinToApply);
+}
+
+function changeSkin(skinName) {
+  if (!isValidSkinName(skinName)) {
+    return false;
+  }
+
+  applySkin(skinName);
+
+  localStorage.setItem(SKIN_STORAGE_KEY, skinName);
+
+  return true;
+}
+
+// ===== /スキン =====
 
 function formatDiary(text) {
   return text.split(/[。！？、,]/)
@@ -612,12 +681,25 @@ function addTodayDiaryItem(text, index) {
 
   editButton.addEventListener("click", (event) => {
     event.stopPropagation();
-    if (!isEditing) { isEditing = true; content.contentEditable = "true"; content.classList.add("editing"); content.focus(); }
-    else {
-      isEditing = false; content.contentEditable = "false"; content.classList.remove("editing"); updateDiaryItem(todayKey, index, content.textContent.trim()); item.classList.remove("show-edit");
-      renderTodayDiary();
-      renderMonthSelect();
+
+    if (!isEditing) {
+      isEditing = true;
+      content.contentEditable = "true";
+      content.classList.add("editing");
+      content.focus();
+      return;
     }
+
+    isEditing = false;
+    content.contentEditable = "false";
+    content.classList.remove("editing");
+
+    updateDiaryItem(todayKey, index, content.textContent.trim());
+
+    item.classList.remove("show-edit");
+
+    renderTodayDiary();
+    renderMonthSelect();
   });
 
   deleteButton.addEventListener("click", (event) => {
@@ -661,32 +743,36 @@ function renderPastDateButtons() {
         pastDiaryList.innerHTML = "";
       } else {
         selectedPastDateKey = dateKey;
+        isPastDiaryCalendarOpen = false;
         renderPastDiary(dateKey);
       }
 
-      renderPastDateButtons();
+     renderPastDateButtons();
+      renderPastDiaryCalendar();
     });
 
     dateButtons.appendChild(button);
   });
+
   const moreButton = document.createElement("button");
   moreButton.type = "button";
   moreButton.className = "date-button";
   moreButton.textContent = "もっと過去の日記";
 
+   if (isPastDiaryCalendarOpen) {
+    moreButton.classList.add("active");
+  }
+
   moreButton.addEventListener("click", () => {
     isPastDiaryCalendarOpen = !isPastDiaryCalendarOpen;
 
-    if (isPastDiaryCalendarOpen) moreButton.classList.add("active");
-
-    if (!isPastDiaryCalendarOpen) {
+     if (isPastDiaryCalendarOpen) {
+      selectedPastDateKey = null;
+      pastDiaryList.classList.remove("open");
       pastDiaryList.innerHTML = "";
-
-      document.querySelectorAll(".date-button.active").forEach((button) => {
-        button.classList.remove("active");
-      });
     }
 
+    renderPastDateButtons();
     renderPastDiaryCalendar();
   });
 
@@ -1017,7 +1103,22 @@ function renderScheduleList() {
         return;
       }
 
-      if (isEditing) return;
+      const isContentEditing =
+        isEditing || content.classList.contains("editing");
+
+      if (isContentEditing) {
+        isEditing = false;
+        content.contentEditable = "false";
+        content.classList.remove("editing");
+
+        if (isPcPointer() && schedule.done) {
+          closeSwipeActions(item);
+          item.classList.add("show-actions");
+        }
+
+        return;
+      }
+
       if (item.classList.contains("show-edit")) return;
       if (item.classList.contains("show-delete")) return;
 
@@ -1045,7 +1146,7 @@ function renderScheduleList() {
     });
 
     let isEditing = false;
-    
+
     editButton.addEventListener("click", (event) => {
       event.stopPropagation();
 
@@ -2317,6 +2418,8 @@ function toggleGoalColorMode() {
   resetGoalModes();
   isGoalColorMode = nextMode;
 
+  goalColorButton.textContent = isGoalColorMode ? "色分け完了" : "色分け";
+
   goalColorButton.classList.toggle("color-mode", isGoalColorMode);
   goalList.classList.toggle("color-mode", isGoalColorMode);
 
@@ -2468,33 +2571,180 @@ function exportBackup() {
 }
 
 function isValidBackupData(data) {
-  if (!data) return false;
-  if (data.version !== 1) return false;
-  if (data.appName !== "こえ手帳") return false;
-
-  if (
-    typeof data.diary !== "object" ||
-    data.diary === null ||
-    Array.isArray(data.diary)
-  ) {
-    return false;
-  }
-
-  if (!Array.isArray(data.goals)) return false;
-  if (!Array.isArray(data.habits)) return false;
-  if (!Array.isArray(data.schedules)) return false;
-  if (!Array.isArray(data.tabOrder)) return false;
-
-  if (
-    typeof data.settings !== "object" ||
-    data.settings === null ||
-    Array.isArray(data.settings)
-  ) {
-    return false;
-  }
+  if (!isValidBackupRoot(data)) return false;
+  if (!isValidDiaryData(data.diary)) return false;
+  if (!isValidGoalData(data.goals)) return false;
+  if (!isValidHabitData(data.habits)) return false;
+  if (!isValidScheduleData(data.schedules)) return false;
+  if (!isValidTabOrder(data.tabOrder)) return false;
+  if (!isValidBackupSettings(data.settings)) return false;
 
   return true;
 }
+
+// ===== バックアップ検証 =====
+
+function isPlainObject(value) {
+  return (
+    typeof value === "object" &&
+    value !== null &&
+    !Array.isArray(value)
+  );
+}
+
+function isValidDateKey(value) {
+  if (typeof value !== "string") return false;
+
+  const match = value.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  if (!match) return false;
+
+  const year = Number(match[1]);
+  const month = Number(match[2]);
+  const day = Number(match[3]);
+
+  if (month < 1 || month > 12) return false;
+
+  const lastDay = new Date(year, month, 0).getDate();
+
+  return day >= 1 && day <= lastDay;
+}
+
+function isValidBackupRoot(data) {
+  if (!isPlainObject(data)) return false;
+  if (data.version !== 1) return false;
+  if (data.appName !== "こえ手帳") return false;
+
+  if (typeof data.exportedAt !== "string") return false;
+  if (Number.isNaN(Date.parse(data.exportedAt))) return false;
+
+  return true;
+}
+
+function isValidDiaryData(diary) {
+  if (!isPlainObject(diary)) return false;
+
+  return Object.entries(diary).every(([dateKey, items]) => {
+    if (!isValidDateKey(dateKey)) return false;
+    if (!Array.isArray(items)) return false;
+
+    return items.every((item) => typeof item === "string");
+  });
+}
+
+function isValidGoalData(goals) {
+  if (!Array.isArray(goals)) return false;
+
+  return goals.every((goal) => {
+    if (typeof goal === "string") return true;
+
+    if (!isPlainObject(goal)) return false;
+    if (typeof goal.text !== "string") return false;
+
+    if (
+      goal.createdAt !== undefined &&
+      !isValidDateKey(goal.createdAt)
+    ) {
+      return false;
+    }
+
+    if (
+      goal.color !== undefined &&
+      goal.color !== null &&
+      goal.color !== "green" &&
+      goal.color !== "gray"
+    ) {
+      return false;
+    }
+
+    if (
+      goal.done !== undefined &&
+      typeof goal.done !== "boolean"
+    ) {
+      return false;
+    }
+
+    return true;
+  });
+}
+
+function isValidHabitData(habits) {
+  if (!Array.isArray(habits)) return false;
+
+  return habits.every((habit) => {
+    if (!isPlainObject(habit)) return false;
+    if (typeof habit.text !== "string") return false;
+    if (!Array.isArray(habit.doneDates)) return false;
+
+    return habit.doneDates.every((dateKey) =>
+      isValidDateKey(dateKey)
+    );
+  });
+}
+
+function isValidScheduleData(schedules) {
+  if (!Array.isArray(schedules)) return false;
+
+  return schedules.every((schedule) => {
+    if (!isPlainObject(schedule)) return false;
+    if (typeof schedule.text !== "string") return false;
+    if (typeof schedule.done !== "boolean") return false;
+
+    if (
+      schedule.dateKey !== null &&
+      !isValidDateKey(schedule.dateKey)
+    ) {
+      return false;
+    }
+
+    if (
+      schedule.createdAt !== undefined &&
+      !isValidDateKey(schedule.createdAt)
+    ) {
+      return false;
+    }
+
+    return true;
+  });
+}
+
+function isValidTabOrder(tabIds) {
+  if (!Array.isArray(tabIds)) return false;
+
+  const validTabIds = ["diary", "goal", "habit", "schedule"];
+
+  if (tabIds.length !== validTabIds.length) return false;
+
+  const tabIdSet = new Set(tabIds);
+
+  if (tabIdSet.size !== validTabIds.length) return false;
+
+  return validTabIds.every((tabId) => tabIdSet.has(tabId));
+}
+
+function isValidBackupSettings(settings) {
+  if (!isPlainObject(settings)) return false;
+
+  if (
+    settings.dateSwitchMode !== "fixed" &&
+    settings.dateSwitchMode !== "custom"
+  ) {
+    return false;
+  }
+
+  if (
+    typeof settings.dateSwitchHour !== "string" &&
+    typeof settings.dateSwitchHour !== "number"
+  ) {
+    return false;
+  }
+
+  const hour = Number(settings.dateSwitchHour);
+
+  return Number.isInteger(hour) && hour >= 0 && hour <= 6;
+}
+
+
+// ===== /バックアップ検証 =====
 
 function importBackup(event) {
   const file = event.target.files[0];
