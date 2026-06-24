@@ -158,6 +158,56 @@ body.skin-light-green,
   --iro-icon: url("icon-black.png");
 }
 
+body.skin-light-cyan,
+.skin-chip.skin-light-cyan {
+  --iro-bg-main: #f0f0f0;
+  --iro-bg-tab: #d0d0d0;
+  --iro-bg-card: #ffffff;
+
+  --iro-action-btn: #333333;
+  --iro-edit-btn: #4c956c;
+  --iro-delete-btn: #cd4040;
+  --iro-sub-btn: #748a74;
+
+  --iro-text-main: #222;
+  --iro-text-sub: #666;
+  --iro-btn-text: #fff;
+
+  --iro-border: #ccc;
+  --iro-voice: #815CD7;
+
+  --iro-goal-1: #C0E8C0;
+  --iro-goal-2: #eaeaea;
+
+  --iro-overlay: #f7f7f7be;
+  --iro-icon: url("icon-black.png");
+}
+
+body.skin-light-pink,
+.skin-chip.skin-light-pink {
+  --iro-bg-main: #f0f0f0;
+  --iro-bg-tab: #d0d0d0;
+  --iro-bg-card: #ffffff;
+
+  --iro-action-btn: #333333;
+  --iro-edit-btn: #4c956c;
+  --iro-delete-btn: #cd4040;
+  --iro-sub-btn: #748a74;
+
+  --iro-text-main: #222;
+  --iro-text-sub: #666;
+  --iro-btn-text: #fff;
+
+  --iro-border: #ccc;
+  --iro-voice: #815CD7;
+
+  --iro-goal-1: #C0E8C0;
+  --iro-goal-2: #eaeaea;
+
+  --iro-overlay: #f7f7f7be;
+  --iro-icon: url("icon-black.png");
+}
+
 body.skin-light-purple,
 .skin-chip.skin-light-purple {
   --iro-bg-main: #f0f0f0;
@@ -225,7 +275,7 @@ body.skin-dark-purple {}
 .skin-option {
   display: flex;
   flex-wrap: wrap;
-  gap: 25px;
+  gap: 15px;
   margin-bottom: 10px;
 }
 
@@ -322,7 +372,6 @@ button {
   gap: 2px;
 
   -webkit-tap-highlight-color: transparent;
-
   transition: background 0.15s ease,
 
 }
@@ -499,6 +548,7 @@ button {
   font-size: 13px;
   color: var(--iro-text-main);
   border-bottom: 3px solid var(--iro-bg-tab);
+  background: var(--iro-bg-main);
 }
 
 .date-button.active {
@@ -771,6 +821,7 @@ button {
   font-size: 13px;
   color: var(--iro-text-main);
   border-bottom: 3px solid var(--iro-bg-tab);
+  background-color: var(--iro-bg-main);;
 }
 
 .goal-sort-button.sort-mode {
