@@ -52,7 +52,7 @@ const VALID_SKINS = [
   "skin-dark-purple",
 ];
 
-const skinInputs = document.querySelectorAll('input[name="skin"]');
+const skinButtons = document.querySelectorAll("[data-skin]");
 const tabBar = document.getElementById("tabBar");
 const voiceButton = document.getElementById("voiceButton");
 const downloadButton = document.getElementById("downloadButton");
@@ -131,21 +131,17 @@ goalColorButton.addEventListener("click", toggleGoalColorMode);
 exportBackupButton.addEventListener("click", exportBackup);
 importBackupInput.addEventListener("change", importBackup);
 
-skinInputs.forEach((skinInput) => {
-  skinInput.addEventListener("change", () => {
-    if (skinInput.checked) {
-      changeSkin(skinInput.value);
-    }
+skinButtons.forEach((skinButton) => {
+  skinButton.addEventListener("click", () => {
+    changeSkin(skinButton.dataset.skin);
+    updateSelectedSkinButton(skinButton.dataset.skin);
   });
 });
 
 const currentSkin = loadSkin();
 
 applySkin(currentSkin);
-
-skinInputs.forEach((skinInput) => {
-  skinInput.checked = skinInput.value === currentSkin;
-});
+updateSelectedSkinButton(currentSkin);
 
 renderTabs();
 renderPanels();
@@ -156,6 +152,15 @@ renderMonthSelect();
 renderGoalList();
 renderHabitList();
 renderScheduleList();
+
+function updateSelectedSkinButton(currentSkin) {
+  skinButtons.forEach((skinButton) => {
+    const isSelected = skinButton.dataset.skin === currentSkin;
+
+    skinButton.classList.toggle("selected", isSelected);
+    skinButton.setAttribute("aria-pressed", isSelected);
+  });
+}
 
 function setupDiaryVoiceInput() {
 
