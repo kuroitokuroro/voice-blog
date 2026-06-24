@@ -8,13 +8,13 @@
 /* ===== スキン：初期値 ===== */
 
 :root {
-  --iro-bg-main: #f7f7f7;
+  --iro-bg-main: #f0f0f0;
   --iro-bg-tab: #d0d0d0;
   --iro-bg-card: #ffffff;
 
   --iro-action-btn: #333333;
   --iro-edit-btn: #4c956c;
-  --iro-delete-btn: #d33;
+  --iro-delete-btn: #cd4040;
   --iro-sub-btn: #748a74;
 
   --iro-text-main: #222;
@@ -27,7 +27,7 @@
   --iro-goal-1: #C0E8C0;
   --iro-goal-2: #eaeaea;
 
-  --iro-overlay: rgba(247, 247, 247, 0.86);
+  --iro-overlay: #f7f7f7be;
   --iro-icon: url("icon-black.png");
 }
 
@@ -35,13 +35,13 @@
 
 body.skin-light-mono,
 .skin-chip.skin-light-mono {
-  --iro-bg-main: #f7f7f7;
+  --iro-bg-main: #f0f0f0;
   --iro-bg-tab: #d0d0d0;
   --iro-bg-card: #ffffff;
 
   --iro-action-btn: #333333;
   --iro-edit-btn: #4c956c;
-  --iro-delete-btn: #d33;
+  --iro-delete-btn: #cd4040;
   --iro-sub-btn: #748a74;
 
   --iro-text-main: #222;
@@ -54,19 +54,19 @@ body.skin-light-mono,
   --iro-goal-1: #C0E8C0;
   --iro-goal-2: #eaeaea;
 
-  --iro-overlay: rgba(247, 247, 247, 0.86);
+  --iro-overlay: #f7f7f7be;
   --iro-icon: url("icon-black.png");
 }
 
 body.skin-light-red,
 .skin-chip.skin-light-red {
-  --iro-bg-main: #f7f7f7;
+  --iro-bg-main: #f0f0f0;
   --iro-bg-tab: #d0d0d0;
   --iro-bg-card: #ffffff;
 
   --iro-action-btn: #333333;
   --iro-edit-btn: #4c956c;
-  --iro-delete-btn: #d33;
+  --iro-delete-btn: #cd4040;
   --iro-sub-btn: #748a74;
 
   --iro-text-main: #222;
@@ -79,19 +79,19 @@ body.skin-light-red,
   --iro-goal-1: #C0E8C0;
   --iro-goal-2: #eaeaea;
 
-  --iro-overlay: rgba(247, 247, 247, 0.86);
+  --iro-overlay: #f7f7f7be;
   --iro-icon: url("icon-black.png");
 }
 
 body.skin-light-blue,
 .skin-chip.skin-light-blue {
-  --iro-bg-main: #f7f7f7;
+  --iro-bg-main: #f0f0f0;
   --iro-bg-tab: #d0d0d0;
   --iro-bg-card: #ffffff;
 
   --iro-action-btn: #333333;
   --iro-edit-btn: #4c956c;
-  --iro-delete-btn: #d33;
+  --iro-delete-btn: #cd4040;
   --iro-sub-btn: #748a74;
 
   --iro-text-main: #222;
@@ -104,19 +104,19 @@ body.skin-light-blue,
   --iro-goal-1: #C0E8C0;
   --iro-goal-2: #eaeaea;
 
-  --iro-overlay: rgba(247, 247, 247, 0.86);
+  --iro-overlay: #f7f7f7be;
   --iro-icon: url("icon-black.png");
 }
 
 body.skin-light-yellow,
 .skin-chip.skin-light-yellow {
-  --iro-bg-main: #f7f7f7;
+  --iro-bg-main: #f0f0f0;
   --iro-bg-tab: #d0d0d0;
   --iro-bg-card: #ffffff;
 
   --iro-action-btn: #333333;
   --iro-edit-btn: #4c956c;
-  --iro-delete-btn: #d33;
+  --iro-delete-btn: #cd4040;
   --iro-sub-btn: #748a74;
 
   --iro-text-main: #222;
@@ -129,19 +129,19 @@ body.skin-light-yellow,
   --iro-goal-1: #C0E8C0;
   --iro-goal-2: #eaeaea;
 
-  --iro-overlay: rgba(247, 247, 247, 0.86);
+  --iro-overlay: #f7f7f7be;
   --iro-icon: url("icon-black.png");
 }
 
 body.skin-light-green,
 .skin-chip.skin-light-green {
-  --iro-bg-main: #f7f7f7;
+  --iro-bg-main: #f0f0f0;
   --iro-bg-tab: #d0d0d0;
   --iro-bg-card: #ffffff;
 
   --iro-action-btn: #333333;
   --iro-edit-btn: #4c956c;
-  --iro-delete-btn: #d33;
+  --iro-delete-btn: #cd4040;
   --iro-sub-btn: #748a74;
 
   --iro-text-main: #222;
@@ -154,19 +154,19 @@ body.skin-light-green,
   --iro-goal-1: #C0E8C0;
   --iro-goal-2: #eaeaea;
 
-  --iro-overlay: rgba(247, 247, 247, 0.86);
+  --iro-overlay: #f7f7f7be;
   --iro-icon: url("icon-black.png");
 }
 
 body.skin-light-purple,
 .skin-chip.skin-light-purple {
-  --iro-bg-main: #f7f7f7;
+  --iro-bg-main: #f0f0f0;
   --iro-bg-tab: #d0d0d0;
   --iro-bg-card: #ffffff;
 
   --iro-action-btn: #333333;
   --iro-edit-btn: #4c956c;
-  --iro-delete-btn: #d33;
+  --iro-delete-btn: #cd4040;
   --iro-sub-btn: #748a74;
 
   --iro-text-main: #222;
@@ -179,7 +179,7 @@ body.skin-light-purple,
   --iro-goal-1: #C0E8C0;
   --iro-goal-2: #eaeaea;
 
-  --iro-overlay: rgba(247, 247, 247, 0.86);
+  --iro-overlay: #f7f7f7be;
   --iro-icon: url("icon-black.png");
 }
 
@@ -187,16 +187,16 @@ body.skin-light-purple,
 
 body.skin-dark-mono,
 .skin-chip.skin-dark-mono {
-  --iro-bg-main: #161616;
-  --iro-bg-tab: #4C4C4C;
-  --iro-bg-card: #000000;
+  --iro-bg-main: #262626;
+  --iro-bg-tab: #383838;
+  --iro-bg-card: #151515;
 
-  --iro-action-btn: #ffffff;
+  --iro-action-btn: #dfdfdf;
   --iro-edit-btn: #4c956c;
   --iro-delete-btn: #9f2747;
   --iro-sub-btn: #82699a;
 
-  --iro-text-main: #efefef;
+  --iro-text-main: #dfdfdf;
   --iro-text-sub: #8f8f8f;
   --iro-btn-text: #000000;
 
@@ -206,7 +206,7 @@ body.skin-dark-mono,
   --iro-goal-1: #393761;
   --iro-goal-2: #303030;
 
-  --iro-overlay: rgba(23, 23, 23, 0.86);
+  --iro-overlay: #171717db;
   --iro-icon: url("icon-white.png");
 }
 
@@ -225,7 +225,7 @@ body.skin-dark-purple {}
 .skin-option {
   display: flex;
   flex-wrap: wrap;
-  gap: 5px;
+  gap: 25px;
   margin-bottom: 10px;
 }
 
@@ -430,8 +430,9 @@ button {
     position: absolute;
     pointer-events: none;
     inset: 0;
-    background: var(--iro-bg-card);
+    background: var(--iro-overlay);
     z-index: 3;
+
   }
 
   .common-item.show-actions .edit-button,
@@ -443,7 +444,7 @@ button {
     z-index: 4;
     transform: translateY(-50%);
     gap: 6px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+    box-shadow: 0 2px 8px #0000001f;
   }
 
   .common-item.show-actions .edit-button {
@@ -497,7 +498,7 @@ button {
   margin: 0px 0px 10px 0px;
   font-size: 13px;
   color: var(--iro-text-main);
-  background-color: var(--iro-bg-tab);
+  border-bottom: 3px solid var(--iro-bg-tab);
 }
 
 .date-button.active {
@@ -768,8 +769,6 @@ button {
 .goal-sort-button {
   padding: 5px 7px;
   font-size: 13px;
-  background-color: var(--iro-bg-tab);
-  ;
   color: var(--iro-text-main);
   border-bottom: 3px solid var(--iro-bg-tab);
 }
@@ -843,7 +842,7 @@ button {
   z-index: 9999;
   pointer-events: none;
   background: #ddd;
-  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.18);
+  box-shadow: 0 8px 18px #0000002e;
 }
 
 .goal-item.drag-placeholder .swipe-content {
@@ -1055,8 +1054,8 @@ button {
   height: 22px;
   border: 1px solid #999;
   border-radius: 11px 8px 12px 7px;
-  box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.7),
-    0 1px 2px rgba(0, 0, 0, 0.12);
+  box-shadow: inset 0 1px 2px #ffffffb3,
+    0 1px 2px #0000001f;
   cursor: pointer;
   margin: 0px 2px;
 }

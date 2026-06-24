@@ -494,10 +494,14 @@ function isPcPointer() {
   return window.matchMedia("(hover: hover) and (pointer: fine)").matches;
 }
 
-function cancelEditingItems() {
+function finishEditingItems() {
   document.querySelectorAll(".text.editing").forEach((content) => {
-    content.contentEditable = "false";
-    content.classList.remove("editing");
+    const item = content.closest(".common-item");
+    const editButton = item?.querySelector(".edit-button");
+
+    if (editButton) {
+      editButton.click();
+    }
   });
 }
 
@@ -587,13 +591,36 @@ document.addEventListener("touchstart", (event) => {
   closeSwipeActions();
 });
 
-document.addEventListener("click", (event) => {
-  if (!isPcPointer()) return;
-  if (event.target.closest(".common-item")) return;
+document.addEventListener(
+  "click",
+  (event) => {
+    if (!isPcPointer()) return;
 
-  cancelEditingItems();
-  closeSwipeActions();
-});
+    const editingContent =
+      document.querySelector(".text.editing");
+
+    if (!editingContent) return;
+
+    const editingItem =
+      editingContent.closest(".common-item");
+
+    const clickedItem =
+      event.target.closest(".common-item");
+
+    // 編集中のタスク内をクリックした場合は閉じない
+    if (clickedItem === editingItem) return;
+
+    // 別のタスクなら、今回は編集終了だけ行う
+    if (clickedItem) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+
+    finishEditingItems();
+    closeSwipeActions();
+  },
+  true,
+);
 
 const VOICE_TEXT_REPLACE_RULES = [
   { from: /話しした/g, to: "話した" }
@@ -689,6 +716,10 @@ function addTodayDiaryItem(text, index) {
 
     if (!isEditing) {
       isEditing = true;
+
+      item.classList.remove("show-actions");
+      item.classList.add("show-edit");
+
       content.contentEditable = "true";
       content.classList.add("editing");
       content.focus();
@@ -752,7 +783,7 @@ function renderPastDateButtons() {
         renderPastDiary(dateKey);
       }
 
-     renderPastDateButtons();
+      renderPastDateButtons();
       renderPastDiaryCalendar();
     });
 
@@ -764,14 +795,14 @@ function renderPastDateButtons() {
   moreButton.className = "date-button";
   moreButton.textContent = "もっと過去の日記";
 
-   if (isPastDiaryCalendarOpen) {
+  if (isPastDiaryCalendarOpen) {
     moreButton.classList.add("active");
   }
 
   moreButton.addEventListener("click", () => {
     isPastDiaryCalendarOpen = !isPastDiaryCalendarOpen;
 
-     if (isPastDiaryCalendarOpen) {
+    if (isPastDiaryCalendarOpen) {
       selectedPastDateKey = null;
       pastDiaryList.classList.remove("open");
       pastDiaryList.innerHTML = "";
@@ -831,6 +862,10 @@ function addPastDiaryItem(dateKey, text, index) {
 
     if (!isEditing) {
       isEditing = true;
+
+      item.classList.remove("show-actions");
+      item.classList.add("show-edit");
+
       content.contentEditable = "true";
       content.classList.add("editing");
       content.focus();
@@ -1163,6 +1198,10 @@ function renderScheduleList() {
 
       if (!isEditing) {
         isEditing = true;
+
+        item.classList.remove("show-actions");
+        item.classList.add("show-edit");
+
         content.contentEditable = "true";
         content.classList.add("editing");
         content.focus();
@@ -1427,6 +1466,10 @@ function addGoalItem(text, index, color = null) {
 
     if (!isEditing) {
       isEditing = true;
+
+      item.classList.remove("show-actions");
+      item.classList.add("show-edit");
+
       content.contentEditable = "true";
       content.classList.add("editing");
       content.focus();
