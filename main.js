@@ -1,5 +1,4 @@
 
-
 const TAB_STORAGE_KEY = "koeTabOrder";
 const DIARY_STORAGE_KEY = "voiceDiaryData";
 const GOAL_STORAGE_KEY = "koeGoalData";
@@ -7,6 +6,8 @@ const HABIT_STORAGE_KEY = "koeHabitData";
 const SCHEDULE_STORAGE_KEY = "koeScheduleData";
 const DATE_SWITCH_MODE_KEY = "dateSwitchMode";
 const DATE_SWITCH_HOUR_KEY = "dateSwitchHour";
+const SKIN_STORAGE_KEY = "koeSkin";
+const DEFAULT_SKIN = "skin-light-mono";
 
 
 const DEFAULT_TABS = [
@@ -36,6 +37,22 @@ const DEFAULT_TABS = [
   },
 ];
 
+const VALID_SKINS = [
+  "skin-light-mono",
+  "skin-light-red",
+  "skin-light-blue",
+  "skin-light-yellow",
+  "skin-light-green",
+  "skin-light-purple",
+  "skin-dark-mono",
+  "skin-dark-red",
+  "skin-dark-blue",
+  "skin-dark-yellow",
+  "skin-dark-green",
+  "skin-dark-purple",
+];
+
+const skinInputs = document.querySelectorAll('input[name="skin"]');
 const tabBar = document.getElementById("tabBar");
 const voiceButton = document.getElementById("voiceButton");
 const downloadButton = document.getElementById("downloadButton");
@@ -71,7 +88,6 @@ const customRadio = document.getElementById("dateSwitchCustom");
 const customArea = document.getElementById("dateSwitchCustomArea");
 const exportBackupButton = document.getElementById("exportBackupButton");
 const importBackupInput = document.getElementById("importBackupInput");
-
 
 let tabOrder = loadTabOrder();
 let activeTabId = tabOrder[0].id;
@@ -114,6 +130,22 @@ goalAddButton.addEventListener("click", addGoalFromInput);
 goalColorButton.addEventListener("click", toggleGoalColorMode);
 exportBackupButton.addEventListener("click", exportBackup);
 importBackupInput.addEventListener("change", importBackup);
+
+skinInputs.forEach((skinInput) => {
+  skinInput.addEventListener("change", () => {
+    if (skinInput.checked) {
+      changeSkin(skinInput.value);
+    }
+  });
+});
+
+const currentSkin = loadSkin();
+
+applySkin(currentSkin);
+
+skinInputs.forEach((skinInput) => {
+  skinInput.checked = skinInput.value === currentSkin;
+});
 
 renderTabs();
 renderPanels();
@@ -568,7 +600,44 @@ function normalizeVoiceText(text) {
   }, text);
 }
 
+// ===== スキン =====
 
+function isValidSkinName(skinName) {
+  return VALID_SKINS.includes(skinName);
+}
+
+function loadSkin() {
+  const savedSkin = localStorage.getItem(SKIN_STORAGE_KEY);
+
+  if (isValidSkinName(savedSkin)) {
+    return savedSkin;
+  }
+
+  return DEFAULT_SKIN;
+}
+
+function applySkin(skinName) {
+  const skinToApply = isValidSkinName(skinName)
+    ? skinName
+    : DEFAULT_SKIN;
+
+  document.body.classList.remove(...VALID_SKINS);
+  document.body.classList.add(skinToApply);
+}
+
+function changeSkin(skinName) {
+  if (!isValidSkinName(skinName)) {
+    return false;
+  }
+
+  applySkin(skinName);
+
+  localStorage.setItem(SKIN_STORAGE_KEY, skinName);
+
+  return true;
+}
+
+// ===== /スキン =====
 
 function formatDiary(text) {
   return text.split(/[。！？、,]/)

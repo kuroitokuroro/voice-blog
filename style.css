@@ -1,68 +1,107 @@
+/* スキン設定は localStorage に保存する
+　 バックアップJSON には含めない */
 
- /* スキン設定は localStorage に保存する*/
- /* バックアップJSON には含めない */
+/* 保存データでは green / gray を使う。
+   スキンでは goal-1 / goal-2 を使う。 
+   詳細は開発メモ参照 */
 
 /* ===== スキン：初期値 ===== */
 
-:root{
---iro-bg-main:#f7f7f7;
---iro-bg-tab:#d0d0d0;
---iro-bg-card:#ffffff;
+:root {
+  --iro-bg-main: #f7f7f7;
+  --iro-bg-tab: #d0d0d0;
+  --iro-bg-card: #ffffff;
 
---iro-action-btn:#333333;
---iro-delete-btn:#d33;
---iro-sub-btn:#748a74;
+  --iro-action-btn: #333333;
+  --iro-edit-btn: #4c956c;
+  --iro-delete-btn: #d33;
+  --iro-sub-btn: #748a74;
 
---iro-text-main:#222;
---iro-text-sub:#666;
---iro-btn-text:#fff;
+  --iro-text-main: #222;
+  --iro-text-sub: #666;
+  --iro-btn-text: #fff;
 
---iro-border:#ccc;
---iro-voice:#815CD7;
+  --iro-border: #ccc;
+  --iro-voice: #815CD7;
 
---iro-goal-1:#C0E8C0;
---iro-goal-2:#DFDFDF;
+  --iro-goal-1: #C0E8C0;
+  --iro-goal-2: #eaeaea;
+
+  --iro-overlay: rgba(247, 247, 247, 0.86);
+  --iro-icon: url("icon-black.png");
 }
 
 /* ===== スキン：明るい ===== */
 
-body.skin-light-white {
+body.skin-light-mono {
+  --iro-bg-main: #f7f7f7;
+  --iro-bg-tab: #d0d0d0;
+  --iro-bg-card: #ffffff;
+
+  --iro-action-btn: #333333;
+  --iro-edit-btn: #4c956c;
+  --iro-delete-btn: #d33;
+  --iro-sub-btn: #748a74;
+
+  --iro-text-main: #222;
+  --iro-text-sub: #666;
+  --iro-btn-text: #fff;
+
+  --iro-border: #ccc;
+  --iro-voice: #815CD7;
+
+  --iro-goal-1: #C0E8C0;
+  --iro-goal-2: #eaeaea;
+
+  --iro-overlay: rgba(247, 247, 247, 0.86);
+  --iro-icon: url("icon-black.png");
 }
 
-body.skin-light-red {
-}
+body.skin-light-red {}
 
-body.skin-light-blue {
-}
+body.skin-light-blue {}
 
-body.skin-light-yellow {
-}
+body.skin-light-yellow {}
 
-body.skin-light-green {
-}
+body.skin-light-green {}
 
-body.skin-light-purple {
-}
+body.skin-light-purple {}
 
 /* ===== スキン：暗い ===== */
 
-body.skin-dark-white {
+body.skin-dark-mono {
+  --iro-bg-main: #161616;
+  --iro-bg-tab: #4C4C4C;
+  --iro-bg-card: #000000;
+
+  --iro-action-btn: #ffffff;
+  --iro-edit-btn: #4c956c;
+  --iro-delete-btn: #9f2747;
+  --iro-sub-btn: #82699a;
+
+  --iro-text-main: #efefef;
+  --iro-text-sub: #8f8f8f;
+  --iro-btn-text: #000000;
+
+  --iro-border: #545454;
+  --iro-voice: #56d5d7;
+
+  --iro-goal-1: #393761;
+  --iro-goal-2: #303030;
+
+  --iro-overlay: rgba(23, 23, 23, 0.86);
+  --iro-icon: url("icon-white.png");
 }
 
-body.skin-dark-red {
-}
+body.skin-dark-red {}
 
-body.skin-dark-blue {
-}
+body.skin-dark-blue {}
 
-body.skin-dark-yellow {
-}
+body.skin-dark-yellow {}
 
-body.skin-dark-green {
-}
+body.skin-dark-green {}
 
-body.skin-dark-purple {
-}
+body.skin-dark-purple {}
 
 /* ===== /スキン ===== */
 
@@ -71,8 +110,8 @@ body {
   max-width: 640px;
   margin: 0 auto;
   padding: 0px 24px;
-  background: #f7f7f7;
-  color: #222;
+  background-color: var(--iro-bg-main);
+  color: var(--iro-text-main);
 }
 
 h1 {
@@ -98,7 +137,7 @@ button {
   gap: 8px;
   margin: 0 -24px 15px;
   padding: 0 24px;
-  background: #d0d0d0;
+  background-color: var(--iro-bg-tab);
   user-select: none;
   touch-action: none;
 }
@@ -109,7 +148,7 @@ button {
   margin-bottom: -3px;
   border-radius: 16px 16px 0 0;
   background: transparent;
-  color: #222;
+  color: var(--iro-text-main);
   font-size: 14px;
   font-weight: 700;
 
@@ -121,15 +160,13 @@ button {
 
   -webkit-tap-highlight-color: transparent;
 
-  transition:
-    transform 0.15s ease,
-    background 0.15s ease,
+  transition: background 0.15s ease,
 
 }
 
 .tab-button.active {
-  background: #f7f7f7;
-  color: #111;
+  background-color: var(--iro-bg-main);
+  color: var(--iro-text-main);
 }
 
 .tab-icon {
@@ -149,18 +186,18 @@ button {
   display: block;
 }
 
-.main-button {
+.file-button {
   width: 100%;
   padding: 16px;
   margin-bottom: 16px;
   font-size: 18px;
-  background: #333;
-  color: white;
+  background: var(--iro-action-btn);
+  color: var(--iro-btn-text);
 }
 
 .diary-area,
 .past-diary-area {
-  background: white;
+  background: var(--iro-bg-card);
   border-radius: 12px;
   overflow: hidden;
   margin-bottom: 16px;
@@ -169,14 +206,14 @@ button {
 .common-item {
   position: relative;
   overflow: hidden;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid var(--iro-border);
   background: white;
 }
 
 .swipe-content {
   position: relative;
   z-index: 2;
-  background: white;
+  background: var(--iro-bg-card);
   padding: 12px;
   transition: transform 0.2s ease;
   display: flex;
@@ -212,12 +249,12 @@ button {
 
 .delete-button {
   right: 0;
-  background: #d33;
+  background: var(--iro-delete-btn);
 }
 
 .edit-button {
   left: 0;
-  background: #4c956c;
+  background: var(--iro-edit-btn);
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -230,7 +267,7 @@ button {
     position: absolute;
     pointer-events: none;
     inset: 0;
-    background: rgba(247, 247, 247, 0.86);
+    background: var(--iro-bg-card);
     z-index: 3;
   }
 
@@ -293,14 +330,15 @@ button {
 }
 
 .date-button {
-  padding: 5px 7px;
+  padding: 5px 8px;
+  margin: 0px 0px 10px 0px;
   font-size: 13px;
-  color: #000000;
-  border-bottom: 3px solid #ccc;
+  color: var(--iro-text-main);
+  background-color: var(--iro-bg-tab);
 }
 
 .date-button.active {
-  background: #748a74;
+  background: var(--iro-sub-btn);
   color: white;
 }
 
@@ -328,21 +366,15 @@ button {
   padding: 12px;
   margin-bottom: 10px;
   border-radius: 10px;
-  border: 1px solid #ccc;
+  border: 1px solid var(--iro-border);
   font-size: 16px;
-  background: white;
+  background: var(--iro-bg-card);
+  color: var(--iro-text-main);
 }
 
 .goal-checkbox {
   margin-right: 10px;
   transform: scale(1.2);
-}
-
-.empty-message {
-  padding: 12px;
-  font-size: 14px;
-  color: #666;
-  line-height: 1.6;
 }
 
 .habit-add-area {
@@ -355,19 +387,19 @@ button {
   flex: 1;
   min-width: 0;
   padding: 12px;
-  border: 1px solid #ccc;
+  border: 1px solid var(--iro-border);
   border-radius: 12px;
   font-size: 16px;
   font-family: inherit;
-  background: white;
+  background: var(--iro-bg-card);
 }
 
 .habit-add-submit-button {
   width: 72px;
   padding: 12px;
   border-radius: 12px;
-  background: #333;
-  color: white;
+  background: var(--iro-action-btn);
+  color: var(--iro-btn-text);
   font-size: 15px;
 }
 
@@ -376,7 +408,7 @@ button {
   flex-wrap: wrap;
   gap: 8px;
   padding: 12px;
-  background: white;
+  background: var(--iro-bg-card);
   border-radius: 12px;
   margin-bottom: 16px;
 }
@@ -384,35 +416,31 @@ button {
 .habit-task-button {
   padding: 10px 14px;
   border-radius: 999px;
-  background: #eeeeee;
-  color: #333;
+  background-color: var(--iro-bg-main);
+  color: var(--iro-text-main);
   font-size: 15px;
   line-height: 1.2;
-  transition:
-    background 0.15s ease,
-    transform 0.15s ease,
-    box-shadow 0.15s ease;
+  transition: 0.15s ease;
   user-select: none;
   touch-action: manipulation;
 }
 
 .habit-task-button.done-today {
-  background: #748a74;
-  color: #ffffff;
+  background: var(--iro-sub-btn);
+  color: white;
 }
 
 .habit-task-button.selected {
-  box-shadow: 0 0 0 2px #748a74 inset;
+  box-shadow: 0 0 0 2px var(--iro-sub-btn) inset;
 }
 
 .habit-task-button.long-pressing {
   transform: scale(0.96);
-  background: #748a74;
 }
 
 .habit-calendar {
   display: none;
-  background: white;
+  background: var(--iro-bg-card);
   border-radius: 12px;
   padding: 12px;
   margin-bottom: 16px;
@@ -425,7 +453,7 @@ button {
 .habit-calendar-title {
   margin-bottom: 5px;
   font-size: 14px;
-  color: #555;
+  color: var(--iro-text-main);
   line-height: 1.5;
   display: flex;
   align-items: center;
@@ -450,18 +478,18 @@ button {
 
 .habit-calendar-weekday {
   min-height: 22px;
-  color: #888;
+  color: var(--iro-text-sub);
   font-size: 12px;
 }
 
 .habit-calendar-day {
-  background: #f1f1f1;
-  color: #777;
+  background: var(--iro-bg-main);
+  color: var(--iro-text-sub);
 }
 
 .habit-calendar-day.done {
-  background: #748a74;
-  color: #ffffff;
+  background: var(--iro-sub-btn);
+  color: white;
   font-weight: bold;
 }
 
@@ -478,7 +506,7 @@ button {
   font-size: 1em;
   border: none;
   border-radius: 12px;
-  background: #b94a48;
+  background: var(--iro-delete-btn);
   color: white;
   cursor: pointer;
 }
@@ -498,7 +526,7 @@ button {
   align-items: center;
   margin: 0 -24px;
   padding: 12px 24px 20px;
-  background: #d0d0d0;
+  background: var(--iro-bg-tab);
 }
 
 .title-group {
@@ -550,6 +578,10 @@ button {
 .bottomIcon {
   width: 48px;
   height: 48px;
+  background-image: var(--iro-icon);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
 }
 
 .tab-button.dragging {
@@ -573,13 +605,14 @@ button {
 .goal-sort-button {
   padding: 5px 7px;
   font-size: 13px;
-  color: #000000;
-  border-bottom: 3px solid #ccc;
+  background-color: var(--iro-bg-tab);;
+  color: var(--iro-text-main);
+  border-bottom: 3px solid var(--iro-bg-tab);
 }
 
 .goal-sort-button.sort-mode {
   color: white;
-  background: #748a74;
+  background: var(--iro-sub-btn);
 }
 
 .goal-title-actions {
@@ -589,7 +622,7 @@ button {
 }
 
 .goal-sort-button.delete-mode {
-  background: #748a74;
+  background: var(--iro-sub-btn);
   color: white;
 }
 
@@ -682,17 +715,14 @@ button {
   height: 42px;
   border-radius: 14px;
   border: none;
-  background: #f2f2f2;
-  color: #222;
+  background: var(--iro-bg-main);
+  color: var(--iro-text-main);
   display: flex;
   align-items: center;
   justify-content: center;
   text-decoration: none;
   font-family: inherit;
   padding: 0;
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.85),
-    0 2px 6px rgba(0, 0, 0, 0.08);
   -webkit-tap-highlight-color: transparent;
 }
 
@@ -729,7 +759,7 @@ button {
   border: none;
   background: none;
   font-size: 15px;
-  color: #666;
+  color: var(--iro-sub-btn);
 }
 
 .month-nav-button:disabled {
@@ -737,7 +767,7 @@ button {
 }
 
 .common-item.done {
-  border-left: 1em solid #d0d0d0;
+  border-left: 1em solid var(--iro-bg-tab);
 }
 
 .common-item.done::before {
@@ -760,7 +790,7 @@ button {
 }
 
 .common-item.done.delete-warning {
-  border-left-color: #c96b6b;
+  border-left-color: var(--iro-delete-btn);
 }
 
 .help-section {
@@ -775,11 +805,11 @@ button {
 .help-section p {
   margin: 0;
   line-height: 1.7;
-  color: #555;
+  color: var(--iro-text-main);
 }
 
 .common-item.today {
-  border-left: 1em solid #4c956c;
+  border-left: 1em solid var(--iro-sub-btn);
 }
 
 .common-input-area {
@@ -792,11 +822,13 @@ button {
 .common-input {
   min-height: 50px;
   padding: 10px;
-  border: 1px solid #ccc;
+  border: 1px solid var(--iro-border);
   border-radius: 10px;
   font-size: 16px;
   font-family: inherit;
   resize: none;
+  background-color: var(--iro-bg-card);
+  color:var(--iro-text-main);
 }
 
 .common-input-actions {
@@ -811,8 +843,8 @@ button {
   border: none;
   border-radius: 12px;
   margin-bottom: 12px;
-  background: #333;
-  color: #fff;
+  background: var(--iro-action-btn);
+  color: var(--iro-btn-text);
   font-family: inherit;
 }
 
@@ -831,8 +863,8 @@ button {
 }
 
 .common-voice-button.listening {
-  background: #815CD7;
-  color: #fff;
+  background: var(--iro-voice);
+  color: var(--iro-btn-text);
 }
 
 .diary-heading {
@@ -841,11 +873,11 @@ button {
 }
 
 .goal-color-green {
-  background: #C0E8C0;
+  background: var(--iro-goal-1);
 }
 
 .goal-color-gray {
-  background: #DFDFDF;
+  background: var(--iro-goal-2);
 }
 
 .goal-color-controls {
@@ -866,24 +898,24 @@ button {
 }
 
 .goal-color-chip.green {
-  background: #C0E8C0;
+  background: var(--iro-goal-1);
 }
 
 .goal-color-chip.gray {
-  background: #DFDFDF;
+  background: var(--iro-goal-2);
 }
 
 .goal-sort-button.color-mode {
-  background: #748a74;
+  background: var(--iro-sub-btn);
   color: white;
 }
 
 .goal-color-green .swipe-content {
-  background: #C0E8C0;
+  background: var(--iro-goal-1);
 }
 
 .goal-color-gray .swipe-content {
-  background: #eaeaea;
+  background: var(--iro-goal-2);
 }
 
 .date-switch-range {
@@ -906,7 +938,7 @@ button {
   width: 24px;
   height: 24px;
   margin-top: -5px;
-  background: #748a74;
+  background: #8a7474;
   border-radius: 50%;
 }
 
@@ -932,5 +964,5 @@ button {
   margin-bottom: 20px;
   line-height: 1.8;
   font-size: 14px;
-  color: #444;
+  color: var(--iro-text-sub);
 }
