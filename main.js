@@ -43,12 +43,17 @@ const VALID_SKINS = [
   "skin-light-blue",
   "skin-light-yellow",
   "skin-light-green",
+  "skin-light-cyan",
+  "skin-light-pink",
   "skin-light-purple",
+
   "skin-dark-mono",
   "skin-dark-red",
   "skin-dark-blue",
   "skin-dark-yellow",
   "skin-dark-green",
+  "skin-dark-cyan",
+  "skin-dark-pink",
   "skin-dark-purple",
 ];
 

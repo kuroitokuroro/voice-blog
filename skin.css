@@ -21,12 +21,12 @@
   --iro-btn-text: #fff;
 
   --iro-border: #ccc;
-  --iro-voice: #815CD7;
+  --iro-voice: #a85cd7;
 
   --iro-goal-1: #d0d0d0;
   --iro-goal-2: #eaeaea;
 
-  --iro-overlay: #f7f7f7be;
+  --iro-overlay: #f7f7f7c5;
   --iro-icon: url("icon-black.png");
 }
 
@@ -41,18 +41,18 @@ body.skin-light-mono,
   --iro-action-btn: #333333;
   --iro-edit-btn: #4c956c;
   --iro-delete-btn: #cd4040;
-  --iro-sub-btn: #748a74;
+  --iro-sub-btn: #747474;
 
   --iro-text: #222;
   --iro-btn-text: #fff;
 
   --iro-border: #ccc;
-  --iro-voice: #815CD7;
+  --iro-voice: #a85cd7;
 
   --iro-goal-1: #d0d0d0;
   --iro-goal-2: #eaeaea;
 
-  --iro-overlay: #f7f7f7be;
+  --iro-overlay: #f7f7f7c5;
   --iro-icon: url("icon-black.png");
 }
 
@@ -60,25 +60,25 @@ body.skin-light-mono,
 
 body.skin-light-red,
 .skin-chip.skin-light-red {
-  --iro-bg-main: #fce2e2;
+  --iro-bg-main: #faecec;
   --iro-bg-tab: #f5b0b0;
-  --iro-bg-card: #fff5f5;
+  --iro-bg-card: #ffffff;
 
-  --iro-action-btn: #5f2727;
-  --iro-edit-btn: #378d5c;
+  --iro-action-btn: #5a2c2c;
+  --iro-edit-btn: #4e8a54;
   --iro-delete-btn: #cd4040;
-  --iro-sub-btn: #a87272;
+  --iro-sub-btn: #ae7d7d;
 
   --iro-text: #222;
   --iro-btn-text: #fff;
 
   --iro-border: #e1bebe;
-  --iro-voice: #357947;
+  --iro-voice: #dce82e;
 
   --iro-goal-1: #f5b0b0;
-  --iro-goal-2: #ffe0e0;
+  --iro-goal-2: #faecec;
 
-  --iro-overlay: #ffe0e0a4;
+  --iro-overlay: #faececc0;
   --iro-icon: url("icon-black.png");
 }
 
@@ -86,25 +86,25 @@ body.skin-light-red,
 
 body.skin-light-blue,
 .skin-chip.skin-light-blue {
-  --iro-bg-main: #e2e6fc;
+  --iro-bg-main: #ecefff;
   --iro-bg-tab: #b0b9f5;
-  --iro-bg-card: #f5f6ff;
+  --iro-bg-card: #ffffff;
 
-  --iro-action-btn: #29275f;
-  --iro-edit-btn: #3b6eba;
-  --iro-delete-btn: #cd4061;
-  --iro-sub-btn: #7372a8;
+  --iro-action-btn: #2f2d5f;
+  --iro-edit-btn: #4e8a73;
+  --iro-delete-btn: #cd4068;
+  --iro-sub-btn: #7b7aa5;
 
   --iro-text: #222;
   --iro-btn-text: #fff;
 
   --iro-border: #c1bee1;
-  --iro-voice: #357947;
+  --iro-voice: #fb30ed;
 
   --iro-goal-1: #b0b9f5;
-  --iro-goal-2: #e2e6fc;
+  --iro-goal-2: #ecefff;
 
-  --iro-overlay: #e2e6fc7c;
+  --iro-overlay: #e2e6fcbf;
   --iro-icon: url("icon-black.png");
 }
 
@@ -112,25 +112,25 @@ body.skin-light-blue,
 
 body.skin-light-yellow,
 .skin-chip.skin-light-yellow {
-  --iro-bg-main: #f9f7d7;
-  --iro-bg-tab: #f5eb79;
-  --iro-bg-card: #fffdf5;
+  --iro-bg-main: #fffde8;
+  --iro-bg-tab: #fcf38f;
+  --iro-bg-card: #ffffff;
 
-  --iro-action-btn: #584f22;
+  --iro-action-btn: #514a26;
   --iro-edit-btn: #68904b;
   --iro-delete-btn: #cd5c40;
-  --iro-sub-btn: #8c845a;
+  --iro-sub-btn: #928a5b;
 
   --iro-text: #222;
   --iro-btn-text: #fff;
 
   --iro-border: #e1ddbe;
-  --iro-voice: #357947;
+  --iro-voice: #2886f8;
 
-  --iro-goal-1: #f5eb79;
-  --iro-goal-2: #f9f7d7;
+  --iro-goal-1: #fcf38f;
+  --iro-goal-2: #fffde8;
 
-  --iro-overlay: #f9f7d786;
+  --iro-overlay: #f9f7d7a9;
   --iro-icon: url("icon-black.png");
 }
 
@@ -138,25 +138,25 @@ body.skin-light-yellow,
 
 body.skin-light-green,
 .skin-chip.skin-light-green {
-  --iro-bg-main: #f0f0f0;
-  --iro-bg-tab: #d0d0d0;
+  --iro-bg-main: #e8ffea;
+  --iro-bg-tab: #a7e9a1;
   --iro-bg-card: #ffffff;
 
-  --iro-action-btn: #333333;
-  --iro-edit-btn: #4c956c;
-  --iro-delete-btn: #cd4040;
-  --iro-sub-btn: #748a74;
+  --iro-action-btn: #2e4c27;
+  --iro-edit-btn: #4f9e45;
+  --iro-delete-btn: #cd6a40;
+  --iro-sub-btn: #659168;
 
   --iro-text: #222;
   --iro-btn-text: #fff;
 
-  --iro-border: #ccc;
-  --iro-voice: #815CD7;
+  --iro-border: #c7e1be;
+  --iro-voice: #e8932c;
 
-  --iro-goal-1: #C0E8C0;
-  --iro-goal-2: #eaeaea;
+  --iro-goal-1: #a7e9a1;
+  --iro-goal-2: #e8ffea;
 
-  --iro-overlay: #f7f7f7be;
+  --iro-overlay: #e8ffea8d;
   --iro-icon: url("icon-black.png");
 }
 
@@ -164,25 +164,25 @@ body.skin-light-green,
 
 body.skin-light-cyan,
 .skin-chip.skin-light-cyan {
-  --iro-bg-main: #f0f0f0;
-  --iro-bg-tab: #d0d0d0;
+  --iro-bg-main: #e8feff;
+  --iro-bg-tab: #a1e3e9;
   --iro-bg-card: #ffffff;
 
-  --iro-action-btn: #333333;
-  --iro-edit-btn: #4c956c;
-  --iro-delete-btn: #cd4040;
-  --iro-sub-btn: #748a74;
+  --iro-action-btn: #254b4b;
+  --iro-edit-btn: #3c9069;
+  --iro-delete-btn: #d54e64;
+  --iro-sub-btn: #568c84;
 
   --iro-text: #222;
   --iro-btn-text: #fff;
 
-  --iro-border: #ccc;
-  --iro-voice: #815CD7;
+  --iro-border: #bee1de;
+  --iro-voice: #ee397e;
 
-  --iro-goal-1: #C0E8C0;
-  --iro-goal-2: #eaeaea;
+  --iro-goal-1: #a1e3e9;
+  --iro-goal-2: #e8feff;
 
-  --iro-overlay: #f7f7f7be;
+  --iro-overlay: #e8feffc9;
   --iro-icon: url("icon-black.png");
 }
 
@@ -190,25 +190,25 @@ body.skin-light-cyan,
 
 body.skin-light-pink,
 .skin-chip.skin-light-pink {
-  --iro-bg-main: #f0f0f0;
-  --iro-bg-tab: #d0d0d0;
+  --iro-bg-main: #ffe8fd;
+  --iro-bg-tab: #fda9eb;
   --iro-bg-card: #ffffff;
 
-  --iro-action-btn: #333333;
-  --iro-edit-btn: #4c956c;
-  --iro-delete-btn: #cd4040;
-  --iro-sub-btn: #748a74;
+  --iro-action-btn: #5c1c4d;
+  --iro-edit-btn: #29a573;
+  --iro-delete-btn: #e25068;
+  --iro-sub-btn: #9e598f;
 
   --iro-text: #222;
   --iro-btn-text: #fff;
 
-  --iro-border: #ccc;
-  --iro-voice: #815CD7;
+  --iro-border: #e1beda;
+  --iro-voice: #2de0d1;
 
-  --iro-goal-1: #C0E8C0;
-  --iro-goal-2: #eaeaea;
+  --iro-goal-1: #fda9eb;
+  --iro-goal-2: #ffe8fd;
 
-  --iro-overlay: #f7f7f7be;
+  --iro-overlay: #ffe8fdbd;
   --iro-icon: url("icon-black.png");
 }
 
@@ -216,25 +216,25 @@ body.skin-light-pink,
 
 body.skin-light-purple,
 .skin-chip.skin-light-purple {
-  --iro-bg-main: #f0f0f0;
-  --iro-bg-tab: #d0d0d0;
+  --iro-bg-main: #f3e8ff;
+  --iro-bg-tab: #d4a9fd;
   --iro-bg-card: #ffffff;
 
-  --iro-action-btn: #333333;
-  --iro-edit-btn: #4c956c;
-  --iro-delete-btn: #cd4040;
-  --iro-sub-btn: #748a74;
+  --iro-action-btn: #421c5c;
+  --iro-edit-btn: #29a584;
+  --iro-delete-btn: #de4e7b;
+  --iro-sub-btn: #81599e;
 
   --iro-text: #222;
   --iro-btn-text: #fff;
 
-  --iro-border: #ccc;
-  --iro-voice: #815CD7;
+  --iro-border: #cfbee1;
+  --iro-voice: #2de0d1;
 
-  --iro-goal-1: #C0E8C0;
-  --iro-goal-2: #eaeaea;
+  --iro-goal-1: #d4a9fd;
+  --iro-goal-2: #f3e8ff;
 
-  --iro-overlay: #f7f7f7be;
+  --iro-overlay: #f3e8ffc1;
   --iro-icon: url("icon-black.png");
 }
 

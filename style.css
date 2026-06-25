@@ -765,7 +765,7 @@ button {
 .common-input {
   min-height: 50px;
   padding: 10px;
-  border: 1px solid var(--iro-border);
+  border: 3px solid var(--iro-bg-tab);
   border-radius: 10px;
   font-size: 16px;
   font-family: inherit;
@@ -778,6 +778,11 @@ button {
   display: grid;
   grid-template-columns: 3fr 1fr;
   gap: 8px;
+}
+
+.common-input:focus {
+  border-color: var(--iro-voice);
+  outline: none;
 }
 
 .common-add-button,
