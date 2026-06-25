@@ -1,0 +1,390 @@
+/* スキン設定は localStorage に保存する
+　 バックアップJSON には含めない */
+
+/* 保存データでは green / gray を使う。
+   スキンでは goal-1 / goal-2 を使う。 
+   詳細は開発メモ参照 */
+
+/* ===== スキン：初期値 ===== */
+
+:root {
+  --iro-bg-main: #f0f0f0;
+  --iro-bg-tab: #d0d0d0;
+  --iro-bg-card: #ffffff;
+
+  --iro-action-btn: #333333;
+  --iro-edit-btn: #4c956c;
+  --iro-delete-btn: #cd4040;
+  --iro-sub-btn: #748a74;
+
+  --iro-text: #222;
+  --iro-btn-text: #fff;
+
+  --iro-border: #ccc;
+  --iro-voice: #815CD7;
+
+  --iro-goal-1: #d0d0d0;
+  --iro-goal-2: #eaeaea;
+
+  --iro-overlay: #f7f7f7be;
+  --iro-icon: url("icon-black.png");
+}
+
+/* ===== ライト：しろ ===== */
+
+body.skin-light-mono,
+.skin-chip.skin-light-mono {
+  --iro-bg-main: #f0f0f0;
+  --iro-bg-tab: #d0d0d0;
+  --iro-bg-card: #ffffff;
+
+  --iro-action-btn: #333333;
+  --iro-edit-btn: #4c956c;
+  --iro-delete-btn: #cd4040;
+  --iro-sub-btn: #748a74;
+
+  --iro-text: #222;
+  --iro-btn-text: #fff;
+
+  --iro-border: #ccc;
+  --iro-voice: #815CD7;
+
+  --iro-goal-1: #d0d0d0;
+  --iro-goal-2: #eaeaea;
+
+  --iro-overlay: #f7f7f7be;
+  --iro-icon: url("icon-black.png");
+}
+
+/* ===== ライト：あか ===== */
+
+body.skin-light-red,
+.skin-chip.skin-light-red {
+  --iro-bg-main: #fce2e2;
+  --iro-bg-tab: #f5b0b0;
+  --iro-bg-card: #fff5f5;
+
+  --iro-action-btn: #5f2727;
+  --iro-edit-btn: #378d5c;
+  --iro-delete-btn: #cd4040;
+  --iro-sub-btn: #a87272;
+
+  --iro-text: #222;
+  --iro-btn-text: #fff;
+
+  --iro-border: #e1bebe;
+  --iro-voice: #357947;
+
+  --iro-goal-1: #f5b0b0;
+  --iro-goal-2: #ffe0e0;
+
+  --iro-overlay: #ffe0e0a4;
+  --iro-icon: url("icon-black.png");
+}
+
+/* ===== ライト：あお ===== */
+
+body.skin-light-blue,
+.skin-chip.skin-light-blue {
+  --iro-bg-main: #e2e6fc;
+  --iro-bg-tab: #b0b9f5;
+  --iro-bg-card: #f5f6ff;
+
+  --iro-action-btn: #29275f;
+  --iro-edit-btn: #3b6eba;
+  --iro-delete-btn: #cd4061;
+  --iro-sub-btn: #7372a8;
+
+  --iro-text: #222;
+  --iro-btn-text: #fff;
+
+  --iro-border: #c1bee1;
+  --iro-voice: #357947;
+
+  --iro-goal-1: #b0b9f5;
+  --iro-goal-2: #e2e6fc;
+
+  --iro-overlay: #e2e6fc7c;
+  --iro-icon: url("icon-black.png");
+}
+
+/* ===== ライト：きいろ ===== */
+
+body.skin-light-yellow,
+.skin-chip.skin-light-yellow {
+  --iro-bg-main: #f9f7d7;
+  --iro-bg-tab: #f5eb79;
+  --iro-bg-card: #fffdf5;
+
+  --iro-action-btn: #584f22;
+  --iro-edit-btn: #68904b;
+  --iro-delete-btn: #cd5c40;
+  --iro-sub-btn: #8c845a;
+
+  --iro-text: #222;
+  --iro-btn-text: #fff;
+
+  --iro-border: #e1ddbe;
+  --iro-voice: #357947;
+
+  --iro-goal-1: #f5eb79;
+  --iro-goal-2: #f9f7d7;
+
+  --iro-overlay: #f9f7d786;
+  --iro-icon: url("icon-black.png");
+}
+
+/* ===== ライト：みどり ===== */
+
+body.skin-light-green,
+.skin-chip.skin-light-green {
+  --iro-bg-main: #f0f0f0;
+  --iro-bg-tab: #d0d0d0;
+  --iro-bg-card: #ffffff;
+
+  --iro-action-btn: #333333;
+  --iro-edit-btn: #4c956c;
+  --iro-delete-btn: #cd4040;
+  --iro-sub-btn: #748a74;
+
+  --iro-text: #222;
+  --iro-btn-text: #fff;
+
+  --iro-border: #ccc;
+  --iro-voice: #815CD7;
+
+  --iro-goal-1: #C0E8C0;
+  --iro-goal-2: #eaeaea;
+
+  --iro-overlay: #f7f7f7be;
+  --iro-icon: url("icon-black.png");
+}
+
+/* ===== ライト：みずいろ ===== */
+
+body.skin-light-cyan,
+.skin-chip.skin-light-cyan {
+  --iro-bg-main: #f0f0f0;
+  --iro-bg-tab: #d0d0d0;
+  --iro-bg-card: #ffffff;
+
+  --iro-action-btn: #333333;
+  --iro-edit-btn: #4c956c;
+  --iro-delete-btn: #cd4040;
+  --iro-sub-btn: #748a74;
+
+  --iro-text: #222;
+  --iro-btn-text: #fff;
+
+  --iro-border: #ccc;
+  --iro-voice: #815CD7;
+
+  --iro-goal-1: #C0E8C0;
+  --iro-goal-2: #eaeaea;
+
+  --iro-overlay: #f7f7f7be;
+  --iro-icon: url("icon-black.png");
+}
+
+/* ===== ライト：ぴんく ===== */
+
+body.skin-light-pink,
+.skin-chip.skin-light-pink {
+  --iro-bg-main: #f0f0f0;
+  --iro-bg-tab: #d0d0d0;
+  --iro-bg-card: #ffffff;
+
+  --iro-action-btn: #333333;
+  --iro-edit-btn: #4c956c;
+  --iro-delete-btn: #cd4040;
+  --iro-sub-btn: #748a74;
+
+  --iro-text: #222;
+  --iro-btn-text: #fff;
+
+  --iro-border: #ccc;
+  --iro-voice: #815CD7;
+
+  --iro-goal-1: #C0E8C0;
+  --iro-goal-2: #eaeaea;
+
+  --iro-overlay: #f7f7f7be;
+  --iro-icon: url("icon-black.png");
+}
+
+/* ===== ライト：むらさき ===== */
+
+body.skin-light-purple,
+.skin-chip.skin-light-purple {
+  --iro-bg-main: #f0f0f0;
+  --iro-bg-tab: #d0d0d0;
+  --iro-bg-card: #ffffff;
+
+  --iro-action-btn: #333333;
+  --iro-edit-btn: #4c956c;
+  --iro-delete-btn: #cd4040;
+  --iro-sub-btn: #748a74;
+
+  --iro-text: #222;
+  --iro-btn-text: #fff;
+
+  --iro-border: #ccc;
+  --iro-voice: #815CD7;
+
+  --iro-goal-1: #C0E8C0;
+  --iro-goal-2: #eaeaea;
+
+  --iro-overlay: #f7f7f7be;
+  --iro-icon: url("icon-black.png");
+}
+
+/* ===== ダーク：くろ ===== */
+
+body.skin-dark-mono,
+.skin-chip.skin-dark-mono {
+  --iro-bg-main: #262626;
+  --iro-bg-tab: #383838;
+  --iro-bg-card: #151515;
+
+  --iro-action-btn: #dfdfdf;
+  --iro-edit-btn: #4c956c;
+  --iro-delete-btn: #9f2747;
+  --iro-sub-btn: #82699a;
+
+  --iro-text: #dfdfdf;
+  --iro-btn-text: #000000;
+
+  --iro-border: #545454;
+  --iro-voice: #56d5d7;
+
+  --iro-goal-1: #393761;
+  --iro-goal-2: #303030;
+
+  --iro-overlay: #171717db;
+  --iro-icon: url("icon-white.png");
+}
+
+/* ===== ダーク：あか ===== */
+
+body.skin-dark-red {
+  --iro-bg-main: #262626;
+  --iro-bg-tab: #383838;
+  --iro-bg-card: #151515;
+
+  --iro-action-btn: #dfdfdf;
+  --iro-edit-btn: #4c956c;
+  --iro-delete-btn: #9f2747;
+  --iro-sub-btn: #82699a;
+
+  --iro-text: #dfdfdf;
+  --iro-btn-text: #000000;
+
+  --iro-border: #545454;
+  --iro-voice: #56d5d7;
+
+  --iro-goal-1: #393761;
+  --iro-goal-2: #303030;
+
+  --iro-overlay: #171717db;
+  --iro-icon: url("icon-white.png");
+}
+
+/* ===== ダーク：あお ===== */
+
+body.skin-dark-blue {
+  --iro-bg-main: #262626;
+  --iro-bg-tab: #383838;
+  --iro-bg-card: #151515;
+
+  --iro-action-btn: #dfdfdf;
+  --iro-edit-btn: #4c956c;
+  --iro-delete-btn: #9f2747;
+  --iro-sub-btn: #82699a;
+
+  --iro-text: #dfdfdf;
+  --iro-btn-text: #000000;
+
+  --iro-border: #545454;
+  --iro-voice: #56d5d7;
+
+  --iro-goal-1: #393761;
+  --iro-goal-2: #303030;
+
+  --iro-overlay: #171717db;
+  --iro-icon: url("icon-white.png");
+}
+
+/* ===== ダーク：きいろ ===== */
+
+body.skin-dark-yellow {
+  --iro-bg-main: #262626;
+  --iro-bg-tab: #383838;
+  --iro-bg-card: #151515;
+
+  --iro-action-btn: #dfdfdf;
+  --iro-edit-btn: #4c956c;
+  --iro-delete-btn: #9f2747;
+  --iro-sub-btn: #82699a;
+
+  --iro-text: #dfdfdf;
+  --iro-btn-text: #000000;
+
+  --iro-border: #545454;
+  --iro-voice: #56d5d7;
+
+  --iro-goal-1: #393761;
+  --iro-goal-2: #303030;
+
+  --iro-overlay: #171717db;
+  --iro-icon: url("icon-white.png");
+}
+
+/* ===== ダーク：みどり ===== */
+
+body.skin-dark-green {
+  --iro-bg-main: #262626;
+  --iro-bg-tab: #383838;
+  --iro-bg-card: #151515;
+
+  --iro-action-btn: #dfdfdf;
+  --iro-edit-btn: #4c956c;
+  --iro-delete-btn: #9f2747;
+  --iro-sub-btn: #82699a;
+
+  --iro-text: #dfdfdf;
+  --iro-btn-text: #000000;
+
+  --iro-border: #545454;
+  --iro-voice: #56d5d7;
+
+  --iro-goal-1: #393761;
+  --iro-goal-2: #303030;
+
+  --iro-overlay: #171717db;
+  --iro-icon: url("icon-white.png");
+}
+
+/* ===== ダーク：むらさき ===== */
+
+body.skin-dark-purple {
+  --iro-bg-main: #262626;
+  --iro-bg-tab: #383838;
+  --iro-bg-card: #151515;
+
+  --iro-action-btn: #dfdfdf;
+  --iro-edit-btn: #4c956c;
+  --iro-delete-btn: #9f2747;
+  --iro-sub-btn: #82699a;
+
+  --iro-text: #dfdfdf;
+  --iro-btn-text: #000000;
+
+  --iro-border: #545454;
+  --iro-voice: #56d5d7;
+
+  --iro-goal-1: #393761;
+  --iro-goal-2: #303030;
+
+  --iro-overlay: #171717db;
+  --iro-icon: url("icon-white.png");
+}

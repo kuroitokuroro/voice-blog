@@ -1,274 +1,3 @@
-/* スキン設定は localStorage に保存する
-　 バックアップJSON には含めない */
-
-/* 保存データでは green / gray を使う。
-   スキンでは goal-1 / goal-2 を使う。 
-   詳細は開発メモ参照 */
-
-/* ===== スキン：初期値 ===== */
-
-:root {
-  --iro-bg-main: #f0f0f0;
-  --iro-bg-tab: #d0d0d0;
-  --iro-bg-card: #ffffff;
-
-  --iro-action-btn: #333333;
-  --iro-edit-btn: #4c956c;
-  --iro-delete-btn: #cd4040;
-  --iro-sub-btn: #748a74;
-
-  --iro-text-main: #222;
-  --iro-text-sub: #666;
-  --iro-btn-text: #fff;
-
-  --iro-border: #ccc;
-  --iro-voice: #815CD7;
-
-  --iro-goal-1: #C0E8C0;
-  --iro-goal-2: #eaeaea;
-
-  --iro-overlay: #f7f7f7be;
-  --iro-icon: url("icon-black.png");
-}
-
-/* ===== スキン：明るい ===== */
-
-body.skin-light-mono,
-.skin-chip.skin-light-mono {
-  --iro-bg-main: #f0f0f0;
-  --iro-bg-tab: #d0d0d0;
-  --iro-bg-card: #ffffff;
-
-  --iro-action-btn: #333333;
-  --iro-edit-btn: #4c956c;
-  --iro-delete-btn: #cd4040;
-  --iro-sub-btn: #748a74;
-
-  --iro-text-main: #222;
-  --iro-text-sub: #666;
-  --iro-btn-text: #fff;
-
-  --iro-border: #ccc;
-  --iro-voice: #815CD7;
-
-  --iro-goal-1: #C0E8C0;
-  --iro-goal-2: #eaeaea;
-
-  --iro-overlay: #f7f7f7be;
-  --iro-icon: url("icon-black.png");
-}
-
-body.skin-light-red,
-.skin-chip.skin-light-red {
-  --iro-bg-main: #f0f0f0;
-  --iro-bg-tab: #d0d0d0;
-  --iro-bg-card: #ffffff;
-
-  --iro-action-btn: #333333;
-  --iro-edit-btn: #4c956c;
-  --iro-delete-btn: #cd4040;
-  --iro-sub-btn: #748a74;
-
-  --iro-text-main: #222;
-  --iro-text-sub: #666;
-  --iro-btn-text: #fff;
-
-  --iro-border: #ccc;
-  --iro-voice: #815CD7;
-
-  --iro-goal-1: #C0E8C0;
-  --iro-goal-2: #eaeaea;
-
-  --iro-overlay: #f7f7f7be;
-  --iro-icon: url("icon-black.png");
-}
-
-body.skin-light-blue,
-.skin-chip.skin-light-blue {
-  --iro-bg-main: #f0f0f0;
-  --iro-bg-tab: #d0d0d0;
-  --iro-bg-card: #ffffff;
-
-  --iro-action-btn: #333333;
-  --iro-edit-btn: #4c956c;
-  --iro-delete-btn: #cd4040;
-  --iro-sub-btn: #748a74;
-
-  --iro-text-main: #222;
-  --iro-text-sub: #666;
-  --iro-btn-text: #fff;
-
-  --iro-border: #ccc;
-  --iro-voice: #815CD7;
-
-  --iro-goal-1: #C0E8C0;
-  --iro-goal-2: #eaeaea;
-
-  --iro-overlay: #f7f7f7be;
-  --iro-icon: url("icon-black.png");
-}
-
-body.skin-light-yellow,
-.skin-chip.skin-light-yellow {
-  --iro-bg-main: #f0f0f0;
-  --iro-bg-tab: #d0d0d0;
-  --iro-bg-card: #ffffff;
-
-  --iro-action-btn: #333333;
-  --iro-edit-btn: #4c956c;
-  --iro-delete-btn: #cd4040;
-  --iro-sub-btn: #748a74;
-
-  --iro-text-main: #222;
-  --iro-text-sub: #666;
-  --iro-btn-text: #fff;
-
-  --iro-border: #ccc;
-  --iro-voice: #815CD7;
-
-  --iro-goal-1: #C0E8C0;
-  --iro-goal-2: #eaeaea;
-
-  --iro-overlay: #f7f7f7be;
-  --iro-icon: url("icon-black.png");
-}
-
-body.skin-light-green,
-.skin-chip.skin-light-green {
-  --iro-bg-main: #f0f0f0;
-  --iro-bg-tab: #d0d0d0;
-  --iro-bg-card: #ffffff;
-
-  --iro-action-btn: #333333;
-  --iro-edit-btn: #4c956c;
-  --iro-delete-btn: #cd4040;
-  --iro-sub-btn: #748a74;
-
-  --iro-text-main: #222;
-  --iro-text-sub: #666;
-  --iro-btn-text: #fff;
-
-  --iro-border: #ccc;
-  --iro-voice: #815CD7;
-
-  --iro-goal-1: #C0E8C0;
-  --iro-goal-2: #eaeaea;
-
-  --iro-overlay: #f7f7f7be;
-  --iro-icon: url("icon-black.png");
-}
-
-body.skin-light-cyan,
-.skin-chip.skin-light-cyan {
-  --iro-bg-main: #f0f0f0;
-  --iro-bg-tab: #d0d0d0;
-  --iro-bg-card: #ffffff;
-
-  --iro-action-btn: #333333;
-  --iro-edit-btn: #4c956c;
-  --iro-delete-btn: #cd4040;
-  --iro-sub-btn: #748a74;
-
-  --iro-text-main: #222;
-  --iro-text-sub: #666;
-  --iro-btn-text: #fff;
-
-  --iro-border: #ccc;
-  --iro-voice: #815CD7;
-
-  --iro-goal-1: #C0E8C0;
-  --iro-goal-2: #eaeaea;
-
-  --iro-overlay: #f7f7f7be;
-  --iro-icon: url("icon-black.png");
-}
-
-body.skin-light-pink,
-.skin-chip.skin-light-pink {
-  --iro-bg-main: #f0f0f0;
-  --iro-bg-tab: #d0d0d0;
-  --iro-bg-card: #ffffff;
-
-  --iro-action-btn: #333333;
-  --iro-edit-btn: #4c956c;
-  --iro-delete-btn: #cd4040;
-  --iro-sub-btn: #748a74;
-
-  --iro-text-main: #222;
-  --iro-text-sub: #666;
-  --iro-btn-text: #fff;
-
-  --iro-border: #ccc;
-  --iro-voice: #815CD7;
-
-  --iro-goal-1: #C0E8C0;
-  --iro-goal-2: #eaeaea;
-
-  --iro-overlay: #f7f7f7be;
-  --iro-icon: url("icon-black.png");
-}
-
-body.skin-light-purple,
-.skin-chip.skin-light-purple {
-  --iro-bg-main: #f0f0f0;
-  --iro-bg-tab: #d0d0d0;
-  --iro-bg-card: #ffffff;
-
-  --iro-action-btn: #333333;
-  --iro-edit-btn: #4c956c;
-  --iro-delete-btn: #cd4040;
-  --iro-sub-btn: #748a74;
-
-  --iro-text-main: #222;
-  --iro-text-sub: #666;
-  --iro-btn-text: #fff;
-
-  --iro-border: #ccc;
-  --iro-voice: #815CD7;
-
-  --iro-goal-1: #C0E8C0;
-  --iro-goal-2: #eaeaea;
-
-  --iro-overlay: #f7f7f7be;
-  --iro-icon: url("icon-black.png");
-}
-
-/* ===== スキン：暗い ===== */
-
-body.skin-dark-mono,
-.skin-chip.skin-dark-mono {
-  --iro-bg-main: #262626;
-  --iro-bg-tab: #383838;
-  --iro-bg-card: #151515;
-
-  --iro-action-btn: #dfdfdf;
-  --iro-edit-btn: #4c956c;
-  --iro-delete-btn: #9f2747;
-  --iro-sub-btn: #82699a;
-
-  --iro-text-main: #dfdfdf;
-  --iro-text-sub: #8f8f8f;
-  --iro-btn-text: #000000;
-
-  --iro-border: #545454;
-  --iro-voice: #56d5d7;
-
-  --iro-goal-1: #393761;
-  --iro-goal-2: #303030;
-
-  --iro-overlay: #171717db;
-  --iro-icon: url("icon-white.png");
-}
-
-body.skin-dark-red {}
-
-body.skin-dark-blue {}
-
-body.skin-dark-yellow {}
-
-body.skin-dark-green {}
-
-body.skin-dark-purple {}
 
 /* ===== スキン：選択チップ ===== */
 
@@ -289,7 +18,7 @@ body.skin-dark-purple {}
   border-left: 10px solid var(--iro-bg-tab);
   border-radius: 5px;
   background-color: var(--iro-bg-main);
-  color: var(--iro-text-main);
+  color: var(--iro-text);
   font-size: 15px;
   font-weight: bold;
   box-sizing: border-box;
@@ -324,7 +53,7 @@ body {
   margin: 0 auto;
   padding: 0px 24px;
   background-color: var(--iro-bg-main);
-  color: var(--iro-text-main);
+  color: var(--iro-text);
 }
 
 h1 {
@@ -361,7 +90,7 @@ button {
   margin-bottom: -3px;
   border-radius: 16px 16px 0 0;
   background: transparent;
-  color: var(--iro-text-main);
+  color: var(--iro-text);
   font-size: 14px;
   font-weight: 700;
 
@@ -378,7 +107,7 @@ button {
 
 .tab-button.active {
   background-color: var(--iro-bg-main);
-  color: var(--iro-text-main);
+  color: var(--iro-text);
 }
 
 .tab-icon {
@@ -546,7 +275,7 @@ button {
   padding: 5px 8px;
   margin: 0px 0px 10px 0px;
   font-size: 13px;
-  color: var(--iro-text-main);
+  color: var(--iro-text);
   border-bottom: 3px solid var(--iro-bg-tab);
   background: var(--iro-bg-main);
 }
@@ -583,7 +312,7 @@ button {
   border: 1px solid var(--iro-border);
   font-size: 16px;
   background: var(--iro-bg-card);
-  color: var(--iro-text-main);
+  color: var(--iro-text);
 }
 
 .goal-checkbox {
@@ -631,7 +360,7 @@ button {
   padding: 10px 14px;
   border-radius: 999px;
   background-color: var(--iro-bg-main);
-  color: var(--iro-text-main);
+  color: var(--iro-text);
   font-size: 15px;
   line-height: 1.2;
   transition: 0.15s ease;
@@ -667,7 +396,7 @@ button {
 .habit-calendar-title {
   margin-bottom: 5px;
   font-size: 14px;
-  color: var(--iro-text-main);
+  color: var(--iro-text);
   line-height: 1.5;
   display: flex;
   align-items: center;
@@ -819,7 +548,7 @@ button {
 .goal-sort-button {
   padding: 5px 7px;
   font-size: 13px;
-  color: var(--iro-text-main);
+  color: var(--iro-text);
   border-bottom: 3px solid var(--iro-bg-tab);
   background-color: var(--iro-bg-main);;
 }
@@ -930,7 +659,7 @@ button {
   border-radius: 14px;
   border: none;
   background: var(--iro-bg-main);
-  color: var(--iro-text-main);
+  color: var(--iro-text);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1019,7 +748,7 @@ button {
 .help-section p {
   margin: 0;
   line-height: 1.7;
-  color: var(--iro-text-main);
+  color: var(--iro-text);
 }
 
 .common-item.today {
@@ -1042,7 +771,7 @@ button {
   font-family: inherit;
   resize: none;
   background-color: var(--iro-bg-card);
-  color: var(--iro-text-main);
+  color: var(--iro-text);
 }
 
 .common-input-actions {
