@@ -15,13 +15,13 @@ const DEFAULT_TABS = [
     id: "diary",
     label: "日記",
     panelId: "diaryPanel",
-    icon: "menu_book",
+    icon: "import_contacts",
   },
   {
     id: "goal",
     label: "目標",
     panelId: "goalPanel",
-    icon: "target",
+    icon: "flag_2",
   },
   {
     id: "habit",

@@ -99,7 +99,7 @@ body.skin-light-blue,
   --iro-btn-text: #fff;
 
   --iro-border: #c1bee1;
-  --iro-voice: #fb30ed;
+  --iro-voice: #f155e7;
 
   --iro-goal-1: #b0b9f5;
   --iro-goal-2: #ecefff;
@@ -242,9 +242,9 @@ body.skin-light-purple,
 
 body.skin-dark-mono,
 .skin-chip.skin-dark-mono {
-  --iro-bg-main: #262626;
-  --iro-bg-tab: #383838;
-  --iro-bg-card: #151515;
+  --iro-bg-main: #252525;
+  --iro-bg-tab: #3e3e3e;
+  --iro-bg-card: #000000;
 
   --iro-action-btn: #dfdfdf;
   --iro-edit-btn: #4c956c;
@@ -260,88 +260,92 @@ body.skin-dark-mono,
   --iro-goal-1: #393761;
   --iro-goal-2: #303030;
 
-  --iro-overlay: #171717db;
+  --iro-overlay: #000000ba;
   --iro-icon: url("icon-white.png");
 }
 
 /* ===== ダーク：あか ===== */
 
-body.skin-dark-red {
-  --iro-bg-main: #262626;
-  --iro-bg-tab: #383838;
-  --iro-bg-card: #151515;
+body.skin-dark-red,
+.skin-chip.skin-dark-red {
+  --iro-bg-main: #391212;
+  --iro-bg-tab: #531a21;
+  --iro-bg-card: #000000;
 
   --iro-action-btn: #dfdfdf;
-  --iro-edit-btn: #4c956c;
-  --iro-delete-btn: #9f2747;
-  --iro-sub-btn: #82699a;
+  --iro-edit-btn: #2e5535;
+  --iro-delete-btn: #87243e;
+  --iro-sub-btn: #872430;
 
   --iro-text: #dfdfdf;
   --iro-btn-text: #000000;
 
-  --iro-border: #545454;
-  --iro-voice: #56d5d7;
+  --iro-border: #391212;
+  --iro-voice: #dce82e;
 
-  --iro-goal-1: #393761;
-  --iro-goal-2: #303030;
+  --iro-goal-1: #531a21;
+  --iro-goal-2: #391212;
 
-  --iro-overlay: #171717db;
+  --iro-overlay: #000000ba;
   --iro-icon: url("icon-white.png");
 }
 
 /* ===== ダーク：あお ===== */
 
-body.skin-dark-blue {
-  --iro-bg-main: #262626;
-  --iro-bg-tab: #383838;
-  --iro-bg-card: #151515;
+body.skin-dark-blue,
+.skin-chip.skin-dark-blue {
+  --iro-bg-main: #151239;
+  --iro-bg-tab: #2b1c5f;
+  --iro-bg-card: #000000;
 
   --iro-action-btn: #dfdfdf;
-  --iro-edit-btn: #4c956c;
-  --iro-delete-btn: #9f2747;
-  --iro-sub-btn: #82699a;
+  --iro-edit-btn: #295a46;
+  --iro-delete-btn: #872843;
+  --iro-sub-btn: #382c8d;
 
   --iro-text: #dfdfdf;
   --iro-btn-text: #000000;
 
-  --iro-border: #545454;
-  --iro-voice: #56d5d7;
+  --iro-border: #151239;
+  --iro-voice: #f155e7;
 
-  --iro-goal-1: #393761;
-  --iro-goal-2: #303030;
+  --iro-goal-1: #2b1c5f;
+  --iro-goal-2: #151239;
 
-  --iro-overlay: #171717db;
+  --iro-overlay: #000000ba;
   --iro-icon: url("icon-white.png");
 }
 
 /* ===== ダーク：きいろ ===== */
 
-body.skin-dark-yellow {
-  --iro-bg-main: #262626;
-  --iro-bg-tab: #383838;
-  --iro-bg-card: #151515;
+body.skin-dark-yellow,
+.skin-chip.skin-dark-yellow {
+  --iro-bg-main: #393912;
+  --iro-bg-tab: #5f5b1c;
+  --iro-bg-card: #000000;
 
   --iro-action-btn: #dfdfdf;
-  --iro-edit-btn: #4c956c;
-  --iro-delete-btn: #9f2747;
-  --iro-sub-btn: #82699a;
+  --iro-edit-btn: #46682d;
+  --iro-delete-btn: #9f3c23;
+  --iro-sub-btn: #382c8d;
 
   --iro-text: #dfdfdf;
   --iro-btn-text: #000000;
 
-  --iro-border: #545454;
-  --iro-voice: #56d5d7;
+  --iro-border: #393912;
+  --iro-voice: #2886f8;
 
-  --iro-goal-1: #393761;
-  --iro-goal-2: #303030;
+  --iro-goal-1: #5f5b1c;
+  --iro-goal-2: #393912;
 
-  --iro-overlay: #171717db;
+  --iro-overlay: #000000ba;
   --iro-icon: url("icon-white.png");
 }
 
 /* ===== ダーク：みどり ===== */
 
-body.skin-dark-green {
+body.skin-dark-green,
+.skin-chip.skin-dark-green {
   --iro-bg-main: #262626;
   --iro-bg-tab: #383838;
   --iro-bg-card: #151515;
@@ -366,7 +370,8 @@ body.skin-dark-green {
 
 /* ===== ダーク：むらさき ===== */
 
-body.skin-dark-purple {
+body.skin-dark-purple,
+.skin-chip.skin-dark-purple {
   --iro-bg-main: #262626;
   --iro-bg-tab: #383838;
   --iro-bg-card: #151515;

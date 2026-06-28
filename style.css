@@ -49,6 +49,7 @@
 
 body {
   font-family: sans-serif;
+  font-weight: 400;
   max-width: 640px;
   margin: 0 auto;
   padding: 0px 24px;
@@ -249,6 +250,16 @@ button {
 
 .material-symbols-outlined {
   font-size: 24px;
+
+  font-variation-settings:
+    'FILL' 1,
+    'wght' 800,
+    'opsz' 50;
+}
+
+.icon-action-button .material-symbols-outlined,
+.common-voice-button .material-symbols-outlined {
+  font-size: 24px;
 }
 
 .text.editing {
@@ -330,7 +341,7 @@ button {
   flex: 1;
   min-width: 0;
   padding: 12px;
-  border: 1px solid var(--iro-border);
+  border: 3px solid var(--iro-bg-tab);
   border-radius: 12px;
   font-size: 16px;
   font-family: inherit;
@@ -669,10 +680,6 @@ button {
   -webkit-tap-highlight-color: transparent;
 }
 
-.icon-action-button .material-symbols-outlined {
-  font-size: 24px;
-}
-
 .icon-action-button:active {
   opacity: 0.6;
 }
@@ -804,10 +811,6 @@ button {
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-.common-voice-button .material-symbols-outlined {
-  font-size: 24px;
 }
 
 .common-voice-button.listening {
