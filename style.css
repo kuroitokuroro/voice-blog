@@ -311,21 +311,6 @@ button {
   line-height: 1.5;
 }
 
-.download-area {
-  margin-top: 16px;
-}
-
-#monthSelect {
-  width: 100%;
-  padding: 12px;
-  margin-bottom: 10px;
-  border-radius: 10px;
-  border: 1px solid var(--iro-border);
-  font-size: 16px;
-  background: var(--iro-bg-card);
-  color: var(--iro-text);
-}
-
 .goal-checkbox {
   margin-right: 10px;
   transform: scale(1.2);
@@ -682,10 +667,6 @@ button {
 
 .icon-action-button:active {
   opacity: 0.6;
-}
-
-#downloadButton {
-  font-size: 1em;
 }
 
 .tab-drag-ghost {

@@ -60,16 +60,13 @@ const VALID_SKINS = [
 const skinButtons = document.querySelectorAll("[data-skin]");
 const tabBar = document.getElementById("tabBar");
 const voiceButton = document.getElementById("voiceButton");
-const downloadButton = document.getElementById("downloadButton");
 const todayDiaryList = document.getElementById("todayDiaryList");
 const dateButtons = document.getElementById("dateButtons");
 const pastDiaryList = document.getElementById("pastDiaryList");
-const monthSelect = document.getElementById("monthSelect");
 const goalVoiceButton = document.getElementById("goalVoiceButton");
 const goalMultiDeleteButton = document.getElementById("goalMultiDeleteButton",);
 const goalList = document.getElementById("goalList");
 const goalSortButton = document.getElementById("goalSortButton");
-const deleteOldestMonthButton = document.getElementById("deleteOldestMonthButton",);
 const habitAddArea = document.getElementById("habitAddArea");
 const habitInput = document.getElementById("habitInput");
 const habitAddSubmitButton = document.getElementById("habitAddSubmitButton",);
@@ -119,8 +116,6 @@ setupDiaryVoiceInput();
 setupGoalVoiceInput();
 setupScheduleVoiceInput();
 setupDateSwitchRange();
-downloadButton.addEventListener("click", downloadTxt);
-deleteOldestMonthButton.addEventListener("click", deleteOldestMonthDiary);
 goalMultiDeleteButton.addEventListener("click", toggleGoalMultiDelete);
 goalSortButton.addEventListener("click", toggleGoalSortMode);
 habitAddSubmitButton.addEventListener("click", addHabitFromInput);
@@ -153,7 +148,6 @@ renderPanels();
 renderTodayDiary();
 renderPastDateButtons();
 renderPastDiaryCalendar();
-renderMonthSelect();
 renderGoalList();
 renderHabitList();
 renderScheduleList();
@@ -205,7 +199,6 @@ function setupDiaryVoiceInput() {
 
     renderTodayDiary();
     renderPastDateButtons();
-    renderMonthSelect();
   };
 
   recognition.onend = () => {
@@ -740,7 +733,6 @@ function addTodayDiaryItem(text, index) {
     item.classList.remove("show-edit");
 
     renderTodayDiary();
-    renderMonthSelect();
   });
 
   deleteButton.addEventListener("click", (event) => {
@@ -749,7 +741,6 @@ function addTodayDiaryItem(text, index) {
 
     renderTodayDiary();
     renderPastDateButtons();
-    renderMonthSelect();
   });
 
   item.appendChild(editButton);
@@ -885,7 +876,6 @@ function addPastDiaryItem(dateKey, text, index) {
 
     item.classList.remove("show-edit");
     renderPastDiary(dateKey);
-    renderMonthSelect();
   });
 
   deleteButton.addEventListener("click", (event) => {
@@ -904,7 +894,6 @@ function addPastDiaryItem(dateKey, text, index) {
     }
 
     renderPastDateButtons();
-    renderMonthSelect();
   });
 
   item.appendChild(editButton);
@@ -952,87 +941,6 @@ function deleteDiaryItemByIndex(dateKey, index) {
   if (data[dateKey].length === 0) delete data[dateKey];
 
   setDiaryData(data);
-}
-
-function renderMonthSelect() {
-  const data = getDiaryData();
-
-  const months = [
-    ...new Set(
-      Object.keys(data)
-        .sort()
-        .map((dateKey) => {
-          const date = new Date(dateKey);
-          return `${date.getFullYear()}/${date.getMonth() + 1}`;
-        }),
-    ),
-  ];
-
-  monthSelect.innerHTML = "";
-
-  months.forEach((monthKey) => {
-    const option = document.createElement("option");
-    option.value = monthKey;
-    option.textContent = monthKey;
-    monthSelect.appendChild(option);
-  });
-}
-
-function downloadTxt() {
-  const data = getDiaryData();
-  const selectedMonth = monthSelect.value;
-
-  if (!selectedMonth) {
-    alert("ダウンロードする月の日記がありません。");
-    return;
-  }
-
-  const [yearText, monthText] = selectedMonth.split("/");
-  const year = Number(yearText);
-  const month = Number(monthText);
-
-  const targetKeys = Object.keys(data)
-    .sort()
-    .filter((dateKey) => {
-      const date = new Date(dateKey);
-
-      return (
-        date.getFullYear() === year &&
-        date.getMonth() + 1 === month
-      );
-    });
-
-  let text = `【日記】${year}年${month}月\n\n`;
-
-  targetKeys.forEach((dateKey) => {
-    const date = new Date(dateKey);
-    const day = date.getDate();
-
-    text += "────────────\n";
-    text += `▼${month}月${day}日\n`;
-    text += "────────────\n";
-
-    data[dateKey].forEach((item) => {
-      text += `${item}\n`;
-    });
-
-    text += "\n";
-  });
-
-  text += "────────────\n";
-
-  const blob = new Blob([text], {
-    type: "text/plain;charset=utf-8",
-  });
-
-  const url = URL.createObjectURL(blob);
-
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = `日記_${year}-${String(month).padStart(2, "0")}.txt`;
-  a.click();
-
-  URL.revokeObjectURL(url);
 }
 
 function getGoalData() {
@@ -2133,60 +2041,6 @@ function getLogicalToday() {
   return logicalDate;
 }
 
-function deleteOldestMonthDiary() {
-  const data = getDiaryData();
-  const dateKeys = Object.keys(data).sort();
-
-  if (dateKeys.length === 0) {
-    alert("削除できる日記がありません。");
-    return;
-  }
-
-  const oldestDate = new Date(dateKeys[0]);
-  const year = oldestDate.getFullYear();
-  const month = oldestDate.getMonth() + 1;
-  const targetMonth = `${year}/${month}`;
-
-  const firstConfirm = confirm(
-    `${targetMonth} の日記を削除します。\n\n` +
-    "この操作は元に戻せません。\n" +
-    "先にtxtファイルで保存しているか確認してください。\n\n" +
-    "削除しますか？",
-  );
-
-  if (!firstConfirm) return;
-
-  const typed = prompt(
-    `本当に ${targetMonth} の日記を削除する場合は、\n` +
-    "「削除」と入力してください。",
-  );
-
-  if (typed !== "削除") {
-    alert("削除をキャンセルしました。");
-    return;
-  }
-
-  Object.keys(data).forEach((dateKey) => {
-    const date = new Date(dateKey);
-
-    if (date.getFullYear() === year && date.getMonth() + 1 === month) {
-      delete data[dateKey];
-    }
-  });
-
-  setDiaryData(data);
-
-  selectedPastDateKey = null;
-  pastDiaryList.classList.remove("open");
-  pastDiaryList.innerHTML = "";
-
-  renderTodayDiary();
-  renderPastDateButtons();
-  renderMonthSelect();
-
-  alert(`${targetMonth} の日記を削除しました。`);
-}
-
 function openHelp() {
   closeSwipeActions();
   isScheduleDoneDeleteMode = false;
@@ -2442,7 +2296,6 @@ function addDiaryFromInput() {
 
   renderTodayDiary();
   renderPastDateButtons();
-  renderMonthSelect();
 }
 
 function addGoalFromInput() {
@@ -2905,7 +2758,6 @@ function resetAfterRestore() {
   renderTodayDiary();
   renderPastDateButtons();
   renderPastDiaryCalendar();
-  renderMonthSelect();
   renderGoalList();
   renderHabitList();
   renderScheduleList();
