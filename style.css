@@ -1,4 +1,3 @@
-
 /* ===== スキン：選択チップ ===== */
 
 .skin-option {
@@ -64,7 +63,13 @@ h1 {
 
 h2 {
   font-size: 18px;
-  margin: 18px 0 10px;
+  margin: 18px 0px 10px;
+}
+
+h3 {
+  font-size: 18px;
+  margin: 0px;
+  color:var(--iro-text);
 }
 
 button {
@@ -126,6 +131,22 @@ button {
 
 .panel.active {
   display: block;
+}
+
+.sub-tab-section {
+  background: var(--iro-bg-card);
+  color:var(--iro-text);
+  border-radius: 0px 0px 10px 10px;
+  border: 5px solid var(--iro-bg-tab);
+  padding: 15px;
+  margin: 0px 0px 15px 0px;
+}
+
+.settings-title {
+  background: var(--iro-bg-tab);
+  border-radius: 10px 10px 0px 0px;
+  padding: 10px;
+  font-weight: bold;
 }
 
 .file-button {
@@ -327,7 +348,7 @@ button {
   min-width: 0;
   padding: 12px;
   border: 3px solid var(--iro-bg-tab);
-  border-radius: 12px;
+  border-radius: 10px;
   font-size: 16px;
   font-family: inherit;
   background: var(--iro-bg-card);
@@ -546,7 +567,8 @@ button {
   font-size: 13px;
   color: var(--iro-text);
   border-bottom: 3px solid var(--iro-bg-tab);
-  background-color: var(--iro-bg-main);;
+  background-color: var(--iro-bg-main);
+  ;
 }
 
 .goal-sort-button.sort-mode {
@@ -722,21 +744,6 @@ button {
 
 .common-item.done.delete-warning {
   border-left-color: var(--iro-delete-btn);
-}
-
-.help-section {
-  margin-bottom: 16px;
-}
-
-.help-section h3 {
-  margin: 0 0 6px;
-  font-size: 16px;
-}
-
-.help-section p {
-  margin: 0;
-  line-height: 1.7;
-  color: var(--iro-text);
 }
 
 .common-item.today {
