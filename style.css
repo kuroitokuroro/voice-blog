@@ -905,3 +905,28 @@ button {
   font-size: 14px;
   color: var(--iro-text-sub);
 }
+
+.yearly-log-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.yearly-log-button {
+  padding: 8px 12px;
+  background: var(--iro-action-btn);
+  color: var(--iro-btn-text);
+}
+
+.yearly-log-actions {
+  display: flex;
+  gap: 6px;
+}
+
+.yearly-log-delete-button {
+  width: auto;
+  margin: 0;
+  padding: 8px 12px;
+}

@@ -90,6 +90,7 @@ const customRadio = document.getElementById("dateSwitchCustom");
 const customArea = document.getElementById("dateSwitchCustomArea");
 const exportBackupButton = document.getElementById("exportBackupButton");
 const importBackupInput = document.getElementById("importBackupInput");
+const yearlyLogList = document.getElementById("yearlyLogList");
 
 let tabOrder = loadTabOrder();
 let activeTabId = tabOrder[0].id;
@@ -151,6 +152,7 @@ renderPastDiaryCalendar();
 renderGoalList();
 renderHabitList();
 renderScheduleList();
+renderYearlyLogList();
 
 function updateSelectedSkinButton(currentSkin) {
   skinButtons.forEach((skinButton) => {
@@ -2438,6 +2440,308 @@ function updateDateSwitchMode() {
 
   customArea.style.display = "block";
 }
+
+// ===== アーカイブ　ダウンロード・削除 =====
+
+function isDateKeyInYear(dateKey, year) {
+  return (
+    typeof dateKey === "string" &&
+    Number(dateKey.slice(0, 4)) === year
+  );
+}
+
+function getPastLogYears() {
+  const currentYear = today.getFullYear();
+  const years = new Set();
+
+  const addYear = (dateKey) => {
+    if (typeof dateKey !== "string") return;
+
+    const year = Number(dateKey.slice(0, 4));
+    if (year < currentYear) years.add(year);
+  };
+
+  Object.keys(getDiaryData()).forEach(addYear);
+
+  getHabitData().forEach((habit) => {
+    if (Array.isArray(habit.doneDates)) {
+      habit.doneDates.forEach(addYear);
+    }
+  });
+
+  getScheduleData().forEach((schedule) => {
+    if (schedule.done && schedule.dateKey) {
+      addYear(schedule.dateKey);
+    }
+  });
+
+  return [...years].sort((a, b) => b - a);
+}
+
+function renderYearlyLogList() {
+  yearlyLogList.innerHTML = "";
+
+  const years = getPastLogYears();
+
+  if (years.length === 0) {
+    yearlyLogList.textContent =
+      "整理できる過去の記録はありません。";
+    return;
+  }
+
+  years.forEach((year) => {
+    const row = document.createElement("div");
+    row.className = "yearly-log-row";
+
+    const yearLabel = document.createElement("span");
+    yearLabel.textContent = `${year}年分`;
+
+    const actions = document.createElement("div");
+    actions.className = "yearly-log-actions";
+
+    const downloadButton = document.createElement("button");
+    downloadButton.type = "button";
+    downloadButton.className = "yearly-log-button";
+    downloadButton.textContent = "ダウンロード";
+
+    downloadButton.addEventListener("click", () => {
+      downloadYearLog(year);
+    });
+
+    const deleteButton = document.createElement("button");
+    deleteButton.type = "button";
+    deleteButton.className =
+      "danger-button yearly-log-delete-button";
+    deleteButton.textContent = "削除";
+
+    deleteButton.addEventListener("click", () => {
+      deleteYearData(year);
+    });
+
+    actions.appendChild(downloadButton);
+    actions.appendChild(deleteButton);
+
+    row.appendChild(yearLabel);
+    row.appendChild(actions);
+    yearlyLogList.appendChild(row);
+  });
+}
+
+function createScheduleYearText(year) {
+  const schedules = getScheduleData()
+    .filter((schedule) =>
+      isDateKeyInYear(schedule.dateKey, year)
+    )
+    .sort((a, b) => a.dateKey.localeCompare(b.dateKey));
+
+  let text = "━　予定　━━━━━━━━━━━━━━━━\n\n";
+  text += "（●完了　〇未完了）\n\n";
+
+  if (schedules.length === 0) return text + "記録なし\n\n";
+
+  schedules.forEach((schedule) => {
+    const mark = schedule.done ? "●" : "〇";
+    const month = Number(schedule.dateKey.slice(5, 7));
+    const day = Number(schedule.dateKey.slice(8, 10));
+
+    text += `${mark}${month}/${day}　${schedule.text}\n`;
+  });
+
+  return text + "\n";
+}
+
+function createDiaryYearText(year) {
+  const diary = getDiaryData();
+
+  const dateKeys = Object.keys(diary)
+    .filter((dateKey) => isDateKeyInYear(dateKey, year))
+    .sort();
+
+  let text = "━　日記　━━━━━━━━━━━━━━━━\n\n";
+  text += "（件数 / 記録日数）\n\n";
+
+  if (dateKeys.length === 0) return text + "記録なし\n\n";
+
+  for (let month = 1; month <= 12; month++) {
+    const monthKeys = dateKeys.filter(
+      (dateKey) => Number(dateKey.slice(5, 7)) === month
+    );
+
+    if (monthKeys.length === 0) continue;
+
+    const itemCount = monthKeys.reduce(
+      (total, dateKey) => total + diary[dateKey].length,
+      0
+    );
+
+    text += `・${month}月　（${itemCount}件 / ${monthKeys.length}日）\n`;
+  }
+
+  text += "\n";
+
+  for (let month = 1; month <= 12; month++) {
+    const monthKeys = dateKeys.filter(
+      (dateKey) => Number(dateKey.slice(5, 7)) === month
+    );
+
+    if (monthKeys.length === 0) continue;
+
+    text += `━　${month}月　━━━━━━━━━━━━━━━━━\n\n`;
+
+    monthKeys.forEach((dateKey) => {
+      const day = Number(dateKey.slice(8, 10));
+
+      text += `▼${month}/${day}\n`;
+      diary[dateKey].forEach((item) => {
+        text += `${item}\n`;
+      });
+      text += "\n";
+    });
+  }
+
+  return text;
+}
+
+function createHabitMonthPattern(year, month, doneDates) {
+  const lastDay = new Date(year, month, 0).getDate();
+  let pattern = "";
+
+  for (let day = 1; day <= lastDay; day++) {
+    const dateKey =
+      `${year}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+
+    pattern += doneDates.includes(dateKey) ? "■" : "□";
+
+    if (day % 7 === 0) pattern += "\n";
+  }
+
+  return pattern.trimEnd();
+}
+
+function createHabitYearText(year) {
+  const habits = getHabitData().filter((habit) =>
+    habit.doneDates.some((dateKey) =>
+      isDateKeyInYear(dateKey, year)
+    )
+  );
+
+  if (habits.length === 0) {
+    return "━　習慣　━━━━━━━━━━━━━━━━\n\n記録なし\n\n";
+  }
+
+  let text = "";
+
+  habits.forEach((habit) => {
+    text += `━　習慣　${habit.text}　━━━━━━━━━━━\n\n`;
+    text += "（■記録あり　□記録なし）\n\n";
+
+    for (let month = 1; month <= 12; month++) {
+      text += `${month}月\n`;
+      text += createHabitMonthPattern(
+        year,
+        month,
+        habit.doneDates
+      );
+      text += "\n\n";
+    }
+  });
+
+  return text;
+}
+
+function createYearLogText(year) {
+  let text = "━　タイトル　━━━━━━━━━━━━━━\n\n";
+  text += `こえ手帳　${year}年\n\n`;
+
+  text += createScheduleYearText(year);
+  text += createDiaryYearText(year);
+  text += createHabitYearText(year);
+  text += "━━━━━━━━━━━━━━━━━━━━━\n";
+
+  return text;
+}
+
+function downloadYearLog(year) {
+  const text = createYearLogText(year);
+
+  const blob = new Blob(["\uFEFF", text], {
+    type: "text/plain;charset=utf-8",
+  });
+
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+
+  link.href = url;
+  link.download = `こえ手帳_${year}年.txt`;
+  link.click();
+
+  URL.revokeObjectURL(url);
+}
+
+function deleteYearData(year) {
+  const confirmed = confirm(
+    `${year}年分の記録を削除します。\n\n` +
+    "この操作は元に戻せません。\n" +
+    "先にログをダウンロードし、内容を確認してください。"
+  );
+
+  if (!confirmed) return;
+
+  const typed = prompt(
+    `本当に${year}年分を削除する場合は、\n` +
+    "「削除」と入力してください。"
+  );
+
+  if (typed !== "削除") {
+    alert("削除をキャンセルしました。");
+    return;
+  }
+
+  const diary = getDiaryData();
+  const habits = getHabitData();
+  const schedules = getScheduleData();
+
+  Object.keys(diary).forEach((dateKey) => {
+    if (isDateKeyInYear(dateKey, year)) {
+      delete diary[dateKey];
+    }
+  });
+
+  const updatedHabits = habits.map((habit) => ({
+    ...habit,
+    doneDates: habit.doneDates.filter(
+      (dateKey) => !isDateKeyInYear(dateKey, year)
+    ),
+  }));
+
+  const updatedSchedules = schedules.filter((schedule) => {
+    const isTarget =
+      schedule.done &&
+      isDateKeyInYear(schedule.dateKey, year);
+
+    return !isTarget;
+  });
+
+  setDiaryData(diary);
+  setHabitData(updatedHabits);
+  setScheduleData(updatedSchedules);
+
+  selectedPastDateKey = null;
+  pastDiaryList.classList.remove("open");
+  pastDiaryList.innerHTML = "";
+
+  renderTodayDiary();
+  renderPastDateButtons();
+  renderPastDiaryCalendar();
+  renderHabitList();
+  renderHabitCalendar();
+  renderScheduleList();
+  renderYearlyLogList();
+
+  alert(`${year}年分の記録を整理しました。`);
+}
+
+// ===== /アーカイブ　ダウンロード・削除 =====
 
 function createBackupData() {
   return {
