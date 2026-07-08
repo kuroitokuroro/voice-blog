@@ -4,10 +4,9 @@ This project is for personal learning purposes.
 
 All assets used in this project are either original creations by the author or sourced from free-to-use materials.
 
-<h2>毎日を管理できる手帳ツール</h2>
+<h2>毎日を管理できるオールインワンな手帳ツール</h2>
 
 タイトル：こえ手帳<br>
-ジャンル：声で自己管理するオールインワンな手帳ツール<br>
 推奨環境：Android　Chrome<br>
 進捗：もう使える　自分で使いながら改良中<br>
 
