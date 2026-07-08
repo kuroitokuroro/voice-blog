@@ -4,7 +4,7 @@ This project is for personal learning purposes.
 
 All assets used in this project are either original creations by the author or sourced from free-to-use materials.
 
-こちらは、毎日を管理できる手帳ツールです。<br>
+<h2>毎日を管理できる手帳ツール</h2>
 
 タイトル：こえ手帳<br>
 ジャンル：声で自己管理するオールインワンな手帳ツール<br>
