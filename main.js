@@ -73,6 +73,7 @@ const habitAddSubmitButton = document.getElementById("habitAddSubmitButton",);
 const habitList = document.getElementById("habitList");
 const habitCalendar = document.getElementById("habitCalendar");
 const helpButton = document.getElementById("helpButton",);
+const mailButton = document.getElementById("mailButton");
 const settingsButton = document.getElementById("settingsButton");
 const pastDiaryCalendar = document.getElementById("pastDiaryCalendar");
 const scheduleInput = document.getElementById("scheduleInput");
@@ -124,6 +125,7 @@ habitInput.addEventListener("keydown", (event) => {
   if (event.key === "Enter") addHabitFromInput();
 });
 helpButton.addEventListener("click", openHelp);
+mailButton.addEventListener("click", openMail);
 settingsButton.addEventListener("click", openSettings);
 scheduleAddButton.addEventListener("click", addScheduleFromInput);
 diaryAddButton.addEventListener("click", addDiaryFromInput);
@@ -379,8 +381,12 @@ function renderPanels() {
     return;
   }
 
+  if (activeTabId === "mail") {
+    document.getElementById("mailPanel").classList.add("active");return;
+  }
+
   if (activeTabId === "settings") {
-    document.getElementById("settingsPanel").classList.add("active");
+    document.getElementById("settingsPanel").classList.add("active");return;
   }
 }
 
@@ -2043,6 +2049,20 @@ function getLogicalToday() {
   return logicalDate;
 }
 
+function openSettings() {
+  closeSwipeActions();
+  isScheduleDoneDeleteMode = false;
+
+  if (activeTabId === "settings") {
+    activeTabId = lastMainTabId;
+  } else {
+    activeTabId = "settings";
+  }
+
+  renderTabs();
+  renderPanels();
+}
+
 function openHelp() {
   closeSwipeActions();
   isScheduleDoneDeleteMode = false;
@@ -2051,6 +2071,21 @@ function openHelp() {
     activeTabId = lastMainTabId;
   } else {
     activeTabId = "help";
+  }
+
+  renderTabs();
+  renderPanels();
+}
+
+
+function openMail() {
+  closeSwipeActions();
+  isScheduleDoneDeleteMode = false;
+
+  if (activeTabId === "mail") {
+    activeTabId = lastMainTabId;
+  } else {
+    activeTabId = "mail";
   }
 
   renderTabs();
@@ -2083,20 +2118,6 @@ function updateGoalDropPreview(pointerY) {
   }
 
   items[dropIndex].classList.add("drop-preview-before");
-}
-
-function openSettings() {
-  closeSwipeActions();
-  isScheduleDoneDeleteMode = false;
-
-  if (activeTabId === "settings") {
-    activeTabId = lastMainTabId;
-  } else {
-    activeTabId = "settings";
-  }
-
-  renderTabs();
-  renderPanels();
 }
 
 function renderPastDiaryCalendar() {
