@@ -13,14 +13,12 @@
   <meta property="og:url" content="https://kuroitokuroro.github.io/voice-blog/">
 
   <link rel="stylesheet"
-    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=block" />
-  <link rel="icon" type="image/jpeg" href="favicon.jpg" />
-  <link rel="apple-touch-icon" href="favicon.jpg" />
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,700,1,0&display=block" />
+  <link rel="icon" type="image/png" href="favicon.png" />
+  <link rel="apple-touch-icon" href="favicon.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link
-    href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c&family=Noto+Sans+JP:wght@100..900&family=WDXL+Lubrifont+JP+N&family=Zen+Maru+Gothic:wght@500&display=swap"
-    rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500&text=こえ手帳&display=swap" rel="stylesheet" />
 
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="skin.css">
@@ -45,229 +43,230 @@
   </div>
 
   <div id="tabBar" class="tab-bar"></div>
+  <main>
+    <section id="diaryPanel" class="panel">
+      <div class="common-input-area">
+        <textarea id="diaryInput" class="common-input" placeholder="今日のことを書く"></textarea>
 
-  <section id="diaryPanel" class="panel">
-    <div class="common-input-area">
-      <textarea id="diaryInput" class="common-input" placeholder="今日のことを書く"></textarea>
+        <div class="common-input-actions">
+          <button id="diaryAddButton" class="common-add-button" type="button">
+            追加
+          </button>
 
-      <div class="common-input-actions">
-        <button id="diaryAddButton" class="common-add-button" type="button">
-          追加
-        </button>
-
-        <button id="voiceButton" class="common-voice-button" type="button" aria-label="日記を音声入力">
-          <span class="material-symbols-outlined">mic</span>
-        </button>
+          <button id="voiceButton" class="common-voice-button" type="button" aria-label="日記を音声入力">
+            <span class="material-symbols-outlined">mic</span>
+          </button>
+        </div>
       </div>
-    </div>
 
-    <h2 class="diary-heading">今日の日記</h2>
-    <div id="todayDiaryList" class="diary-area"></div>
+      <h2 class="diary-heading">今日の日記</h2>
+      <div id="todayDiaryList" class="diary-area"></div>
 
-    <div class="past-section">
-      <h2 class="diary-heading">過去の日記</h2>
-      <div id="dateButtons" class="date-buttons"></div>
-      <div id="pastDiaryCalendar" class="habit-calendar"></div>
-      <div id="pastDiaryList" class="past-diary-area"></div>
-    </div>
-  </section>
-
-  <section id="goalPanel" class="panel">
-    <div class="common-input-area">
-      <textarea id="goalInput" class="common-input" placeholder="例：部屋を片付ける"></textarea>
-
-      <div class="common-input-actions">
-        <button id="goalAddButton" class="common-add-button" type="button">追加</button>
-
-        <button id="goalVoiceButton" class="common-voice-button" type="button" aria-label="目標を音声入力">
-          <span class="material-symbols-outlined">mic</span>
-        </button>
-      </div>
-    </div>
-
-    <div class="goal-title-row">
-      <h2>目標</h2>
-      <div class="goal-title-actions"><button id="goalColorButton" class="goal-sort-button">色分け</button><button
-          id="goalSortButton" class="goal-sort-button">並び替え</button>
-        <button id="goalMultiDeleteButton" class="goal-sort-button">複数削除</button>
-      </div>
-    </div>
-    <div id="goalList" class="diary-area"></div>
-  </section>
-
-  <section id="habitPanel" class="panel">
-    <div id="habitAddArea" class="habit-add-area">
-      <input id="habitInput" class="habit-input" type="text" autocomplete="off" placeholder="例：水を飲む / 薬 / 風呂" />
-      <button id="habitAddSubmitButton" class="habit-add-submit-button">追加</button>
-    </div>
-
-    <h2>習慣</h2>
-    <div id="habitList" class="habit-button-list"></div>
-    <div id="habitCalendar" class="habit-calendar"></div>
-    <div id="habitDangerArea" class="habit-danger-area"></div>
-  </section>
-
-  <section id="schedulePanel" class="panel">
-
-    <div class="common-input-area">
-      <textarea id="scheduleInput" class="common-input" placeholder="例：6/12 病院"></textarea>
-
-      <div class="common-input-actions">
-        <button id="scheduleAddButton" class="common-add-button" type="button">追加</button>
-
-        <button id="scheduleVoiceButton" class="common-voice-button" type="button" aria-label="予定を音声入力"><span
-            class="material-symbols-outlined">mic</span></button>
-      </div>
-    </div>
-
-    <div id="scheduleList" class="diary-area"></div>
-    <div id="scheduleDangerArea" class="schedule-danger-area"></div>
-  </section>
-  <br>
-  <section id="helpPanel" class="panel">
-    <div class="sub-tab-title"></div>
-    <section class="sub-tab-section">
-      <h3>PCの場合</h3>
-      クリックで編集や削除ができます<br>
-      <br>
-      <h3>スマホの場合</h3>
-      スワイプで編集や削除ができます<br>
-    </section>
-    <div class="sub-tab-title"></div>
-    <section class="sub-tab-section">
-      <h3>日記</h3>
-      今日の記録を残せます。<br>
-      <br>
-      <h3>目標</h3>
-      やりたいことや、日付のない予定を置く場所です。<br>
-      <br>
-      <h3>習慣</h3>
-      続けたいことを登録し、できた日をタップして記録します。<br>
-      <br>
-      <h3>予定</h3>
-      6/12、0612、6月12日 のように行頭に日付を入れると、日付つき予定として登録されます。<br>
-    </section>
-  </section>
-
-  <section id="mailPanel" class="panel">
-    <div class="sub-tab-title"></div>
-    <section class="sub-tab-section">
-      <h3>メールフォーム</h3>
-  使った感想、欲しい機能、応援など気軽にお寄せください。<br>
-<br>
-      <a href="https://odaibako.net/u/voice_blog" target="_blank" rel="noopener noreferrer" class="icon-action-button"
-        aria-label="お題箱を開く"><span class="material-symbols-outlined">mail</span></a>
-
-    
-    </section>
-  </section>
-
-  <section id="settingsPanel" class="panel">
-    <div class="sub-tab-title"></div>
-    <section class="sub-tab-section">
-      <h3>テーマ色変更</h3>
-      <br>
-      <div class="skin-option">
-
-        <button type="button" class="skin-chip skin-light-mono" data-skin="skin-light-mono">white</button>
-
-        <button type="button" class="skin-chip skin-light-red" data-skin="skin-light-red">red</button>
-
-        <button type="button" class="skin-chip skin-light-blue" data-skin="skin-light-blue">blue</button>
-
-      </div>
-      <div class="skin-option">
-
-        <button type="button" class="skin-chip skin-light-yellow" data-skin="skin-light-yellow">yellow</button>
-
-        <button type="button" class="skin-chip skin-light-green" data-skin="skin-light-green">green</button>
-
-        <button type="button" class="skin-chip skin-light-cyan" data-skin="skin-light-cyan">cyan</button>
-
-      </div>
-      <div class="skin-option">
-
-        <button type="button" class="skin-chip skin-light-pink" data-skin="skin-light-pink">pink</button>
-
-        <button type="button" class="skin-chip skin-light-purple" data-skin="skin-light-purple">purple</button>
-
-      </div>
-      <div class="skin-option">
-
-        <button type="button" class="skin-chip skin-dark-mono" data-skin="skin-dark-mono">black</button>
-
-        <button type="button" class="skin-chip skin-dark-red" data-skin="skin-dark-red">red</button>
-
-        <button type="button" class="skin-chip skin-dark-blue" data-skin="skin-dark-blue">blue</button>
-
-      </div>
-      <div class="skin-option">
-
-        <button type="button" class="skin-chip skin-dark-yellow" data-skin="skin-dark-yellow">yellow</button>
-
-        <button type="button" class="skin-chip skin-dark-green" data-skin="skin-dark-green">green</button>
-
-        <button type="button" class="skin-chip skin-dark-cyan" data-skin="skin-dark-cyan">cyan</button>
-
-      </div>
-      <div class="skin-option">
-
-        <button type="button" class="skin-chip skin-dark-pink" data-skin="skin-dark-pink">pink</button>
-
-        <button type="button" class="skin-chip skin-dark-purple" data-skin="skin-dark-purple">purple</button>
+      <div class="past-section">
+        <h2 class="diary-heading">過去の日記</h2>
+        <div id="dateButtons" class="date-buttons"></div>
+        <div id="pastDiaryCalendar" class="habit-calendar"></div>
+        <div id="pastDiaryList" class="past-diary-area"></div>
       </div>
     </section>
 
-    <div class="sub-tab-title"></div>
-    <section class="sub-tab-section">
-      <h3>日付の切り替わる時間</h3>
-      <br>
-      <input id="dateSwitchFixed" type="radio" name="dateSwitchMode" checked>
-      4時で固定（おすすめ）
-      <br>
-      <input id="dateSwitchCustom" type="radio" name="dateSwitchMode">
-      変更する
-      <br>
-      <div id="dateSwitchCustomArea">
-        <div class="date-switch-current" id="dateSwitchCurrent">現在：4時</div>
-        <input id="dateSwitchRange" class="date-switch-range" type="range" min="0" max="6" step="1" value="4">
-      </div>
-      ※予定タブは0時切り替え固定になります。
-      <br>
-    </section>
-    <div class="sub-tab-title"></div>
-    <section class="sub-tab-section">
+    <section id="goalPanel" class="panel">
+      <div class="common-input-area">
+        <textarea id="goalInput" class="common-input" placeholder="例：部屋を片付ける"></textarea>
 
-      <h3>手帳を整理する</h3>
-      <br>
-      過去の記録を、読みやすいテキストファイル（.txt）で保存したり、整理できます。<br>
-      <br>
-      <div id="yearlyLogList" class="yearly-log-list"></div>
+        <div class="common-input-actions">
+          <button id="goalAddButton" class="common-add-button" type="button">追加</button>
+
+          <button id="goalVoiceButton" class="common-voice-button" type="button" aria-label="目標を音声入力">
+            <span class="material-symbols-outlined">mic</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="goal-title-row">
+        <h2>目標</h2>
+        <div class="goal-title-actions"><button id="goalColorButton" class="goal-sort-button">色分け</button><button
+            id="goalSortButton" class="goal-sort-button">並び替え</button>
+          <button id="goalMultiDeleteButton" class="goal-sort-button">複数削除</button>
+        </div>
+      </div>
+      <div id="goalList" class="diary-area"></div>
     </section>
-    <div class="sub-tab-title"></div>
-    <section class="sub-tab-section">
-      <h3>バックアップのやりかた</h3>
-      <br>
-      <div class="backup-help-text">
-        １．「バックアップを書き出す」を押して、データを保存します。<br>
-        （こえ手帳_backup_2026-06-21.json のような名前のファイルが保存されます）<br>
+
+    <section id="habitPanel" class="panel">
+      <div id="habitAddArea" class="habit-add-area">
+        <input id="habitInput" class="habit-input" type="text" autocomplete="off" placeholder="例：水を飲む / 薬 / 風呂" />
+        <button id="habitAddSubmitButton" class="habit-add-submit-button">追加</button>
+      </div>
+
+      <h2>習慣</h2>
+      <div id="habitList" class="habit-button-list"></div>
+      <div id="habitCalendar" class="habit-calendar"></div>
+      <div id="habitDangerArea" class="habit-danger-area"></div>
+    </section>
+
+    <section id="schedulePanel" class="panel">
+
+      <div class="common-input-area">
+        <textarea id="scheduleInput" class="common-input" placeholder="例：6/12 病院"></textarea>
+
+        <div class="common-input-actions">
+          <button id="scheduleAddButton" class="common-add-button" type="button">追加</button>
+
+          <button id="scheduleVoiceButton" class="common-voice-button" type="button" aria-label="予定を音声入力"><span
+              class="material-symbols-outlined">mic</span></button>
+        </div>
+      </div>
+
+      <div id="scheduleList" class="diary-area"></div>
+      <div id="scheduleDangerArea" class="schedule-danger-area"></div>
+    </section>
+
+    <section id="helpPanel" class="panel">
+      <div class="sub-tab-title"></div>
+      <section class="sub-tab-section">
+        <h3>PCの場合</h3>
+        クリックで編集や削除ができます<br>
         <br>
-        ２．保存したデータを、読み込みたい端末へ送ります。<br>
+        <h3>スマホの場合</h3>
+        スワイプで編集や削除ができます<br>
+      </section>
+      <div class="sub-tab-title"></div>
+      <section class="sub-tab-section">
+        <h3>日記</h3>
+        今日の記録を残せます。<br>
         <br>
-        ３．「バックアップを読み込む」から、送ったデータを読み込みます。<br>
-      </div>
-      <br>
-      <button id="exportBackupButton" class="file-button" type="button">
-        バックアップを書き出す
-      </button>
-
-      <input id="importBackupInput" class="backup-file-input" type="file" accept="application/json" />
-
-      <label for="importBackupInput" class="file-button import-backup-button">
-        バックアップを読み込む
-      </label>
+        <h3>目標</h3>
+        やりたいことや、日付のない予定を置く場所です。<br>
+        <br>
+        <h3>習慣</h3>
+        続けたいことを登録し、できた日をタップして記録します。<br>
+        <br>
+        <h3>予定</h3>
+        6/12、0612、6月12日 のように行頭に日付を入れると、日付つき予定として登録されます。<br>
+      </section>
     </section>
-  </section>
+
+    <section id="mailPanel" class="panel">
+      <div class="sub-tab-title"></div>
+      <section class="sub-tab-section">
+        <h3>メールフォーム</h3>
+        使った感想、欲しい機能、応援など気軽にお寄せください。<br>
+        <br>
+        <a href="https://odaibako.net/u/voice_blog" target="_blank" rel="noopener noreferrer" class="icon-action-button"
+          aria-label="お題箱を開く"><span class="material-symbols-outlined">mail</span></a>
+
+
+      </section>
+    </section>
+
+    <section id="settingsPanel" class="panel">
+      <div class="sub-tab-title"></div>
+      <section class="sub-tab-section">
+        <h3>テーマ色変更</h3>
+        <br>
+        <div class="skin-option">
+
+          <button type="button" class="skin-chip skin-light-mono" data-skin="skin-light-mono">white</button>
+
+          <button type="button" class="skin-chip skin-light-red" data-skin="skin-light-red">red</button>
+
+          <button type="button" class="skin-chip skin-light-blue" data-skin="skin-light-blue">blue</button>
+
+        </div>
+        <div class="skin-option">
+
+          <button type="button" class="skin-chip skin-light-yellow" data-skin="skin-light-yellow">yellow</button>
+
+          <button type="button" class="skin-chip skin-light-green" data-skin="skin-light-green">green</button>
+
+          <button type="button" class="skin-chip skin-light-cyan" data-skin="skin-light-cyan">cyan</button>
+
+        </div>
+        <div class="skin-option">
+
+          <button type="button" class="skin-chip skin-light-pink" data-skin="skin-light-pink">pink</button>
+
+          <button type="button" class="skin-chip skin-light-purple" data-skin="skin-light-purple">purple</button>
+
+        </div>
+        <div class="skin-option">
+
+          <button type="button" class="skin-chip skin-dark-mono" data-skin="skin-dark-mono">black</button>
+
+          <button type="button" class="skin-chip skin-dark-red" data-skin="skin-dark-red">red</button>
+
+          <button type="button" class="skin-chip skin-dark-blue" data-skin="skin-dark-blue">blue</button>
+
+        </div>
+        <div class="skin-option">
+
+          <button type="button" class="skin-chip skin-dark-yellow" data-skin="skin-dark-yellow">yellow</button>
+
+          <button type="button" class="skin-chip skin-dark-green" data-skin="skin-dark-green">green</button>
+
+          <button type="button" class="skin-chip skin-dark-cyan" data-skin="skin-dark-cyan">cyan</button>
+
+        </div>
+        <div class="skin-option">
+
+          <button type="button" class="skin-chip skin-dark-pink" data-skin="skin-dark-pink">pink</button>
+
+          <button type="button" class="skin-chip skin-dark-purple" data-skin="skin-dark-purple">purple</button>
+        </div>
+      </section>
+
+      <div class="sub-tab-title"></div>
+      <section class="sub-tab-section">
+        <h3>日付の切り替わる時間</h3>
+        <br>
+        <input id="dateSwitchFixed" type="radio" name="dateSwitchMode" checked>
+        4時で固定（おすすめ）
+        <br>
+        <input id="dateSwitchCustom" type="radio" name="dateSwitchMode">
+        変更する
+        <br>
+        <div id="dateSwitchCustomArea">
+          <div class="date-switch-current" id="dateSwitchCurrent">現在：4時</div>
+          <input id="dateSwitchRange" class="date-switch-range" type="range" min="0" max="6" step="1" value="4">
+        </div>
+        ※予定タブは0時切り替え固定になります。
+        <br>
+      </section>
+      <div class="sub-tab-title"></div>
+      <section class="sub-tab-section">
+
+        <h3>手帳を整理する</h3>
+        <br>
+        過去の記録を、読みやすいテキストファイル（.txt）で保存したり、整理できます。<br>
+        <br>
+        <div id="yearlyLogList" class="yearly-log-list"></div>
+      </section>
+      <div class="sub-tab-title"></div>
+      <section class="sub-tab-section">
+        <h3>バックアップのやりかた</h3>
+        <br>
+        <div class="backup-help-text">
+          １．「バックアップを書き出す」を押して、データを保存します。<br>
+          （こえ手帳_backup_2026-06-21.json のような名前のファイルが保存されます）<br>
+          <br>
+          ２．保存したデータを、読み込みたい端末へ送ります。<br>
+          <br>
+          ３．「バックアップを読み込む」から、送ったデータを読み込みます。<br>
+        </div>
+        <br>
+        <button id="exportBackupButton" class="file-button" type="button">
+          バックアップを書き出す
+        </button>
+
+        <input id="importBackupInput" class="backup-file-input" type="file" accept="application/json" />
+
+        <label for="importBackupInput" class="file-button import-backup-button">
+          バックアップを読み込む
+        </label>
+      </section>
+    </section>
+  </main>
   <div class="bottomIconArea">
     <div class="bottomIcon"></div>
   </div>
