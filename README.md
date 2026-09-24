@@ -19,3 +19,4 @@ All assets used in this project are either original creations by the author or s
 ・視力に難がある人（将来的にはターゲット？）<br>
 
 予定タブでは、先頭に数字4文字を入力することで日付として認識し、自動で並び替える機能があります。<br>
+スマホはドラッグの快適さを中心に、PCではドラッグ不可の方針<br>
