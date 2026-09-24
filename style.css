@@ -69,7 +69,7 @@ h2 {
 h3 {
   font-size: 18px;
   margin: 10px 0px 10px 0px;
-  color:var(--iro-text);
+  color: var(--iro-text);
 }
 
 button {
@@ -135,7 +135,7 @@ button {
 
 .sub-tab-section {
   background: var(--iro-bg-card);
-  color:var(--iro-text);
+  color: var(--iro-text);
   border-radius: 0px 0px 10px 10px;
   border: 5px solid var(--iro-bg-tab);
   padding: 15px;
@@ -373,29 +373,63 @@ button {
   margin-bottom: 16px;
 }
 
-.habit-task-button {
-  padding: 10px 14px;
-  border-radius: 999px;
-  background-color: var(--iro-bg-main);
+.habit-task-chip {
+  display: inline-flex; 
+  align-items: stretch;
+  max-width: 100%;
+  overflow: hidden;
+  border-radius: 999px 10px 10px 999px;
+  box-sizing: border-box;
+  border: 2px solid transparent;
   color: var(--iro-text);
-  font-size: 15px;
-  line-height: 1.2;
   transition: 0.15s ease;
+}
+
+.habit-task-button {
+  flex: 1; 
+  min-width: 0;
+  padding: 10px 14px; 
+  border: none;
+  border-radius: 0;
+  background: var(--iro-bg-main);
+  color: inherit;
+  font-family: inherit;
+  font-size: 19px;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
   user-select: none;
   touch-action: manipulation;
 }
 
-.habit-task-button.done-today {
+.habit-done-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0; 
+  width: 48px;
+  min-width: 48px;
+  margin: 0;
+  padding: 0;
+  border: none;
+  border-radius: 0; 
+  background: var(--iro-bg-tab);
+  color: var(--iro-text);
+  font-family: inherit;
+  user-select: none;
+  touch-action: manipulation;
+}
+
+.habit-done-button .material-symbols-outlined {
+  font-size: 30px;
+}
+
+.habit-task-chip.done-today .habit-done-button {
   background: var(--iro-sub-btn);
-  color: white;
+  color: var(--iro-btn-text);
 }
 
-.habit-task-button.selected {
-  box-shadow: 0 0 0 2px var(--iro-sub-btn) inset;
-}
-
-.habit-task-button.long-pressing {
-  transform: scale(0.96);
+.habit-task-chip.selected {
+  border-color: var(--iro-sub-btn);
 }
 
 .habit-calendar {

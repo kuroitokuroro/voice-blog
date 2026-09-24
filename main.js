@@ -1755,32 +1755,68 @@ function renderHabitList() {
   }
 
   habits.forEach((habit, index) => {
-    const button = document.createElement("button");
-    button.className = "habit-task-button";
-    button.textContent = habit.text;
-    button.type = "button";
+    const chip = document.createElement("div");
+    chip.className = "habit-task-chip";
+
+    const viewButton = document.createElement("button");
+    viewButton.className = "habit-task-button";
+    viewButton.type = "button";
+    viewButton.textContent = habit.text;
+    viewButton.setAttribute(
+      "aria-label",
+      `${habit.text}の記録を見る`,
+    );
+
+    const doneButton = document.createElement("button");
+    doneButton.className = "habit-done-button";
+    doneButton.type = "button";
 
     const isDoneToday =
       Array.isArray(habit.doneDates) &&
       habit.doneDates.includes(todayKey);
 
-    if (isDoneToday) button.classList.add("done-today");
-    if (selectedHabitIndex === index) button.classList.add("selected");
+    const checkIcon = document.createElement("span");
+    checkIcon.className = "material-symbols-outlined";
+    checkIcon.textContent = isDoneToday
+      ? "check_box"
+      : "check_box_outline_blank";
 
-    setupHabitButtonPress(button, index);
-    habitList.appendChild(button);
+    doneButton.appendChild(checkIcon);
+    doneButton.setAttribute(
+      "aria-label",
+      isDoneToday
+        ? `${habit.text}の今日の記録を解除`
+        : `${habit.text}を今日の記録に追加`,
+    );
+    doneButton.setAttribute("aria-pressed", String(isDoneToday));
+
+    if (isDoneToday) {
+      chip.classList.add("done-today");
+    }
+
+    if (selectedHabitIndex === index) {
+      chip.classList.add("selected");
+    }
+
+    setupHabitButtonPress(viewButton, doneButton, index);
+
+    chip.appendChild(viewButton);
+    chip.appendChild(doneButton);
+    habitList.appendChild(chip);
   });
 
   renderHabitCalendar();
 }
 
-function setupHabitButtonPress(button, index) {
-  button.addEventListener("click", () => {
-    toggleHabitDone(index);
-
+function setupHabitButtonPress(viewButton, doneButton, index) {
+  viewButton.addEventListener("click", () => {
     selectedHabitIndex = index;
     renderHabitList();
     renderHabitCalendar();
+  });
+
+  doneButton.addEventListener("click", () => {
+    toggleHabitDone(index);
   });
 }
 
