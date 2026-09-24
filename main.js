@@ -1810,9 +1810,13 @@ function renderHabitList() {
 
 function setupHabitButtonPress(viewButton, doneButton, index) {
   viewButton.addEventListener("click", () => {
-    selectedHabitIndex = index;
+    if (selectedHabitIndex === index) {
+      selectedHabitIndex = null;
+    } else {
+      selectedHabitIndex = index;
+    }
+
     renderHabitList();
-    renderHabitCalendar();
   });
 
   doneButton.addEventListener("click", () => {
