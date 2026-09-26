@@ -424,7 +424,7 @@ button {
 }
 
 .habit-task-chip.done-today .habit-done-button {
-  background: var(--iro-sub-btn);
+  background: var(--iro-voice);
   color: var(--iro-btn-text);
 }
 
