@@ -107,7 +107,7 @@ button {
   gap: 2px;
 
   -webkit-tap-highlight-color: transparent;
-  transition: background 0.15s ease,
+  transition: background 0.15s ease
 
 }
 
