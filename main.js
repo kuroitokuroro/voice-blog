@@ -1213,16 +1213,24 @@ function renderScheduleList() {
   }
 }
 
-function updateScheduleItemFromEditableText(index, editableText, oldSchedule) {
+function updateScheduleItemFromEditableText(
+  index,
+  editableText,
+  oldSchedule
+) {
+  if (!editableText) return;
+
   const schedules = getScheduleData();
 
-  const match = editableText.match(/^(\d{1,2})[\/／.-](\d{1,2})\s+(.+)$/);
+  const match = editableText.match(
+    /^(\d{1,2})[\/／.-](\d{1,2})\s+(.+)$/
+  );
 
   if (!match) {
     schedules[index] = {
       ...schedules[index],
       text: editableText,
-      dateKey: oldSchedule.dateKey || "",
+      dateKey: oldSchedule.dateKey || null,
     };
 
     setScheduleData(schedules);
@@ -1248,7 +1256,7 @@ function updateScheduleItemFromEditableText(index, editableText, oldSchedule) {
     schedules[index] = {
       ...schedules[index],
       text: editableText,
-      dateKey: oldSchedule.dateKey || "",
+      dateKey: oldSchedule.dateKey || null,
     };
 
     setScheduleData(schedules);
@@ -3602,7 +3610,13 @@ function createBackupData() {
     goals: getGoalData(),
     habits: getHabitData(),
     habitGroups: getHabitGroups(),
-    schedules: getScheduleData(),
+    schedules: getScheduleData().map((schedule) => ({
+  ...schedule,
+  dateKey:
+    schedule.dateKey === ""
+      ? null
+      : schedule.dateKey,
+})),
     tabOrder: tabOrder.map((tab) => tab.id),
     settings: {
       dateSwitchMode:
@@ -3856,6 +3870,7 @@ function isValidScheduleData(schedules) {
 
     if (
       schedule.dateKey !== null &&
+      schedule.dateKey !== "" &&
       !isValidDateKey(schedule.dateKey)
     ) {
       return false;
@@ -4005,11 +4020,20 @@ function restoreBackupData(backupData) {
       restoredGroups
     );
 
+  const restoredSchedules =
+    backupData.schedules.map((schedule) => ({
+      ...schedule,
+      dateKey:
+        schedule.dateKey === ""
+          ? null
+          : schedule.dateKey,
+    }));
+
   setDiaryData(backupData.diary);
   setGoalData(backupData.goals);
   setHabitGroups(restoredGroups);
   setHabitData(restoredHabits);
-  setScheduleData(backupData.schedules);
+  setScheduleData(restoredSchedules);
 
   localStorage.setItem(
     TAB_STORAGE_KEY,
