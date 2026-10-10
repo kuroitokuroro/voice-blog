@@ -18,7 +18,8 @@
   <link rel="apple-touch-icon" href="favicon.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500&text=こえ手帳&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500&text=こえ手帳&display=swap"
+    rel="stylesheet" />
 
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="skin.css">
@@ -99,8 +100,17 @@
         <button id="habitAddSubmitButton" class="habit-add-submit-button">追加</button>
       </div>
 
-      <h2>習慣</h2>
+      <div class="habit-title-row">
+        <h2>習慣</h2>
+
+        <button id="habitOrganizeButton" class="habit-organize-button" type="button" aria-pressed="false">
+          整理する
+        </button>
+      </div>
       <div id="habitList" class="habit-button-list"></div>
+      <button id="habitGroupAddButton" class="habit-group-add-button" type="button" aria-label="習慣グループを追加">
+        <span class="material-symbols-outlined">add</span>
+      </button>
       <div id="habitCalendar" class="habit-calendar"></div>
       <div id="habitDangerArea" class="habit-danger-area"></div>
     </section>
