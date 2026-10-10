@@ -522,7 +522,7 @@ button {
   align-items: stretch;
   max-width: 100%;
   overflow: hidden;
-  border-radius: 999px 10px 10px 999px;
+  border-radius: 10px;
   box-sizing: border-box;
   border: 2px solid transparent;
   color: var(--iro-text);
