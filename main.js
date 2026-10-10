@@ -1073,7 +1073,13 @@ function renderScheduleList() {
       content.textContent = schedule.text;
     }
 
-    swipeContent.addEventListener("click", () => {
+    swipeContent.addEventListener("click", (event) => {
+      if (
+        content.classList.contains("editing") &&
+        content.contains(event.target)
+      ) {
+        return;
+      }
       if (isScheduleDoneDeleteMode) {
         isScheduleDoneDeleteMode = false;
         renderScheduleList();
@@ -3611,12 +3617,12 @@ function createBackupData() {
     habits: getHabitData(),
     habitGroups: getHabitGroups(),
     schedules: getScheduleData().map((schedule) => ({
-  ...schedule,
-  dateKey:
-    schedule.dateKey === ""
-      ? null
-      : schedule.dateKey,
-})),
+      ...schedule,
+      dateKey:
+        schedule.dateKey === ""
+          ? null
+          : schedule.dateKey,
+    })),
     tabOrder: tabOrder.map((tab) => tab.id),
     settings: {
       dateSwitchMode:
