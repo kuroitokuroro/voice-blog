@@ -286,9 +286,10 @@ button {
 .text.editing {
   width: 100%;
   padding: 6px;
-  border: 1px solid #aaa;
+  border: 1px solid var(--iro-border);
   border-radius: 6px;
-  background: #fffdf2;
+  background: var(--iro-bg-card);
+  color: var(--iro-text);
   outline: none;
 }
 

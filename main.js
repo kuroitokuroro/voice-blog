@@ -454,6 +454,7 @@ function setupTabDrag(button, startIndex) {
     }
 
     if (!hasMoved) {
+      finishEditingItems();
       closeSwipeActions();
       isScheduleDoneDeleteMode = false;
       exitHabitOrganizeMode();
@@ -2785,10 +2786,10 @@ function showHabitTitleEdit(index, titleElement) {
     renderHabitCalendar();
   });
 
-input.addEventListener("keydown", (event) => {
-  if (event.isComposing || event.key !== "Enter") return;
-  button.click();
-});
+  input.addEventListener("keydown", (event) => {
+    if (event.isComposing || event.key !== "Enter") return;
+    button.click();
+  });
 
   titleElement.appendChild(input);
   titleElement.appendChild(button);
@@ -2872,6 +2873,7 @@ function getLogicalToday() {
 }
 
 function openSettings() {
+  finishEditingItems();
   closeSwipeActions();
   isScheduleDoneDeleteMode = false;
   exitHabitOrganizeMode();
@@ -2887,6 +2889,7 @@ function openSettings() {
 }
 
 function openHelp() {
+  finishEditingItems();
   closeSwipeActions();
   isScheduleDoneDeleteMode = false;
   exitHabitOrganizeMode();
@@ -2903,6 +2906,7 @@ function openHelp() {
 
 
 function openMail() {
+  finishEditingItems();
   closeSwipeActions();
   isScheduleDoneDeleteMode = false;
   exitHabitOrganizeMode();
@@ -3821,8 +3825,8 @@ function isValidHabitGroupData(groups) {
 
   const groupIds = groups.map((group) => group.id);
   const groupNames = groups.map((group) =>
-  group.name.trim()
-);
+    group.name.trim()
+  );
 
   if (
     new Set(groupIds).size !== groupIds.length ||
