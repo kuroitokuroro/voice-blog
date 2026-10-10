@@ -3,6 +3,9 @@ const TAB_STORAGE_KEY = "koeTabOrder";
 const DIARY_STORAGE_KEY = "voiceDiaryData";
 const GOAL_STORAGE_KEY = "koeGoalData";
 const HABIT_STORAGE_KEY = "koeHabitData";
+const HABIT_GROUP_STORAGE_KEY = "koeHabitGroupData";
+const DEFAULT_HABIT_GROUP_ID = "default";
+const MAX_HABIT_GROUPS = 10;
 const SCHEDULE_STORAGE_KEY = "koeScheduleData";
 const DATE_SWITCH_MODE_KEY = "dateSwitchMode";
 const DATE_SWITCH_HOUR_KEY = "dateSwitchHour";
@@ -70,6 +73,8 @@ const goalSortButton = document.getElementById("goalSortButton");
 const habitAddArea = document.getElementById("habitAddArea");
 const habitInput = document.getElementById("habitInput");
 const habitAddSubmitButton = document.getElementById("habitAddSubmitButton",);
+const habitOrganizeButton = document.getElementById("habitOrganizeButton");
+const habitGroupAddButton = document.getElementById("habitGroupAddButton");
 const habitList = document.getElementById("habitList");
 const habitCalendar = document.getElementById("habitCalendar");
 const helpButton = document.getElementById("helpButton",);
@@ -98,6 +103,11 @@ let activeTabId = tabOrder[0].id;
 let lastMainTabId = activeTabId;
 let selectedPastDateKey = null;
 let selectedHabitIndex = null;
+let isHabitOrganizeMode = false;
+let movingHabitIndex = null;
+let editingHabitGroupId = null;
+let habitGroupsLoadFailed = false;
+let hasShownHabitGroupsLoadWarning = false;
 let isGoalDeleteMode = false;
 let editingHabitIndex = null;
 let draggingTabId = null;
@@ -121,9 +131,11 @@ setupDateSwitchRange();
 goalMultiDeleteButton.addEventListener("click", toggleGoalMultiDelete);
 goalSortButton.addEventListener("click", toggleGoalSortMode);
 habitAddSubmitButton.addEventListener("click", addHabitFromInput);
+habitOrganizeButton.addEventListener("click", toggleHabitOrganizeMode);
 habitInput.addEventListener("keydown", (event) => {
   if (event.key === "Enter") addHabitFromInput();
 });
+habitGroupAddButton.addEventListener("click", addHabitGroup);
 helpButton.addEventListener("click", openHelp);
 mailButton.addEventListener("click", openMail);
 settingsButton.addEventListener("click", openSettings);
@@ -382,11 +394,11 @@ function renderPanels() {
   }
 
   if (activeTabId === "mail") {
-    document.getElementById("mailPanel").classList.add("active");return;
+    document.getElementById("mailPanel").classList.add("active"); return;
   }
 
   if (activeTabId === "settings") {
-    document.getElementById("settingsPanel").classList.add("active");return;
+    document.getElementById("settingsPanel").classList.add("active"); return;
   }
 }
 
@@ -442,6 +454,7 @@ function setupTabDrag(button, startIndex) {
     if (!hasMoved) {
       closeSwipeActions();
       isScheduleDoneDeleteMode = false;
+      exitHabitOrganizeMode();
 
       activeTabId = tabOrder[currentIndex].id;
       lastMainTabId = activeTabId;
@@ -484,6 +497,7 @@ function setupTabDrag(button, startIndex) {
     document.addEventListener("pointermove", onPointerMove);
     document.addEventListener("pointerup", onPointerUp);
     document.addEventListener("pointercancel", onPointerUp);
+    document.addEventListener("click", handleHabitGroupOutsideClick);
   });
 }
 
@@ -1648,6 +1662,7 @@ function deleteGoalItems(indexes) {
 }
 
 function addHabitFromInput() {
+  if (isHabitOrganizeMode) return;
   const taskText = habitInput.value.trim();
 
   if (!taskText) {
@@ -1684,10 +1699,141 @@ function setHabitData(data) {
   localStorage.setItem(HABIT_STORAGE_KEY, JSON.stringify(data));
 }
 
+function createDefaultHabitGroups() {
+  return [
+    {
+      id: DEFAULT_HABIT_GROUP_ID,
+      name: "未分類",
+    },
+  ];
+}
+
+function normalizeHabitGroups(groups) {
+  const normalizedGroups = groups.map((group) => ({
+    id: group.id,
+    name: group.name.trim(),
+  }));
+
+  const defaultGroup = normalizedGroups.find(
+    (group) => group.id === DEFAULT_HABIT_GROUP_ID
+  );
+
+  const customGroups = normalizedGroups.filter(
+    (group) => group.id !== DEFAULT_HABIT_GROUP_ID
+  );
+
+  return [
+    defaultGroup || createDefaultHabitGroups()[0],
+    ...customGroups,
+  ];
+}
+
+function getHabitGroups() {
+  const savedData = localStorage.getItem(HABIT_GROUP_STORAGE_KEY);
+
+  if (savedData === null) {
+    habitGroupsLoadFailed = false;
+    return createDefaultHabitGroups();
+  }
+
+  try {
+    const parsedGroups = JSON.parse(savedData);
+
+    const hasValidShape =
+      Array.isArray(parsedGroups) &&
+      parsedGroups.length <= MAX_HABIT_GROUPS &&
+      parsedGroups.every(
+        (group) =>
+          group &&
+          typeof group === "object" &&
+          typeof group.id === "string" &&
+          group.id.trim() !== "" &&
+          typeof group.name === "string" &&
+          group.name.trim() !== ""
+      );
+
+    if (!hasValidShape) {
+      throw new Error("習慣グループの形式が正しくありません。");
+    }
+
+    const defaultGroupCount = parsedGroups.filter(
+      (group) => group.id === DEFAULT_HABIT_GROUP_ID
+    ).length;
+
+    if (defaultGroupCount > 1) {
+      throw new Error("基本グループが重複しています。");
+    }
+
+    const normalizedGroups = normalizeHabitGroups(parsedGroups);
+    const groupIds = normalizedGroups.map((group) => group.id);
+    const groupNames = normalizedGroups.map((group) => group.name);
+
+    const hasDuplicateId =
+      new Set(groupIds).size !== groupIds.length;
+
+    const hasDuplicateName =
+      new Set(groupNames).size !== groupNames.length;
+
+    if (
+      normalizedGroups.length > MAX_HABIT_GROUPS ||
+      hasDuplicateId ||
+      hasDuplicateName
+    ) {
+      throw new Error("習慣グループに重複があります。");
+    }
+
+    habitGroupsLoadFailed = false;
+    return normalizedGroups;
+  } catch (error) {
+    console.error("習慣グループを読み込めませんでした。", error);
+
+    habitGroupsLoadFailed = true;
+    return createDefaultHabitGroups();
+  }
+}
+
+function setHabitGroups(groups) {
+  localStorage.setItem(
+    HABIT_GROUP_STORAGE_KEY,
+    JSON.stringify(groups)
+  );
+}
+
+function getHabitGroupId(habit, groups) {
+  if (!habit || !Array.isArray(groups)) {
+    return DEFAULT_HABIT_GROUP_ID;
+  }
+
+  const groupId =
+    typeof habit.groupId === "string"
+      ? habit.groupId
+      : DEFAULT_HABIT_GROUP_ID;
+
+  const groupExists = groups.some(
+    (group) => group.id === groupId
+  );
+
+  return groupExists
+    ? groupId
+    : DEFAULT_HABIT_GROUP_ID;
+}
+
+function createHabitsWithOriginalIndex(habits) {
+  return habits.map((habit, index) => ({
+    habit,
+    index,
+  }));
+}
+
 function saveHabitItem(text) {
   const data = getHabitData();
 
-  data.push({ text, doneDates: [] });
+  data.push({
+    text,
+    doneDates: [],
+    groupId: DEFAULT_HABIT_GROUP_ID,
+  });
+
   setHabitData(data);
 }
 
@@ -1733,83 +1879,724 @@ function toggleHabitDoneByDate(index, dateKey) {
   renderHabitCalendar();
 }
 
-function renderHabitList() {
-  const habits = getHabitData();
-
-  habitList.innerHTML = "";
-
-  if (habits.length === 0) {
-    selectedHabitIndex = null;
-
-    habitCalendar.classList.remove("open");
-    habitCalendar.innerHTML = "";
-
-    const habitDangerArea = document.getElementById("habitDangerArea");
-    habitDangerArea.innerHTML = "";
-
+function toggleHabitOrganizeMode() {
+  if (isHabitOrganizeMode) {
+    exitHabitOrganizeMode();
     return;
   }
 
-  if (selectedHabitIndex !== null && !habits[selectedHabitIndex]) {
+  enterHabitOrganizeMode();
+}
+
+function enterHabitOrganizeMode() {
+  getHabitGroups();
+
+  if (habitGroupsLoadFailed) {
+    showHabitGroupsLoadWarning();
+    return;
+  }
+
+  isHabitOrganizeMode = true;
+  selectedHabitIndex = null;
+  movingHabitIndex = null;
+  editingHabitGroupId = null;
+
+  habitCalendarMonthOffset = 0;
+
+  renderHabitList();
+}
+
+function exitHabitOrganizeMode() {
+  const needsRender =
+    isHabitOrganizeMode ||
+    movingHabitIndex !== null ||
+    editingHabitGroupId !== null;
+
+  isHabitOrganizeMode = false;
+  movingHabitIndex = null;
+  editingHabitGroupId = null;
+  selectedHabitIndex = null;
+
+  if (needsRender) {
+    renderHabitList();
+  }
+}
+
+function cancelHabitGroupNameEdit() {
+  editingHabitGroupId = null;
+}
+
+function handleHabitGroupOutsideClick(event) {
+  if (
+    !isHabitOrganizeMode ||
+    editingHabitGroupId === null
+  ) {
+    return;
+  }
+
+  const target =
+    event.target instanceof Element
+      ? event.target
+      : null;
+
+  if (!target) return;
+
+  if (
+    target.closest(".habit-group-name-editor")
+  ) {
+    return;
+  }
+
+  if (
+    target.closest(
+      ".habit-group-title-button, " +
+      "#habitGroupAddButton"
+    )
+  ) {
+    return;
+  }
+
+  cancelHabitGroupNameEdit();
+  renderHabitList();
+}
+
+function startHabitGroupNameEdit(groupId) {
+  if (
+    !isHabitOrganizeMode ||
+    habitGroupsLoadFailed ||
+    movingHabitIndex !== null
+  ) {
+    return;
+  }
+
+  editingHabitGroupId = groupId;
+  renderHabitList();
+}
+
+function isDuplicateHabitGroupName(
+  groups,
+  groupId,
+  name
+) {
+  return groups.some(
+    (group) =>
+      group.id !== groupId &&
+      group.name === name
+  );
+}
+
+function saveHabitGroupName(groupId, inputElement) {
+  const groups = getHabitGroups();
+
+  if (habitGroupsLoadFailed) {
+    showHabitGroupsLoadWarning();
+    return;
+  }
+
+  const targetGroup = groups.find(
+    (group) => group.id === groupId
+  );
+
+  if (!targetGroup) {
+    editingHabitGroupId = null;
+    renderHabitList();
+    return;
+  }
+
+  const newName = inputElement.value.trim();
+
+  if (newName === "") {
+    editingHabitGroupId = null;
+    renderHabitList();
+    return;
+  }
+
+  if (
+    isDuplicateHabitGroupName(
+      groups,
+      groupId,
+      newName
+    )
+  ) {
+    alert("同じ名前の習慣グループがあります。");
+    inputElement.focus();
+    return;
+  }
+
+  targetGroup.name = newName;
+  setHabitGroups(groups);
+
+  editingHabitGroupId = null;
+  renderHabitList();
+}
+
+function selectHabitForMove(index) {
+  cancelHabitGroupNameEdit();
+
+  if (movingHabitIndex === index) {
+    movingHabitIndex = null;
+  } else {
+    movingHabitIndex = index;
+  }
+
+  renderHabitList();
+}
+
+function handleHabitGroupTitleClick(groupId) {
+  if (!isHabitOrganizeMode) return;
+
+  if (movingHabitIndex !== null) {
+    moveHabitToGroup(groupId);
+    return;
+  }
+
+  startHabitGroupNameEdit(groupId);
+}
+
+function moveHabitToGroup(targetGroupId) {
+  const habits = getHabitData();
+  const groups = getHabitGroups();
+
+  if (
+    habitGroupsLoadFailed ||
+    movingHabitIndex === null ||
+    !habits[movingHabitIndex]
+  ) {
+    movingHabitIndex = null;
+    renderHabitList();
+    return;
+  }
+
+  const targetGroupExists = groups.some(
+    (group) => group.id === targetGroupId
+  );
+
+  if (!targetGroupExists) {
+    movingHabitIndex = null;
+    renderHabitList();
+    return;
+  }
+
+  const movingHabit = habits[movingHabitIndex];
+
+  const currentGroupId = getHabitGroupId(
+    movingHabit,
+    groups
+  );
+
+  if (currentGroupId === targetGroupId) {
+    movingHabitIndex = null;
+    renderHabitList();
+    return;
+  }
+
+  const [removedHabit] = habits.splice(
+    movingHabitIndex,
+    1
+  );
+
+  removedHabit.groupId = targetGroupId;
+  habits.push(removedHabit);
+
+  setHabitData(habits);
+
+  movingHabitIndex = null;
+  editingHabitGroupId = null;
+
+  renderHabitList();
+}
+
+function createHabitGroupId(groups) {
+  const datePart = formatDateKey(new Date())
+    .replaceAll("-", "");
+
+  let sequence = 1;
+  let groupId = "";
+
+  do {
+    groupId =
+      `group-${datePart}-` +
+      String(sequence).padStart(3, "0");
+
+    sequence++;
+  } while (
+    groups.some((group) => group.id === groupId)
+  );
+
+  return groupId;
+}
+
+function getNextHabitGroupName(groups) {
+  const usedNames = new Set(
+    groups.map((group) => group.name)
+  );
+
+  let number = 2;
+
+  while (usedNames.has(`習慣${number}`)) {
+    number++;
+  }
+
+  return `習慣${number}`;
+}
+
+function addHabitGroup() {
+  const groups = getHabitGroups();
+
+  if (habitGroupsLoadFailed) {
+    showHabitGroupsLoadWarning();
+    return;
+  }
+
+  if (groups.length >= MAX_HABIT_GROUPS) {
+    alert("習慣グループは10個まで作れます。");
+    return;
+  }
+
+  const newGroup = {
+    id: createHabitGroupId(groups),
+    name: getNextHabitGroupName(groups),
+  };
+
+  groups.push(newGroup);
+  setHabitGroups(groups);
+
+  movingHabitIndex = null;
+  editingHabitGroupId = newGroup.id;
+
+  renderHabitList();
+}
+
+function showHabitGroupsLoadWarning() {
+  if (
+    !habitGroupsLoadFailed ||
+    hasShownHabitGroupsLoadWarning
+  ) {
+    return;
+  }
+
+  hasShownHabitGroupsLoadWarning = true;
+
+  alert(
+    "習慣グループの保存データを読み込めませんでした。\n\n" +
+    "習慣そのものは未分類として表示します。\n" +
+    "グループの編集は停止しています。\n\n" +
+    "正常なバックアップを復元すると修復できます。"
+  );
+}
+
+function updateHabitOrganizeUI(groups) {
+  habitOrganizeButton.textContent =
+    isHabitOrganizeMode
+      ? "整理終了"
+      : "整理する";
+
+  habitOrganizeButton.classList.toggle(
+    "organize-mode",
+    isHabitOrganizeMode
+  );
+
+  habitOrganizeButton.setAttribute(
+    "aria-pressed",
+    String(isHabitOrganizeMode)
+  );
+
+  habitAddArea.hidden = false;
+
+  habitAddArea.classList.toggle(
+    "organize-hidden",
+    isHabitOrganizeMode
+  );
+
+  habitAddArea.setAttribute(
+    "aria-hidden",
+    String(isHabitOrganizeMode)
+  );
+
+  habitGroupAddButton.classList.toggle(
+    "show",
+    isHabitOrganizeMode
+  );
+
+  habitGroupAddButton.disabled =
+    habitGroupsLoadFailed ||
+    groups.length >= MAX_HABIT_GROUPS;
+}
+
+function renderHabitList() {
+  const habits = getHabitData();
+  const groups = getHabitGroups();
+
+  showHabitGroupsLoadWarning();
+  updateHabitOrganizeUI(groups);
+  habitList.innerHTML = "";
+
+  if (
+    selectedHabitIndex !== null &&
+    !habits[selectedHabitIndex]
+  ) {
     selectedHabitIndex = null;
   }
 
-  habits.forEach((habit, index) => {
-    const chip = document.createElement("div");
-    chip.className = "habit-task-chip";
+  if (
+    movingHabitIndex !== null &&
+    !habits[movingHabitIndex]
+  ) {
+    movingHabitIndex = null;
+  }
 
-    const viewButton = document.createElement("button");
-    viewButton.className = "habit-task-button";
-    viewButton.type = "button";
-    viewButton.textContent = habit.text;
-    viewButton.setAttribute(
-      "aria-label",
-      `${habit.text}の記録を見る`,
+  renderHabitGroups(groups, habits);
+  renderHabitCalendar();
+}
+
+function renderHabitGroups(groups, habits) {
+  const habitsWithIndex =
+    createHabitsWithOriginalIndex(habits);
+
+  const visibleGroups = isHabitOrganizeMode
+    ? groups
+    : groups.filter((group) =>
+      habitsWithIndex.some(
+        ({ habit }) =>
+          getHabitGroupId(habit, groups) === group.id
+      )
     );
 
-    const doneButton = document.createElement("button");
-    doneButton.className = "habit-done-button";
-    doneButton.type = "button";
-
-    const isDoneToday =
-      Array.isArray(habit.doneDates) &&
-      habit.doneDates.includes(todayKey);
-
-    const checkIcon = document.createElement("span");
-    checkIcon.className = "material-symbols-outlined";
-    checkIcon.textContent = isDoneToday
-      ? "check_box"
-      : "check_box_outline_blank";
-
-    doneButton.appendChild(checkIcon);
-    doneButton.setAttribute(
-      "aria-label",
-      isDoneToday
-        ? `${habit.text}の今日の記録を解除`
-        : `${habit.text}を今日の記録に追加`,
+  visibleGroups.forEach((group) => {
+    const groupHabits = habitsWithIndex.filter(
+      ({ habit }) =>
+        getHabitGroupId(habit, groups) === group.id
     );
-    doneButton.setAttribute("aria-pressed", String(isDoneToday));
 
-    if (isDoneToday) {
-      chip.classList.add("done-today");
+    const shouldShowTitle =
+      isHabitOrganizeMode ||
+      group.id !== DEFAULT_HABIT_GROUP_ID ||
+      visibleGroups.length > 1;
+
+    renderHabitGroup(
+      group,
+      groupHabits,
+      shouldShowTitle
+    );
+  });
+}
+
+function setupHabitGroupMoveTarget(
+  groupSection,
+  groupId
+) {
+  if (
+    !isHabitOrganizeMode ||
+    movingHabitIndex === null
+  ) {
+    return;
+  }
+
+  groupSection.classList.add("move-target");
+
+  groupSection.addEventListener("click", (event) => {
+    if (movingHabitIndex === null) return;
+
+    const target =
+      event.target instanceof Element
+        ? event.target
+        : null;
+
+    if (!target) return;
+
+    if (
+      target.closest(
+        ".habit-task-chip, " +
+        ".habit-group-name-editor"
+      )
+    ) {
+      return;
     }
 
-    if (selectedHabitIndex === index) {
-      chip.classList.add("selected");
-    }
+    moveHabitToGroup(groupId);
+  });
+}
 
-    setupHabitButtonPress(viewButton, doneButton, index);
+function renderHabitGroup(
+  group,
+  habitsWithIndex,
+  shouldShowTitle
+) {
+  const groupSection = document.createElement("section");
+  groupSection.className = "habit-group";
+  groupSection.dataset.groupId = group.id;
+  setupHabitGroupMoveTarget(
+    groupSection,
+    group.id
+  );
 
-    chip.appendChild(viewButton);
-    chip.appendChild(doneButton);
-    habitList.appendChild(chip);
+  if (shouldShowTitle) {
+    groupSection.appendChild(
+      createHabitGroupHeader(
+        group,
+        habitsWithIndex.length === 0
+      )
+    );
+  }
+
+  const taskContainer = document.createElement("div");
+  taskContainer.className = "habit-group-tasks";
+
+  habitsWithIndex.forEach(({ habit, index }) => {
+    taskContainer.appendChild(
+      createHabitTaskChip(habit, index)
+    );
   });
 
-  renderHabitCalendar();
+  groupSection.appendChild(taskContainer);
+  habitList.appendChild(groupSection);
+}
+
+function createHabitGroupHeader(group, isEmpty) {
+  const header = document.createElement("div");
+  header.className = "habit-group-header";
+
+  if (
+    isHabitOrganizeMode &&
+    editingHabitGroupId === group.id
+  ) {
+    const editor = document.createElement("div");
+    editor.className = "habit-group-name-editor";
+
+    const input = document.createElement("input");
+    input.className = "habit-group-name-input";
+    input.type = "text";
+    input.placeholder = group.name;
+    input.setAttribute(
+      "aria-label",
+      `${group.name}の名前を変更`
+    );
+
+    const saveButton = document.createElement("button");
+    saveButton.className =
+      "habit-group-name-save-button";
+    saveButton.type = "button";
+    saveButton.textContent = "変更";
+
+    saveButton.addEventListener("click", () => {
+      saveHabitGroupName(group.id, input);
+    });
+
+    input.addEventListener("keydown", (event) => {
+      if (event.key !== "Enter") return;
+
+      event.preventDefault();
+      saveHabitGroupName(group.id, input);
+    });
+
+    editor.appendChild(input);
+    editor.appendChild(saveButton);
+    header.appendChild(editor);
+
+    appendHabitGroupDeleteButton(
+      header,
+      group,
+      isEmpty
+    );
+
+    requestAnimationFrame(() => {
+      input.focus();
+    });
+
+    return header;
+  }
+
+  if (isHabitOrganizeMode) {
+    const titleButton = document.createElement("button");
+    titleButton.className =
+      "habit-group-title-button";
+    titleButton.type = "button";
+    titleButton.textContent = group.name;
+
+    titleButton.setAttribute(
+      "aria-label",
+      movingHabitIndex !== null
+        ? `${group.name}へ移動`
+        : `${group.name}の名前を変更`
+    );
+
+    titleButton.addEventListener("click", () => {
+      handleHabitGroupTitleClick(group.id);
+    });
+
+    header.appendChild(titleButton);
+
+    appendHabitGroupDeleteButton(
+      header,
+      group,
+      isEmpty
+    );
+
+    return header;
+  }
+
+  const title = document.createElement("h3");
+  title.className = "habit-group-title";
+  title.textContent = group.name;
+
+  header.appendChild(title);
+  return header;
+}
+
+function appendHabitGroupDeleteButton(
+  header,
+  group,
+  isEmpty
+) {
+  if (
+    !isHabitOrganizeMode ||
+    group.id === DEFAULT_HABIT_GROUP_ID ||
+    !isEmpty
+  ) {
+    return;
+  }
+
+  const deleteButton = document.createElement("button");
+  deleteButton.className =
+    "habit-group-delete-button";
+  deleteButton.type = "button";
+  deleteButton.setAttribute(
+    "aria-label",
+    `${group.name}を削除`
+  );
+
+  const icon = document.createElement("span");
+  icon.className = "material-symbols-outlined";
+  icon.textContent = "delete";
+
+  deleteButton.appendChild(icon);
+
+  deleteButton.addEventListener("click", (event) => {
+    event.stopPropagation();
+    deleteEmptyHabitGroup(group.id);
+  });
+
+  header.appendChild(deleteButton);
+}
+
+function isHabitGroupEmpty(groupId, habits) {
+  return !habits.some(
+    (habit) => habit.groupId === groupId
+  );
+}
+
+function canDeleteHabitGroup(groupId, habits) {
+  return (
+    groupId !== DEFAULT_HABIT_GROUP_ID &&
+    isHabitGroupEmpty(groupId, habits)
+  );
+}
+
+function deleteEmptyHabitGroup(groupId) {
+  const groups = getHabitGroups();
+  const habits = getHabitData();
+
+  if (habitGroupsLoadFailed) {
+    showHabitGroupsLoadWarning();
+    return;
+  }
+
+  const groupExists = groups.some(
+    (group) => group.id === groupId
+  );
+
+  if (
+    !groupExists ||
+    !canDeleteHabitGroup(groupId, habits)
+  ) {
+    return;
+  }
+
+  const nextGroups = groups.filter(
+    (group) => group.id !== groupId
+  );
+
+  setHabitGroups(nextGroups);
+
+  movingHabitIndex = null;
+  editingHabitGroupId = null;
+
+  renderHabitList();
+}
+
+function createHabitTaskChip(habit, index) {
+  const chip = document.createElement("div");
+  chip.className = "habit-task-chip";
+
+  const viewButton = document.createElement("button");
+  viewButton.className = "habit-task-button";
+  viewButton.type = "button";
+  viewButton.textContent = habit.text;
+  viewButton.setAttribute(
+    "aria-label",
+    `${habit.text}の記録を見る`
+  );
+
+  const doneButton = document.createElement("button");
+  doneButton.className = "habit-done-button";
+  doneButton.type = "button";
+  doneButton.disabled = isHabitOrganizeMode;
+
+  const isDoneToday =
+    Array.isArray(habit.doneDates) &&
+    habit.doneDates.includes(todayKey);
+
+  const checkIcon = document.createElement("span");
+  checkIcon.className = "material-symbols-outlined";
+  checkIcon.textContent = isDoneToday
+    ? "check_box"
+    : "check_box_outline_blank";
+
+  doneButton.appendChild(checkIcon);
+  doneButton.setAttribute(
+    "aria-label",
+    isDoneToday
+      ? `${habit.text}の今日の記録を解除`
+      : `${habit.text}を今日の記録に追加`
+  );
+  doneButton.setAttribute(
+    "aria-pressed",
+    String(isDoneToday)
+  );
+
+  if (isDoneToday) {
+    chip.classList.add("done-today");
+  }
+
+  if (
+    selectedHabitIndex === index ||
+    (
+      isHabitOrganizeMode &&
+      movingHabitIndex === index
+    )
+  ) {
+    chip.classList.add("selected");
+  }
+
+  setupHabitButtonPress(
+    viewButton,
+    doneButton,
+    index
+  );
+
+  chip.appendChild(viewButton);
+  chip.appendChild(doneButton);
+
+  return chip;
 }
 
 function setupHabitButtonPress(viewButton, doneButton, index) {
   viewButton.addEventListener("click", () => {
+    if (isHabitOrganizeMode) {
+      selectHabitForMove(index);
+      return;
+    }
+
     if (selectedHabitIndex === index) {
       selectedHabitIndex = null;
     } else {
@@ -1820,6 +2607,8 @@ function setupHabitButtonPress(viewButton, doneButton, index) {
   });
 
   doneButton.addEventListener("click", () => {
+    if (isHabitOrganizeMode) return;
+
     toggleHabitDone(index);
   });
 }
@@ -2092,6 +2881,9 @@ function getLogicalToday() {
 function openSettings() {
   closeSwipeActions();
   isScheduleDoneDeleteMode = false;
+  exitHabitOrganizeMode();
+  closeSwipeActions();
+  isScheduleDoneDeleteMode = false;
 
   if (activeTabId === "settings") {
     activeTabId = lastMainTabId;
@@ -2104,6 +2896,9 @@ function openSettings() {
 }
 
 function openHelp() {
+  closeSwipeActions();
+  isScheduleDoneDeleteMode = false;
+  exitHabitOrganizeMode();
   closeSwipeActions();
   isScheduleDoneDeleteMode = false;
 
@@ -2119,6 +2914,9 @@ function openHelp() {
 
 
 function openMail() {
+  closeSwipeActions();
+  isScheduleDoneDeleteMode = false;
+  exitHabitOrganizeMode();
   closeSwipeActions();
   isScheduleDoneDeleteMode = false;
 
@@ -2806,19 +3604,24 @@ function deleteYearData(year) {
 
 function createBackupData() {
   return {
-    version: 1,
+    version: 2,
     exportedAt: new Date().toISOString(),
     appName: "こえ手帳",
     diary: getDiaryData(),
     goals: getGoalData(),
     habits: getHabitData(),
+    habitGroups: getHabitGroups(),
     schedules: getScheduleData(),
     tabOrder: tabOrder.map((tab) => tab.id),
     settings: {
       dateSwitchMode:
-        localStorage.getItem(DATE_SWITCH_MODE_KEY) || "fixed",
+        localStorage.getItem(
+          DATE_SWITCH_MODE_KEY
+        ) || "fixed",
       dateSwitchHour:
-        localStorage.getItem(DATE_SWITCH_HOUR_KEY) || "4",
+        localStorage.getItem(
+          DATE_SWITCH_HOUR_KEY
+        ) || "4",
     },
   };
 }
@@ -2846,9 +3649,29 @@ function isValidBackupData(data) {
   if (!isValidDiaryData(data.diary)) return false;
   if (!isValidGoalData(data.goals)) return false;
   if (!isValidHabitData(data.habits)) return false;
-  if (!isValidScheduleData(data.schedules)) return false;
-  if (!isValidTabOrder(data.tabOrder)) return false;
-  if (!isValidBackupSettings(data.settings)) return false;
+
+  if (
+    data.version === 2 &&
+    !isValidHabitGroupData(data.habitGroups)
+  ) {
+    return false;
+  }
+
+  if (
+    !isValidScheduleData(data.schedules)
+  ) {
+    return false;
+  }
+
+  if (!isValidTabOrder(data.tabOrder)) {
+    return false;
+  }
+
+  if (
+    !isValidBackupSettings(data.settings)
+  ) {
+    return false;
+  }
 
   return true;
 }
@@ -2882,11 +3705,29 @@ function isValidDateKey(value) {
 
 function isValidBackupRoot(data) {
   if (!isPlainObject(data)) return false;
-  if (data.version !== 1) return false;
-  if (data.appName !== "こえ手帳") return false;
 
-  if (typeof data.exportedAt !== "string") return false;
-  if (Number.isNaN(Date.parse(data.exportedAt))) return false;
+  if (
+    data.version !== 1 &&
+    data.version !== 2
+  ) {
+    return false;
+  }
+
+  if (data.appName !== "こえ手帳") {
+    return false;
+  }
+
+  if (typeof data.exportedAt !== "string") {
+    return false;
+  }
+
+  if (
+    Number.isNaN(
+      Date.parse(data.exportedAt)
+    )
+  ) {
+    return false;
+  }
 
   return true;
 }
@@ -2946,10 +3787,70 @@ function isValidHabitData(habits) {
     if (typeof habit.text !== "string") return false;
     if (!Array.isArray(habit.doneDates)) return false;
 
+    if (
+      habit.groupId !== undefined &&
+      typeof habit.groupId !== "string"
+    ) {
+      return false;
+    }
+
     return habit.doneDates.every((dateKey) =>
       isValidDateKey(dateKey)
     );
   });
+}
+
+function isValidHabitGroupData(groups) {
+  if (!Array.isArray(groups)) return false;
+
+  if (
+    groups.length === 0 ||
+    groups.length > MAX_HABIT_GROUPS
+  ) {
+    return false;
+  }
+
+  const hasValidItems = groups.every((group) => {
+    if (!isPlainObject(group)) return false;
+
+    if (
+      typeof group.id !== "string" ||
+      group.id.trim() === ""
+    ) {
+      return false;
+    }
+
+    if (
+      typeof group.name !== "string" ||
+      group.name.trim() === ""
+    ) {
+      return false;
+    }
+
+    return true;
+  });
+
+  if (!hasValidItems) return false;
+
+  const groupIds = groups.map((group) => group.id);
+  const groupNames = groups.map((group) => group.name);
+
+  if (
+    new Set(groupIds).size !== groupIds.length ||
+    new Set(groupNames).size !== groupNames.length
+  ) {
+    return false;
+  }
+
+  const defaultGroupCount = groupIds.filter(
+    (groupId) =>
+      groupId === DEFAULT_HABIT_GROUP_ID
+  ).length;
+
+  return (
+    defaultGroupCount === 1 &&
+    groups[0].id === DEFAULT_HABIT_GROUP_ID
+  );
 }
 
 function isValidScheduleData(schedules) {
@@ -3070,27 +3971,66 @@ function confirmRestoreBackup() {
   return true;
 }
 
+function getRestoredHabitGroups(backupData) {
+  if (backupData.version === 1) {
+    return createDefaultHabitGroups();
+  }
+
+  return normalizeHabitGroups(
+    backupData.habitGroups
+  );
+}
+
+function normalizeRestoredHabits(habits, groups) {
+  const validGroupIds = new Set(
+    groups.map((group) => group.id)
+  );
+
+  return habits.map((habit) => {
+    const groupId =
+      typeof habit.groupId === "string" &&
+        validGroupIds.has(habit.groupId)
+        ? habit.groupId
+        : DEFAULT_HABIT_GROUP_ID;
+
+    return {
+      ...habit,
+      groupId,
+    };
+  });
+}
+
 function restoreBackupData(backupData) {
   if (!confirmRestoreBackup()) return;
 
+  const restoredGroups =
+    getRestoredHabitGroups(backupData);
+
+  const restoredHabits =
+    normalizeRestoredHabits(
+      backupData.habits,
+      restoredGroups
+    );
+
   setDiaryData(backupData.diary);
   setGoalData(backupData.goals);
-  setHabitData(backupData.habits);
+  setHabitGroups(restoredGroups);
+  setHabitData(restoredHabits);
   setScheduleData(backupData.schedules);
 
   localStorage.setItem(
     TAB_STORAGE_KEY,
-    JSON.stringify(backupData.tabOrder),
+    JSON.stringify(backupData.tabOrder)
   );
 
   localStorage.setItem(
     DATE_SWITCH_MODE_KEY,
-    backupData.settings.dateSwitchMode || "fixed",
+    backupData.settings.dateSwitchMode || "fixed"
   );
 
   localStorage.setItem(
     DATE_SWITCH_HOUR_KEY,
-    backupData.settings.dateSwitchHour || "4",
+    backupData.settings.dateSwitchHour || "4"
   );
 
   resetAfterRestore();
@@ -3105,6 +4045,13 @@ function resetAfterRestore() {
   selectedPastDateKey = null;
   selectedHabitIndex = null;
   editingHabitIndex = null;
+
+  isHabitOrganizeMode = false;
+  movingHabitIndex = null;
+  editingHabitGroupId = null;
+
+  habitGroupsLoadFailed = false;
+  hasShownHabitGroupsLoadWarning = false;
 
   isGoalDeleteMode = false;
   isGoalSortMode = false;

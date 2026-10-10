@@ -337,10 +337,40 @@ button {
   transform: scale(1.2);
 }
 
+.habit-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 18px 0 10px;
+}
+
+.habit-title-row h2 {
+  margin: 0;
+}
+
+.habit-organize-button {
+  padding: 5px 7px;
+  border-bottom: 3px solid var(--iro-bg-tab);
+  background-color: var(--iro-bg-main);
+  color: var(--iro-text);
+  font-size: 13px;
+}
+
+.habit-organize-button.organize-mode {
+  background: var(--iro-sub-btn);
+  color: var(--iro-btn-text);
+}
+
 .habit-add-area {
   display: flex;
   gap: 8px;
   margin-bottom: 12px;
+}
+
+.habit-add-area.organize-hidden {
+  visibility: hidden;
+  pointer-events: none;
 }
 
 .habit-input {
@@ -365,16 +395,130 @@ button {
 
 .habit-button-list {
   display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  padding: 12px;
-  background: var(--iro-bg-card);
-  border-radius: 12px;
+  flex-direction: column;
+  gap: 10px;
   margin-bottom: 16px;
 }
 
+.habit-group {
+  padding: 12px;
+  background: var(--iro-bg-card);
+  border-radius: 12px;
+}
+
+.habit-group-title {
+  margin: 0 0 10px;
+  color: var(--iro-text);
+  font-size: 16px;
+}
+
+.habit-group-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.habit-group-header .habit-group-title {
+  margin: 0;
+}
+
+.habit-group-title-button {
+  padding: 2px 4px;
+  background: transparent;
+  color: var(--iro-text);
+  font-size: 16px;
+  font-weight: bold;
+  text-align: left;
+}
+
+.habit-group-name-editor {
+  display: flex;
+  flex: 1;
+  gap: 8px;
+  min-width: 0;
+}
+
+.habit-group-name-input {
+  flex: 1;
+  min-width: 0;
+  padding: 7px 9px;
+  border: 2px solid var(--iro-voice);
+  border-radius: 8px;
+  background: var(--iro-bg-main);
+  color: var(--iro-text);
+  font-size: 16px;
+}
+
+.habit-group-name-save-button {
+  flex-shrink: 0;
+  padding: 7px 10px;
+  border-radius: 8px;
+  background: var(--iro-action-btn);
+  color: var(--iro-btn-text);
+  font-weight: bold;
+}
+
+.habit-group-tasks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  min-height: 32px;
+}
+
+.habit-group-add-button {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 48px;
+  margin-bottom: 16px;
+  border: 2px dashed var(--iro-bg-tab);
+  border-radius: 12px;
+  background: transparent;
+  color: var(--iro-text);
+  opacity: 0.55;
+}
+
+.habit-group-add-button.show {
+  display: flex;
+}
+
+.habit-group-add-button:disabled {
+  cursor: default;
+  opacity: 0.25;
+}
+
+.habit-group.move-target {
+  cursor: pointer;
+}
+
+.habit-group-delete-button {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  margin-left: auto;
+  padding: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--iro-text);
+  opacity: 0.6;
+}
+
+.habit-group-delete-button:hover {
+  background: var(--iro-bg-main);
+  opacity: 1;
+}
+
+.habit-group-delete-button .material-symbols-outlined {
+  font-size: 24px;
+}
+
 .habit-task-chip {
-  display: inline-flex; 
+  display: inline-flex;
   align-items: stretch;
   max-width: 100%;
   overflow: hidden;
@@ -386,9 +530,9 @@ button {
 }
 
 .habit-task-button {
-  flex: 1; 
+  flex: 1;
   min-width: 0;
-  padding: 10px 14px; 
+  padding: 10px 14px;
   border: none;
   border-radius: 0;
   background: var(--iro-bg-main);
@@ -405,13 +549,13 @@ button {
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-shrink: 0; 
+  flex-shrink: 0;
   width: 48px;
   min-width: 48px;
   margin: 0;
   padding: 0;
   border: none;
-  border-radius: 0; 
+  border-radius: 0;
   background: var(--iro-bg-tab);
   color: var(--iro-text);
   font-family: inherit;
