@@ -170,7 +170,7 @@ button {
   position: relative;
   overflow: hidden;
   border-bottom: 1px solid var(--iro-border);
-  background: white;
+  background: var(--iro-bg-card);
 }
 
 .swipe-content {
@@ -212,11 +212,21 @@ button {
 
 .delete-button {
   right: 0;
-  background: var(--iro-delete-btn);
+  background: inherit;
 }
 
 .edit-button {
   left: 0;
+  background: inherit;
+}
+
+.common-item.show-delete .delete-button,
+.common-item.show-actions .delete-button {
+  background: var(--iro-delete-btn);
+}
+
+.common-item.show-edit .edit-button,
+.common-item.show-actions .edit-button {
   background: var(--iro-edit-btn);
 }
 
