@@ -133,9 +133,11 @@ goalSortButton.addEventListener("click", toggleGoalSortMode);
 habitAddSubmitButton.addEventListener("click", addHabitFromInput);
 habitOrganizeButton.addEventListener("click", toggleHabitOrganizeMode);
 habitInput.addEventListener("keydown", (event) => {
-  if (event.key === "Enter") addHabitFromInput();
+  if (event.isComposing || event.key !== "Enter") return;
+  addHabitFromInput();
 });
 habitGroupAddButton.addEventListener("click", addHabitGroup);
+document.addEventListener("click", handleHabitGroupOutsideClick);
 helpButton.addEventListener("click", openHelp);
 mailButton.addEventListener("click", openMail);
 settingsButton.addEventListener("click", openSettings);
@@ -497,7 +499,6 @@ function setupTabDrag(button, startIndex) {
     document.addEventListener("pointermove", onPointerMove);
     document.addEventListener("pointerup", onPointerUp);
     document.addEventListener("pointercancel", onPointerUp);
-    document.addEventListener("click", handleHabitGroupOutsideClick);
   });
 }
 
@@ -1892,7 +1893,7 @@ function enterHabitOrganizeMode() {
   getHabitGroups();
 
   if (habitGroupsLoadFailed) {
-    showHabitGroupsLoadWarning();
+    showHabitGroupsLoadWarning(true);
     return;
   }
 
@@ -1910,7 +1911,8 @@ function exitHabitOrganizeMode() {
   const needsRender =
     isHabitOrganizeMode ||
     movingHabitIndex !== null ||
-    editingHabitGroupId !== null;
+    editingHabitGroupId !== null ||
+    selectedHabitIndex !== null;
 
   isHabitOrganizeMode = false;
   movingHabitIndex = null;
@@ -2167,10 +2169,10 @@ function addHabitGroup() {
   renderHabitList();
 }
 
-function showHabitGroupsLoadWarning() {
+function showHabitGroupsLoadWarning(force = false) {
   if (
     !habitGroupsLoadFailed ||
-    hasShownHabitGroupsLoadWarning
+    (!force && hasShownHabitGroupsLoadWarning)
   ) {
     return;
   }
@@ -2383,7 +2385,7 @@ function createHabitGroupHeader(group, isEmpty) {
     });
 
     input.addEventListener("keydown", (event) => {
-      if (event.key !== "Enter") return;
+      if (event.isComposing || event.key !== "Enter") return;
 
       event.preventDefault();
       saveHabitGroupName(group.id, input);
@@ -2392,12 +2394,6 @@ function createHabitGroupHeader(group, isEmpty) {
     editor.appendChild(input);
     editor.appendChild(saveButton);
     header.appendChild(editor);
-
-    appendHabitGroupDeleteButton(
-      header,
-      group,
-      isEmpty
-    );
 
     requestAnimationFrame(() => {
       input.focus();
@@ -2789,9 +2785,10 @@ function showHabitTitleEdit(index, titleElement) {
     renderHabitCalendar();
   });
 
-  input.addEventListener("keydown", (event) => {
-    if (event.key === "Enter") button.click();
-  });
+input.addEventListener("keydown", (event) => {
+  if (event.isComposing || event.key !== "Enter") return;
+  button.click();
+});
 
   titleElement.appendChild(input);
   titleElement.appendChild(button);
@@ -2831,11 +2828,7 @@ function deleteSelectedHabit() {
   data.splice(selectedHabitIndex, 1);
   setHabitData(data);
 
-  if (data.length === 0) {
-    selectedHabitIndex = null;
-  } else if (selectedHabitIndex >= data.length) {
-    selectedHabitIndex = data.length - 1;
-  }
+  selectedHabitIndex = null;
 
   renderHabitList();
   renderHabitCalendar();
@@ -2882,8 +2875,6 @@ function openSettings() {
   closeSwipeActions();
   isScheduleDoneDeleteMode = false;
   exitHabitOrganizeMode();
-  closeSwipeActions();
-  isScheduleDoneDeleteMode = false;
 
   if (activeTabId === "settings") {
     activeTabId = lastMainTabId;
@@ -2899,8 +2890,6 @@ function openHelp() {
   closeSwipeActions();
   isScheduleDoneDeleteMode = false;
   exitHabitOrganizeMode();
-  closeSwipeActions();
-  isScheduleDoneDeleteMode = false;
 
   if (activeTabId === "help") {
     activeTabId = lastMainTabId;
@@ -2917,8 +2906,6 @@ function openMail() {
   closeSwipeActions();
   isScheduleDoneDeleteMode = false;
   exitHabitOrganizeMode();
-  closeSwipeActions();
-  isScheduleDoneDeleteMode = false;
 
   if (activeTabId === "mail") {
     activeTabId = lastMainTabId;
@@ -3833,7 +3820,9 @@ function isValidHabitGroupData(groups) {
   if (!hasValidItems) return false;
 
   const groupIds = groups.map((group) => group.id);
-  const groupNames = groups.map((group) => group.name);
+  const groupNames = groups.map((group) =>
+  group.name.trim()
+);
 
   if (
     new Set(groupIds).size !== groupIds.length ||
