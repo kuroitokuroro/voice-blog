@@ -1129,6 +1129,9 @@ function renderScheduleList() {
         item.classList.add("show-actions");
         return;
       }
+
+      toggleScheduleDone(index);
+      renderScheduleList();
     });
 
     let isEditing = false;
