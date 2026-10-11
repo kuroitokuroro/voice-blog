@@ -73,7 +73,7 @@ body.skin-light-red,
   --iro-btn-text: #fff;
 
   --iro-border: #e1bebe;
-  --iro-voice: #dce82e;
+  --iro-voice: #49d237;
 
   --iro-goal-1: #f5b0b0;
   --iro-goal-2: #faecec;
@@ -113,7 +113,7 @@ body.skin-light-blue,
 body.skin-light-yellow,
 .skin-chip.skin-light-yellow {
   --iro-bg-main: #fffde8;
-  --iro-bg-tab: #fcf38f;
+  --iro-bg-tab: #f3eb95;
   --iro-bg-card: #ffffff;
 
   --iro-action-btn: #514a26;
@@ -191,7 +191,7 @@ body.skin-light-cyan,
 body.skin-light-pink,
 .skin-chip.skin-light-pink {
   --iro-bg-main: #ffe8fd;
-  --iro-bg-tab: #fda9eb;
+  --iro-bg-tab: #fbaeea;
   --iro-bg-card: #ffffff;
 
   --iro-action-btn: #5c1c4d;
@@ -385,7 +385,7 @@ body.skin-dark-cyan,
   --iro-btn-text: #000000;
 
   --iro-border: #0b2a2d;
-  --iro-voice: #ee397e;
+  --iro-voice: #df4681;
 
   --iro-goal-1: #134647;
   --iro-goal-2: #0b2a2d;
