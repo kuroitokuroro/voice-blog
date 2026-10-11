@@ -84,7 +84,7 @@ const pastDiaryCalendar = document.getElementById("pastDiaryCalendar");
 const scheduleInput = document.getElementById("scheduleInput");
 const scheduleAddButton = document.getElementById("scheduleAddButton");
 const scheduleList = document.getElementById("scheduleList");
-const scheduleDangerArea = document.getElementById("scheduleDangerArea");
+const scheduleMultiDeleteButton = document.getElementById("scheduleMultiDeleteButton");
 const scheduleVoiceButton = document.getElementById("scheduleVoiceButton");
 const diaryInput = document.getElementById("diaryInput");
 const diaryAddButton = document.getElementById("diaryAddButton");
@@ -117,7 +117,7 @@ let isGoalListening = false;
 let habitCalendarMonthOffset = 0;
 let pastDiaryCalendarMonthOffset = 0;
 let isPastDiaryCalendarOpen = false;
-let isScheduleDoneDeleteMode = false;
+let isScheduleDeleteMode = false;
 let isScheduleListening = false;
 let isGoalColorMode = false;
 
@@ -142,6 +142,7 @@ helpButton.addEventListener("click", openHelp);
 mailButton.addEventListener("click", openMail);
 settingsButton.addEventListener("click", openSettings);
 scheduleAddButton.addEventListener("click", addScheduleFromInput);
+scheduleMultiDeleteButton.addEventListener("click", toggleScheduleMultiDelete);
 diaryAddButton.addEventListener("click", addDiaryFromInput);
 goalAddButton.addEventListener("click", addGoalFromInput);
 goalColorButton.addEventListener("click", toggleGoalColorMode);
@@ -456,7 +457,7 @@ function setupTabDrag(button, startIndex) {
     if (!hasMoved) {
       finishEditingItems();
       closeSwipeActions();
-      isScheduleDoneDeleteMode = false;
+      resetScheduleMultiDeleteMode();
       exitHabitOrganizeMode();
 
       activeTabId = tabOrder[currentIndex].id;
@@ -1047,10 +1048,6 @@ function renderScheduleList() {
       item.classList.add("today");
     }
 
-    if (schedule.done && isScheduleDoneDeleteMode) {
-      item.classList.add("delete-warning");
-    }
-
     const editButton = document.createElement("div");
     editButton.className = "edit-button";
     editButton.innerHTML = `<span class="material-symbols-outlined">edit</span>`;
@@ -1061,6 +1058,19 @@ function renderScheduleList() {
 
     const swipeContent = document.createElement("div");
     swipeContent.className = "swipe-content";
+
+    if (isScheduleDeleteMode) {
+      const checkbox = document.createElement("input");
+      checkbox.type = "checkbox";
+      checkbox.className = "schedule-checkbox";
+      checkbox.dataset.index = index;
+
+      checkbox.addEventListener("click", (event) => {
+        event.stopPropagation();
+      });
+
+      swipeContent.appendChild(checkbox);
+    }
 
     const content = document.createElement("div");
     content.className = "text";
@@ -1074,15 +1084,11 @@ function renderScheduleList() {
     }
 
     swipeContent.addEventListener("click", (event) => {
+      if (isScheduleDeleteMode) return;
       if (
         content.classList.contains("editing") &&
         content.contains(event.target)
       ) {
-        return;
-      }
-      if (isScheduleDoneDeleteMode) {
-        isScheduleDoneDeleteMode = false;
-        renderScheduleList();
         return;
       }
 
@@ -1106,6 +1112,12 @@ function renderScheduleList() {
       if (item.classList.contains("show-delete")) return;
 
       if (isPcPointer()) {
+        if (schedule.done) {
+          toggleScheduleDone(index);
+          renderScheduleList();
+          return;
+        }
+
         if (item.classList.contains("show-actions")) {
           item.classList.remove("show-actions");
           toggleScheduleDone(index);
@@ -1113,31 +1125,16 @@ function renderScheduleList() {
           return;
         }
 
-        if (schedule.done) {
-          closeSwipeActions(item);
-          item.classList.add("show-actions");
-          return;
-        }
-
-        toggleScheduleDone(index);
-        renderScheduleList();
+        closeSwipeActions(item);
+        item.classList.add("show-actions");
         return;
       }
-
-      toggleScheduleDone(index);
-      renderScheduleList();
     });
 
     let isEditing = false;
 
     editButton.addEventListener("click", (event) => {
       event.stopPropagation();
-
-      if (isScheduleDoneDeleteMode) {
-        isScheduleDoneDeleteMode = false;
-        renderScheduleList();
-        return;
-      }
 
       if (!isEditing) {
         isEditing = true;
@@ -1164,11 +1161,6 @@ function renderScheduleList() {
     deleteButton.addEventListener("click", (event) => {
       event.stopPropagation();
 
-      if (isScheduleDoneDeleteMode) {
-        isScheduleDoneDeleteMode = false;
-        renderScheduleList();
-        return;
-      }
       deleteScheduleItemByIndex(index);
       renderScheduleList();
     });
@@ -1182,41 +1174,22 @@ function renderScheduleList() {
     scheduleList.appendChild(item);
 
     setupSwipeActions(item, {
-      shouldBlock: () => isScheduleDoneDeleteMode,
+      shouldBlock: () => isScheduleDeleteMode,
     });
+
+    item.addEventListener("click", () => {
+      if (!isScheduleDeleteMode) return;
+
+      const checkbox =
+        item.querySelector(".schedule-checkbox");
+
+      if (!checkbox) return;
+
+      checkbox.checked = !checkbox.checked;
+    });
+
   });
-  scheduleDangerArea.innerHTML = "";
 
-  const hasDoneSchedule = schedules.some((schedule) => schedule.done);
-
-  if (hasDoneSchedule) {
-    const deleteDoneButton = document.createElement("button");
-    deleteDoneButton.type = "button";
-    deleteDoneButton.className = "goal-sort-button";
-
-    if (isScheduleDoneDeleteMode) {
-      deleteDoneButton.classList.add("delete-mode");
-    }
-    deleteDoneButton.textContent = isScheduleDoneDeleteMode
-      ? "もう一度押して削除"
-      : "終了した予定を削除";
-
-    deleteDoneButton.addEventListener("click", (event) => {
-      event.stopPropagation();
-
-      if (!isScheduleDoneDeleteMode) {
-        isScheduleDoneDeleteMode = true;
-        renderScheduleList();
-        return;
-      }
-
-      deleteDoneSchedules();
-      isScheduleDoneDeleteMode = false;
-      renderScheduleList();
-    });
-
-    scheduleDangerArea.appendChild(deleteDoneButton);
-  }
 }
 
 function updateScheduleItemFromEditableText(
@@ -2889,7 +2862,7 @@ function getLogicalToday() {
 function openSettings() {
   finishEditingItems();
   closeSwipeActions();
-  isScheduleDoneDeleteMode = false;
+  resetScheduleMultiDeleteMode();
   exitHabitOrganizeMode();
 
   if (activeTabId === "settings") {
@@ -2905,7 +2878,7 @@ function openSettings() {
 function openHelp() {
   finishEditingItems();
   closeSwipeActions();
-  isScheduleDoneDeleteMode = false;
+  resetScheduleMultiDeleteMode();
   exitHabitOrganizeMode();
 
   if (activeTabId === "help") {
@@ -2922,7 +2895,7 @@ function openHelp() {
 function openMail() {
   finishEditingItems();
   closeSwipeActions();
-  isScheduleDoneDeleteMode = false;
+  resetScheduleMultiDeleteMode();
   exitHabitOrganizeMode();
 
   if (activeTabId === "mail") {
@@ -3137,14 +3110,74 @@ function toggleScheduleDone(index) {
   setScheduleData(data);
 }
 
-function deleteDoneSchedules() {
-  const data = getScheduleData();
-  const activeSchedules = data.filter((schedule) => !schedule.done);
+function toggleScheduleMultiDelete() {
+  const nextMode = !isScheduleDeleteMode;
 
-  setScheduleData(activeSchedules);
+  if (!nextMode) {
+    const checkedBoxes =
+      scheduleList.querySelectorAll(
+        ".schedule-checkbox:checked"
+      );
+
+    if (checkedBoxes.length > 0) {
+      const deleteIndexes =
+        Array.from(checkedBoxes).map((checkbox) =>
+          Number(checkbox.dataset.index)
+        );
+
+      deleteScheduleItems(deleteIndexes);
+    }
+
+    resetScheduleMultiDeleteMode();
+    return;
+  }
+
+  finishEditingItems();
+  closeSwipeActions();
+
+  isScheduleDeleteMode = true;
+
+  scheduleMultiDeleteButton.textContent =
+    "削除する";
+
+  scheduleMultiDeleteButton.classList.add(
+    "delete-mode"
+  );
+
+  scheduleList.classList.add("delete-mode");
+
   renderScheduleList();
 }
 
+function deleteScheduleItems(indexes) {
+  const schedules = getScheduleData();
+
+  const filteredSchedules =
+    schedules.filter(
+      (_, index) => !indexes.includes(index)
+    );
+
+  setScheduleData(filteredSchedules);
+}
+
+function resetScheduleMultiDeleteMode() {
+  const needsRender = isScheduleDeleteMode;
+
+  isScheduleDeleteMode = false;
+
+  scheduleMultiDeleteButton.textContent =
+    "複数削除";
+
+  scheduleMultiDeleteButton.classList.remove(
+    "delete-mode"
+  );
+
+  scheduleList.classList.remove("delete-mode");
+
+  if (needsRender) {
+    renderScheduleList();
+  }
+}
 function addDiaryFromInput() {
   const lines = diaryInput.value
     .split(/\n/)
@@ -4079,7 +4112,6 @@ function resetAfterRestore() {
   isGoalDeleteMode = false;
   isGoalSortMode = false;
   isGoalColorMode = false;
-  isScheduleDoneDeleteMode = false;
 
   habitCalendarMonthOffset = 0;
   pastDiaryCalendarMonthOffset = 0;
@@ -4087,6 +4119,7 @@ function resetAfterRestore() {
 
   closeSwipeActions();
   resetGoalModes();
+  resetScheduleMultiDeleteMode();
 
   renderTabs();
   renderPanels();

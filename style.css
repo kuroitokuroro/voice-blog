@@ -343,9 +343,15 @@ button {
   line-height: 1.5;
 }
 
-.goal-checkbox {
+.goal-checkbox,
+.schedule-checkbox {
   margin-right: 10px;
   transform: scale(1.2);
+}
+
+#scheduleList.delete-mode .edit-button,
+#scheduleList.delete-mode .delete-button {
+  display: none;
 }
 
 .habit-title-row {
@@ -739,7 +745,8 @@ button {
   box-shadow: none;
 }
 
-.goal-title-row {
+.goal-title-row,
+.schedule-title-row {
   display: flex;
   align-items: center;
   margin: 10px 0px;
@@ -747,7 +754,8 @@ button {
   gap: 12px;
 }
 
-.goal-title-row h2 {
+.goal-title-row h2,
+.schedule-title-row h2 {
   margin: 0;
 }
 
@@ -765,7 +773,8 @@ button {
   background: var(--iro-sub-btn);
 }
 
-.goal-title-actions {
+.goal-title-actions,
+.schedule-title-actions {
   display: flex;
   gap: 8px;
   align-items: center;
@@ -923,16 +932,6 @@ button {
   width: 1em;
   background: #d0d0d0;
   border-radius: 10px 0 0 10px;
-}
-
-.schedule-danger-area {
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 12px;
-}
-
-.common-item.done.delete-warning {
-  border-left-color: var(--iro-delete-btn);
 }
 
 .common-item.today {
